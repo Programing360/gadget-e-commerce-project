@@ -3,13 +3,13 @@ import bannerImg2 from "../../assets/slider-2-img.png";
 
 const Banner = () => {
   return (
-    <div className="carousel w-full relative group">
+    <div className="carousel bg-[#e7e7e7] w-full relative group">
 
       {/* -------- Slide 1 -------- */}
       <div id="slide1" className="carousel-item relative w-full">
-        <div className="hero bg-base-200 min-h-screen">
-          <div className="hero-content w-full flex-col md:flex-row-reverse">
-            <img src={bannerImg1} className="max-w-sm rounded-lg shadow-2xl" />
+        <div className="hero bg-[#e7e7e7] min-h-screen">
+          <div className="hero-content w-full flex-col md:flex-row-reverse dark:text-[#000000]">
+            <img src={bannerImg1} className="max-w-sm rounded-lg shadow-2xl " />
             <div>
               <h1 className="text-5xl font-bold">Box Office News!</h1>
               <p className="py-6">
@@ -23,7 +23,7 @@ const Banner = () => {
         {/* Right Button */}
         <div
           className="
-            fixed right-5 top-1/2 -translate-y-1/2
+            absolute right-5 top-1/2 -translate-y-1/2
             flex md:hidden md:group-hover:flex
           "
         >
@@ -35,7 +35,7 @@ const Banner = () => {
 
       {/* -------- Slide 2 -------- */}
       <div id="slide2" className="carousel-item relative w-full">
-        <div className="hero bg-base-200 min-h-screen">
+        <div className="hero bg-[#e7e7e7] min-h-screen">
           <div className="hero-content w-full flex-col md:flex-row-reverse">
             <img src={bannerImg2} className="max-w-sm rounded-lg shadow-2xl" />
             <div>
