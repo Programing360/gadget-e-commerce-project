@@ -1,17 +1,76 @@
-import React from "react";
-import { useLoaderData } from "react-router";
-import NavBar from "../../component/NavBar/NavBar";
+import React, { useContext } from "react";
+import { Link, useLoaderData } from "react-router";
+import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+import { toast, ToastContainer } from "react-toastify";
+import { UseContext } from "../../Context/AuthContext";
+import useCart from "../../Hook/useCart";
 
 const ProductDetails = () => {
-  const { name, image, stock, price, discountPrice, description } =
+  const { _id, name, image, stock, price, discountPrice, description } =
     useLoaderData();
-  // console.log(data)
+  const { user } = useContext(UseContext);
+  const axiosSecure = useAxiosSecure();
+  const [cart, refetch] = useCart();
 
+  const handleCartData = async () => {
+    const existing = cart.find((item) => item.productId === _id);
+    if (existing) {
+      const newQty = existing.quantity + 1;
+      const { data } = await axiosSecure.patch(`/cartData/${existing._id}`, {
+        quantity: newQty,
+      });
+      if (data.modifiedCount > 0) {
+        cart.map((item) =>
+          item.id === existing._id ? { ...item, quantity: newQty } : item
+        );
+        toast.success("Product also added to cart 🛒");
+        refetch();
+      }
+      return;
+    }
+
+    const cartItem = {
+      productId: _id,
+      name,
+      price: discountPrice,
+      quantity: 1,
+      image,
+      email: user.email,
+    };
+    axiosSecure.post("/cartData", cartItem).then((res) => {
+      if (res.data?.insertedId) {
+        toast.success("Product also added to cart 🛒");
+        refetch();
+      }
+    });
+  };
+
+  const quantity = cart.map((item) => {
+    if(item.productId === _id){
+      return item.quantity
+    }
+  });
+  console.log(quantity)
   return (
     <div>
-      <div className="bg-sky-700 text-white text-center py-7">
+      <div className="bg-sky-700 text-white text-center w-full py-7">
         <h1 className="text-2xl">{name}</h1>
-        <p>Home/Product/{name}</p>
+        <div className="breadcrumbs text-sm justify-items-center">
+          <ul className="">
+            <li>
+              <Link to="/">
+                <a>Home</a>
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/products">
+                <a>Product</a>
+              </Link>
+            </li>
+            <li>{name}</li>
+          </ul>
+        </div>
       </div>
       <div className="hero bg-base-200 min-h-screen ">
         <div className="hero-content flex-col lg:flex-row gap-10">
@@ -36,20 +95,23 @@ const ProductDetails = () => {
               {/* Quantity */}
               <div className="flex items-center gap-3">
                 <button className="btn btn-sm">-</button>
-                <span className="min-w-[20px] text-center">0</span>
+                <span className="min-w-5 text-center">{quantity}</span>
                 <button className="btn btn-sm">+</button>
               </div>
 
               {/* Add to Cart */}
-              <button className=" btn flex-1 bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white">
+              <button
+                onClick={handleCartData}
+                className=" btn flex-1 bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white"
+              >
                 Add To Cart
               </button>
             </div>
 
-            <button className="btn w-full bg-gradient-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] mt-4 text-white">
+            <button className="btn w-full bg-linear-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] mt-4 text-white">
               Chat with Messenger
             </button>
-            <p className="py-6 bg-gray-200 p-4 mt-4 rounded-tr-2xl rounded-bl-2xl">
+            <p className="py-6 bg-gray-200 p-4 mt-4 rounded-tr-2xl rounded-bl-2xl dark:text-black">
               <span className="font-bold">Description: </span>
               {description}
             </p>

@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Heart, ZoomIn, X, Minus, Plus } from "lucide-react";
 import { Link } from "react-router";
+import { useAxiosSecure } from "../Hook/useAxiosSecure";
+import { toast } from "react-toastify";
+import { UseContext } from "../Context/AuthContext";
+import useCart from "../Hook/useCart";
 
 const ProductCard = ({ product }) => {
   const {
@@ -13,9 +17,44 @@ const ProductCard = ({ product }) => {
     description,
     stock,
   } = product;
-
   const [open, setOpen] = useState(false);
   const [qty, setQty] = useState(1);
+  const axiosSecure = useAxiosSecure();
+  const { user } = useContext(UseContext);
+  const [cart, refetch] = useCart();
+  // const notify = toast("Added to cart successfully!");
+
+  const handleCartData = async (id) => {
+    const existing = cart.find((item) => item.productId === id);
+    if (existing) {
+      const newQty = existing.quantity + 1;
+      const { data } = await axiosSecure.patch(`/cartData/${existing._id}`, {
+        quantity: newQty,
+      });
+      if (data.modifiedCount > 0) {
+        cart.map(item => item.id === existing._id ? {...item, quantity: newQty} : item);
+        toast.success("Product also added to cart 🛒");
+        refetch();
+      }
+      return;
+    }
+    console.log(id, existing);
+    const cartItem = {
+      productId: _id,
+      name,
+      price: discountPrice,
+      quantity: 1,
+      image,
+      email: user.email,
+    };
+
+    axiosSecure.post("/cartData", cartItem).then((res) => {
+      if (res.data.insertedId) {
+        toast.success("Product added to cart 🛒");
+        refetch();
+      }
+    });
+  };
 
   return (
     <>
@@ -34,7 +73,7 @@ const ProductCard = ({ product }) => {
         {/* Image */}
         <div className="relative">
           <Link to={`productDetails/${_id}`}>
-            <img src={image} alt={name} className="w-full h-80  object-cover" />
+            <img src={image} alt={name} className="w-full h-80 object-cover" />
           </Link>
 
           {/* Hover Zoom */}
@@ -63,7 +102,9 @@ const ProductCard = ({ product }) => {
             <span className="text-sm line-through text-gray-400">৳{price}</span>
           </div>
         </div>
-        <button className="btn w-full">Quick Add</button>
+        <button onClick={() => handleCartData(_id)} className="btn w-full">
+          Quick Add
+        </button>
       </div>
 
       {/* MODAL */}
@@ -118,10 +159,12 @@ const ProductCard = ({ product }) => {
                 </div>
 
                 {/* Add to Cart */}
-                <button className="bg-cyan-600 w-full text-white px-6 py-3 rounded-xl mb-4 hover:opacity-90">
+                <button
+                  onClick={handleCartData}
+                  className="bg-cyan-600 w-full text-white px-6 py-3 rounded-xl mb-4 hover:opacity-90"
+                >
                   Add to Cart
                 </button>
-
                 {/* Description */}
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {description}
