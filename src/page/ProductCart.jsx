@@ -23,7 +23,6 @@ const ProductCard = ({ product }) => {
   const { user } = useContext(UseContext);
   const [cart, refetch] = useCart();
   // const notify = toast("Added to cart successfully!");
-
   const handleCartData = async (id) => {
     const existing = cart.find((item) => item.productId === id);
     if (existing) {
@@ -32,13 +31,14 @@ const ProductCard = ({ product }) => {
         quantity: newQty,
       });
       if (data.modifiedCount > 0) {
-        cart.map(item => item.id === existing._id ? {...item, quantity: newQty} : item);
+        cart.map((item) =>
+          item.id === existing._id ? { ...item, quantity: newQty } : item
+        );
         toast.success("Product also added to cart 🛒");
         refetch();
       }
       return;
     }
-    console.log(id, existing);
     const cartItem = {
       productId: _id,
       name,
@@ -47,6 +47,7 @@ const ProductCard = ({ product }) => {
       image,
       email: user.email,
     };
+    localStorage.setItem("cartItem", JSON.stringify({ id }));
 
     axiosSecure.post("/cartData", cartItem).then((res) => {
       if (res.data.insertedId) {
@@ -124,9 +125,11 @@ const ProductCard = ({ product }) => {
                 <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
                   -{discountPercentage}%
                 </span>
-                <Link to={`productDetails/${_id}`}>
-                  <img src={image} alt={name} className="w-full rounded-xl" />
-                </Link>
+                <div className="">
+                  <Link to={`productDetails/${_id}`}>
+                    <img src={image} alt={name} className="w-full rounded-xl" />
+                  </Link>
+                </div>
               </div>
 
               {/* Right Info */}
@@ -160,7 +163,7 @@ const ProductCard = ({ product }) => {
 
                 {/* Add to Cart */}
                 <button
-                  onClick={handleCartData}
+                  onClick={() => handleCartData(_id)}
                   className="bg-cyan-600 w-full text-white px-6 py-3 rounded-xl mb-4 hover:opacity-90"
                 >
                   Add to Cart

@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import ProductCart from "./ProductCart";
+import { UseContext } from "../Context/AuthContext";
 
 const AllProduct = () => {
-  const [allProducts, setAllProducts] = useState([]);
+
+  const {allProducts, setAllProducts} = useContext(UseContext);
 
   const axiosAllProduct = useAxiosSecure();
   useEffect(() => {
     axiosAllProduct.get("/allProducts").then((res) => setAllProducts(res.data));
-  }, [axiosAllProduct]);
+  }, [axiosAllProduct, setAllProducts]);
 
   return (
     <div className="mt-14 container mx-11/12 mx-auto p-10 lg:p-0">

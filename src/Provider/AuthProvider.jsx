@@ -8,7 +8,7 @@ const AuthProvider = ({children}) => {
 
     const [user,setUser] = useState([])
     const [loading, setLoading] = useState(true) 
-    
+    const [allProducts, setAllProducts] = useState([]);
     const createUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
     }
@@ -56,7 +56,9 @@ const AuthProvider = ({children}) => {
         googleLogin,
         UserLogout,
         user,
-        loading
+        loading,
+        setAllProducts,
+        allProducts
     }
     
     return<UseContext value={userInfo}>{children}</UseContext>;

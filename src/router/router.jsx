@@ -4,6 +4,8 @@ import Home from "../component/Home/Home/home";
 import ProductDetails from "../page/ProductDetails/ProductDetails";
 import Login from "../Authentication/Login";
 import SignIn from "../Authentication/SignIn";
+import AdminPage from "../mainLayout/DashBoard/AdminPage";
+import CartDetails from "../page/AddToCart/CartDetails";
 
 export const router = createBrowserRouter([
   {
@@ -25,9 +27,17 @@ export const router = createBrowserRouter([
         Component: Login,
       },
       {
-        path:'/register',
-        Component:SignIn
-      }
+        path: "/register",
+        Component: SignIn,
+      },
+      {
+        path: "/cartDetails",
+        Component: CartDetails,
+      },
     ],
+  },
+  {
+    path: "/adminDashboard",
+    Component: AdminPage,
   },
 ]);

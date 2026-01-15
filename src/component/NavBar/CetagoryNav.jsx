@@ -2,7 +2,7 @@ import React from "react";
 
 const CategoryNav = () => {
   return (
-    <div className="bg-sky-600">
+    <div className="bg-sky-600 sticky top-16 z-20">
       <ul className="flex justify-center gap-8 text-white py-3 relative">
         {/* Category Dropdown */}
         <li className="relative group cursor-pointer">

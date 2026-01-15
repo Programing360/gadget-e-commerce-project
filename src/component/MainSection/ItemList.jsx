@@ -11,7 +11,7 @@ const ItemList = () => {
 
   return (
     <div className="w-full py-16 bg-gray-50">
-      <h2 className="text-3xl font-bold text-center mb-10">
+      <h2 className="text-3xl font-bold text-center mb-10 dark:text-black">
         Featured Products
       </h2>
 

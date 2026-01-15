@@ -7,12 +7,16 @@ import cartIcon from "../../assets/assets/OrderCart.png";
 import userloginIcon from "../../assets/assets/userloginIcon.png";
 import useCart from "../../Hook/useCart";
 import CartAdd from "../../page/AddToCart/CartAdd";
-
+import crossIcon from "../../assets/assets/crossIcon.png";
 const NavBar = () => {
   const { user, UserLogout } = useContext(UseContext);
   const navigate = useNavigate();
-  const [cart] = useCart()
+  const [cart] = useCart();
   // console.log(cart)
+  const quantity = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   const handleUserLogOut = () => {
     UserLogout().then(() => {
       navigate("/login");
@@ -50,18 +54,50 @@ const NavBar = () => {
                   <img className="w-8 mr-5" src={cartIcon} alt="" />
                   <span className="absolute -top-2 right-1 badge badge-sm indicator-item text-white bg-cyan-700 dark:bg-black outline-0">
                     {cart.length || 0}
-                  </span> 
+                  </span>
                 </label>
               </div>
-              <div className="drawer-side">
+              <div className="drawer-side ">
                 <label
                   htmlFor="my-drawer-5"
                   aria-label="close sidebar"
                   className="drawer-overlay"
                 ></label>
-                <ul className="menu bg-base-200 min-h-full w-100 p-4">
+
+                <ul className="menu bg-base-200 min-h-full lg:w-100 w-[350px] p-4 dark:bg-white dark:text-black">
                   {/* Sidebar content here */}
-                  <CartAdd></CartAdd>
+
+                  <div className=" h-150 overflow-auto">
+                    <label
+                      className="flex justify-end"
+                      htmlFor="my-drawer-5"
+                      aria-label="close sidebar"
+                    >
+                      <img
+                        className="w-7 cursor-pointer"
+                        src={crossIcon}
+                        alt=""
+                      />
+                    </label>
+                    <CartAdd></CartAdd>
+                  </div>
+                  <div className="bg-gray-200 leading-16 mt-10">
+                    <div className="flex justify-between items-center px-6">
+                      <h2 className="text-2xl text-cyan-700">Subtitle:</h2>
+                      <p className="text-pink-600">Price: {quantity} TK</p>
+                    </div>
+                    <div className="px-4">
+                      <button className="btn w-full bg-linear-0 to-violet-400 from-violet-600 text-white">
+                        Pay Online
+                      </button>
+                      <button className="btn w-full bg-linear-0 to-cyan-400 from-cyan-800 text-white">
+                        Cash On Delivery
+                      </button>
+                    </div>
+                    <Link to="/cartDetails">
+                      <p className="underline text-center">View Cart</p>
+                    </Link>
+                  </div>
                 </ul>
               </div>
             </div>
@@ -104,7 +140,7 @@ const NavBar = () => {
                 >
                   <div className="w-10 rounded-full">
                     <img
-                    className="filter bg-fuchsia-600 invert"
+                      className="filter bg-fuchsia-600 invert"
                       alt="Tailwind CSS Navbar component"
                       src={userloginIcon}
                     />
@@ -121,7 +157,9 @@ const NavBar = () => {
                     </a>
                   </li>
                   <li>
-                    <a>Settings</a>
+                    <Link to="/adminDashboard">
+                      <a>Admin Page</a>
+                    </Link>
                   </li>
                   <li onClick={handleUserLogOut}>
                     <a>Logout</a>

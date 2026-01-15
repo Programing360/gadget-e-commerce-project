@@ -4,6 +4,7 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast, ToastContainer } from "react-toastify";
 import { UseContext } from "../../Context/AuthContext";
 import useCart from "../../Hook/useCart";
+import useCartItemUpdate from "../../Hook/cartItemUpdate";
 
 const ProductDetails = () => {
   const { _id, name, image, stock, price, discountPrice, description } =
@@ -11,6 +12,7 @@ const ProductDetails = () => {
   const { user } = useContext(UseContext);
   const axiosSecure = useAxiosSecure();
   const [cart, refetch] = useCart();
+  const {handleCartIncrement, handleCartDecrement} = useCartItemUpdate();
 
   const handleCartData = async () => {
     const existing = cart.find((item) => item.productId === _id);
@@ -37,22 +39,23 @@ const ProductDetails = () => {
       image,
       email: user.email,
     };
+    localStorage.setItem("cartItem", JSON.stringify({ id: _id }));
     axiosSecure.post("/cartData", cartItem).then((res) => {
       if (res.data?.insertedId) {
-        toast.success("Product also added to cart 🛒");
+        toast.success("Product added to cart 🛒");
         refetch();
       }
     });
   };
 
   const quantity = cart.map((item) => {
-    if(item.productId === _id){
-      return item.quantity
+    if (item.productId === _id) {
+      return item.quantity;
     }
   });
-  console.log(quantity)
+  console.log(quantity);
   return (
-    <div>
+    <div className="dark:bg-white dark:text-white">
       <div className="bg-sky-700 text-white text-center w-full py-7">
         <h1 className="text-2xl">{name}</h1>
         <div className="breadcrumbs text-sm justify-items-center">
@@ -94,9 +97,19 @@ const ProductDetails = () => {
             <div className="flex gap-4 w-full p-3 items-center">
               {/* Quantity */}
               <div className="flex items-center gap-3">
-                <button className="btn btn-sm">-</button>
+                <button
+                  onClick={() => handleCartDecrement(_id)}
+                  className="btn btn-sm"
+                >
+                  -
+                </button>
                 <span className="min-w-5 text-center">{quantity}</span>
-                <button className="btn btn-sm">+</button>
+                <button
+                  onClick={() => handleCartIncrement(_id)}
+                  className="btn btn-sm"
+                >
+                  +
+                </button>
               </div>
 
               {/* Add to Cart */}
