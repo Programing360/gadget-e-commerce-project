@@ -5,7 +5,8 @@ import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import { UseContext } from "../Context/AuthContext";
 import useCart from "../Hook/useCart";
-
+import hearIcon from "../assets/assets/heart.png";
+import useWishList from "../Hook/useWishList";
 const ProductCard = ({ product }) => {
   const {
     _id,
@@ -21,7 +22,9 @@ const ProductCard = ({ product }) => {
   const [qty, setQty] = useState(1);
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(UseContext);
+  // const [wishlistIcon, setWishlistIcon] = useState(null)
   const [cart, refetch] = useCart();
+  const [wishlist, reload] = useWishList();
   // const notify = toast("Added to cart successfully!");
   const handleCartData = async (id) => {
     const existing = cart.find((item) => item.productId === id);
@@ -57,6 +60,29 @@ const ProductCard = ({ product }) => {
     });
   };
 
+  const isInWishlist = wishlist?.find((item) => item.productId === _id);
+//   useEffect(() => {
+//   console.log("wishlist changed:", isInWishlist);
+// }, [isInWishlist]);
+
+
+  const handlewishlistCart = () => {
+    const cartItem = {
+      productId: _id,
+      name,
+      price: discountPrice,
+      quantity: 1,
+      image,
+      email: user.email || "",
+    };
+    axiosSecure.post("/addWishList", cartItem).then((res) => {
+      if (res.data.insertedId) {
+        toast.success("Add to wishlist");
+        reload();
+      }
+    });
+  };
+
   return (
     <>
       {/* CARD */}
@@ -67,8 +93,15 @@ const ProductCard = ({ product }) => {
         </span>
 
         {/* Wishlist */}
-        <button className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10 hover:text-red-500 dark:text-red-500">
-          <Heart size={16} />
+        <button
+          onClick={() => handlewishlistCart(_id)}
+          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10 hover:text-red-500 dark:text-red-500"
+        >
+          {isInWishlist ? (
+            <img className="w-4" src={hearIcon} alt="" />
+          ) : (
+            <Heart size={16} />
+          )}
         </button>
 
         {/* Image */}

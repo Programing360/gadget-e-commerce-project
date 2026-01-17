@@ -6,6 +6,7 @@ import Login from "../Authentication/Login";
 import SignIn from "../Authentication/SignIn";
 import AdminPage from "../mainLayout/DashBoard/AdminPage";
 import CartDetails from "../page/AddToCart/CartDetails";
+import AddToWishlist from "../page/AddToWishlist/AddToWishlist";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/cartDetails",
         Component: CartDetails,
+      },
+      {
+        path: "/wishList",
+        Component: AddToWishlist,
       },
     ],
   },

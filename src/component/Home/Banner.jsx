@@ -15,7 +15,7 @@ const Banner = () => {
               <p className="py-6">
                 Provident cupiditate voluptatem et in.
               </p>
-              <button className="btn bg-[#ff7004] text-white hover:bg-black hover:text-[#ff7004]">Shop Now</button>
+              <button className="btn bg-[#ff7004] text-white border-0 hover:bg-black hover:text-[#ff7004]">Shop Now</button>
             </div>
           </div>
         </div>
