@@ -7,6 +7,7 @@ import SignIn from "../Authentication/SignIn";
 import AdminPage from "../mainLayout/DashBoard/AdminPage";
 import CartDetails from "../page/AddToCart/CartDetails";
 import AddToWishlist from "../page/AddToWishlist/AddToWishlist";
+import ProductList from "../mainLayout/DashBoard/ProductList";
 
 export const router = createBrowserRouter([
   {
@@ -44,5 +45,14 @@ export const router = createBrowserRouter([
   {
     path: "/adminDashboard",
     Component: AdminPage,
+    children: [
+      {
+        path: "/adminDashboard/productList",
+        Component: ProductList,
+      },
+      {
+        path:'/adminDashboard/productAdd'
+      }
+    ],
   },
 ]);

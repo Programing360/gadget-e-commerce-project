@@ -8,7 +8,7 @@ const useWishList = () => {
   const { user } = useContext(UseContext);
 
   const { refetch: reload, data: wishlist = [] } = useQuery({
-    queryKey: ["wishListGet", user.email],
+    queryKey: ["wishListGet"],
     queryFn: async () => {
       const res = await axiosSecure.get("/wishListGet");
       return res.data;
