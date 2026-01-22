@@ -6,11 +6,11 @@ const ProductList = () => {
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
-          <thead>
+          <thead className="text-white">
             <tr>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  <input type="checkbox" className="checkbox bg-indigo-600" />
                 </label>
               </th>
               <th>Name</th>
@@ -19,12 +19,12 @@ const ProductList = () => {
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {/* row 1 */}
             <tr>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  <input type="checkbox" className="checkbox bg-indigo-600" />
                 </label>
               </th>
               <td>
@@ -59,7 +59,7 @@ const ProductList = () => {
             <tr>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  <input type="checkbox" className="checkbox bg-indigo-600" />
                 </label>
               </th>
               <td>
@@ -94,7 +94,7 @@ const ProductList = () => {
             <tr>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  <input type="checkbox" className="checkbox bg-indigo-600" />
                 </label>
               </th>
               <td>
@@ -129,7 +129,7 @@ const ProductList = () => {
             <tr>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  <input type="checkbox" className="checkbox bg-indigo-600" />
                 </label>
               </th>
               <td>
@@ -161,16 +161,7 @@ const ProductList = () => {
               </th>
             </tr>
           </tbody>
-          {/* foot */}
-          <tfoot>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
-              <th></th>
-            </tr>
-          </tfoot>
+          
         </table>
       </div>
     </div>

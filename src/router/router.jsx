@@ -8,6 +8,7 @@ import AdminPage from "../mainLayout/DashBoard/AdminPage";
 import CartDetails from "../page/AddToCart/CartDetails";
 import AddToWishlist from "../page/AddToWishlist/AddToWishlist";
 import ProductList from "../mainLayout/DashBoard/ProductList";
+import ProductAdd from "../mainLayout/DashBoard/ProductAdd";
 
 export const router = createBrowserRouter([
   {
@@ -51,8 +52,9 @@ export const router = createBrowserRouter([
         Component: ProductList,
       },
       {
-        path:'/adminDashboard/productAdd'
-      }
+        path: "/adminDashboard/productAdd",
+        Component: ProductAdd,
+      },
     ],
   },
 ]);

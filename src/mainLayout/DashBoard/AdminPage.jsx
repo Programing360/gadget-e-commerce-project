@@ -1,11 +1,12 @@
 import React from "react";
 import logoIcon from "../../assets/logo.jpg";
 import productIcon from "../../assets/assets/list-text.png";
+import dashboardIcon from "../../assets/assets/dashboardIcon.png";
 import { Link, NavLink, Outlet } from "react-router";
 
 const AdminPage = () => {
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open bg-[#010313] text-white">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
         {/* Navbar */}
@@ -33,28 +34,39 @@ const AdminPage = () => {
           <div className="px-4">Navbar Title</div>
         </nav>
         {/* Page content here */}
-        <div>
+        <div className="">
           <Outlet></Outlet>
         </div>
       </div>
 
-      <div className="drawer-side  is-drawer-close:overflow-visible ">
+      <div className="drawer-side  is-drawer-close:overflow-visible  ">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-full is-drawer-open:w-full">
+        <div className="flex min-h-full flex-col items-start  is-drawer-close:w-full is-drawer-open:w-full bg-[#231236e0] text-white">
           {/* Sidebar content here */}
           <ul className="menu w-full grow">
             {/* List item */}
             <li>
               <div className="flex flex-col md:flex-row justify-center items-center gap-3 pb-10">
                 <img className="w-16 rounded-full" src={logoIcon} alt="" />
-                <h1 className=" text-2xl font-bold text-[#000000] dark:text-white">
+                <h1 className=" text-2xl font-bold text-[#f3eeee] dark:text-white">
                   Zeroo<span className="text-[#ff4e5c]">m</span>
                   <span className="text-[#fdb529]">iro</span>
                 </h1>
+              </div>
+              <div>
+                <img className="w-6" src={dashboardIcon} alt="" />
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    isActive ? "border p-3 bg-red-400" : ""
+                  }
+                >
+                  Dashboard
+                </NavLink>
               </div>
               <Link to="/">
                 <button
@@ -83,7 +95,7 @@ const AdminPage = () => {
             </li>
 
             {/* List item */}
-            <Link to='/adminDashboard/productList'>
+            <Link to="/adminDashboard/productList">
               <li>
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
@@ -96,30 +108,34 @@ const AdminPage = () => {
                 </button>
               </li>
             </Link>
-            <li>
-              <button
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
-                data-tip="Settings"
-              >
-                {/* Settings icon */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  fill="none"
-                  stroke="currentColor"
-                  className="my-1.5 inline-block size-4"
+            <Link to="/adminDashboard/productAdd">
+              <li>
+                <button
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
+                  data-tip="Settings"
                 >
-                  <path d="M20 7h-9"></path>
-                  <path d="M14 17H5"></path>
-                  <circle cx="17" cy="17" r="3"></circle>
-                  <circle cx="7" cy="7" r="3"></circle>
-                </svg>
-                <span className="is-drawer-close:hidden lg:is-drawer-close:block">Product Add</span>
-              </button>
-            </li>
+                  {/* Settings icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2"
+                    fill="none"
+                    stroke="currentColor"
+                    className="my-1.5 inline-block size-4"
+                  >
+                    <path d="M20 7h-9"></path>
+                    <path d="M14 17H5"></path>
+                    <circle cx="17" cy="17" r="3"></circle>
+                    <circle cx="7" cy="7" r="3"></circle>
+                  </svg>
+                  <span className="is-drawer-close:hidden lg:is-drawer-close:block">
+                    Product Add
+                  </span>
+                </button>
+              </li>
+            </Link>
           </ul>
         </div>
       </div>

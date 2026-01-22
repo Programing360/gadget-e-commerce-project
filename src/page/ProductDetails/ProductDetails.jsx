@@ -7,12 +7,19 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 
 const ProductDetails = () => {
-  const { _id, name, image, stock, price, discountPrice, description } =
-    useLoaderData();
+  const {
+    _id,
+    name,
+    image,
+    stock,
+    price,
+    discountPrice,
+    description,
+  } = useLoaderData();
   const { user } = useContext(UseContext);
   const axiosSecure = useAxiosSecure();
   const [cart, refetch] = useCart();
-  const {handleCartIncrement, handleCartDecrement} = useCartItemUpdate();
+  const { handleCartIncrement, handleCartDecrement } = useCartItemUpdate();
 
   const handleCartData = async () => {
     const existing = cart.find((item) => item.productId === _id);
@@ -22,9 +29,9 @@ const ProductDetails = () => {
         quantity: newQty,
       });
       if (data.modifiedCount > 0) {
-        cart.map((item) =>
-          item.id === existing._id ? { ...item, quantity: newQty } : item
-        );
+        // cart.map((item) =>
+        //   item._id === existing._id ? { ...item, quantity: newQty } : item,
+        // );
         toast.success("Product also added to cart 🛒");
         refetch();
       }
@@ -47,13 +54,8 @@ const ProductDetails = () => {
       }
     });
   };
-
-  const quantity = cart.map((item) => {
-    if (item.productId === _id) {
-      return item.quantity;
-    }
-  });
-  console.log(quantity);
+  const cartItem = cart?.find((item) => item.productId === _id);
+    
   return (
     <div className="dark:bg-white dark:text-white">
       <div className="bg-sky-700 text-white text-center w-full py-7">
@@ -77,7 +79,10 @@ const ProductDetails = () => {
       </div>
       <div className="hero bg-base-200 min-h-screen ">
         <div className="hero-content flex-col lg:flex-row gap-10">
-          <img src={image} className="w-full h-full rounded-lg shadow-2xl" />
+          <img
+            src={image}
+            className="w-full h-full md:max-w-[604px] rounded-lg shadow-2xl"
+          />
           <div className="product-cart leading-10">
             <div className="">
               <p>
@@ -94,23 +99,27 @@ const ProductDetails = () => {
                 </span>
               </div>
             </div>
-            <div className="flex gap-4 w-full p-3 items-center">
+            <div className="flex gap-4 w-full pt-3 items-center">
               {/* Quantity */}
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => handleCartDecrement(_id)}
-                  className="btn btn-sm"
-                >
-                  -
-                </button>
-                <span className="min-w-5 text-center">{quantity}</span>
-                <button
-                  onClick={() => handleCartIncrement(_id)}
-                  className="btn btn-sm"
-                >
-                  +
-                </button>
-              </div>
+              {cartItem && (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => handleCartDecrement(_id)}
+                    className="btn btn-sm"
+                  >
+                    -
+                  </button>
+                  <span className="min-w-5 text-center">
+                    {cartItem.quantity}
+                  </span>
+                  <button
+                    onClick={() => handleCartIncrement(_id)}
+                    className="btn btn-sm"
+                  >
+                    +
+                  </button>
+                </div>
+              )}
 
               {/* Add to Cart */}
               <button
