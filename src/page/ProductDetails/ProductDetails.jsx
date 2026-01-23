@@ -7,15 +7,8 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 
 const ProductDetails = () => {
-  const {
-    _id,
-    name,
-    image,
-    stock,
-    price,
-    discountPrice,
-    description,
-  } = useLoaderData();
+  const { _id, name, image, stock, price, discountPrice, description } =
+    useLoaderData();
   const { user } = useContext(UseContext);
   const axiosSecure = useAxiosSecure();
   const [cart, refetch] = useCart();
@@ -55,7 +48,7 @@ const ProductDetails = () => {
     });
   };
   const cartItem = cart?.find((item) => item.productId === _id);
-    
+
   return (
     <div className="dark:bg-white dark:text-white">
       <div className="bg-sky-700 text-white text-center w-full py-7">
@@ -130,9 +123,11 @@ const ProductDetails = () => {
               </button>
             </div>
 
-            <button className="btn w-full bg-linear-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] mt-4 text-white">
-              Chat with Messenger
-            </button>
+            <a href="https://www.facebook.com/messages/" target="_blank">
+              <button className="btn w-full bg-linear-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] mt-4 text-white">
+                Chat with Messenger
+              </button>
+            </a>
             <p className="py-6 bg-gray-200 p-4 mt-4 rounded-tr-2xl rounded-bl-2xl dark:text-black">
               <span className="font-bold">Description: </span>
               {description}
