@@ -5,7 +5,7 @@ import { UseContext } from "../Context/AuthContext";
 
 const useWishList = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useContext(UseContext);
+  // const { user } = useContext(UseContext);
 
   const { refetch: reload, data: wishlist = [] } = useQuery({
     queryKey: ["wishListGet"],

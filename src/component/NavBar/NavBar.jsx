@@ -8,14 +8,15 @@ import userloginIcon from "../../assets/assets/userloginIcon.png";
 import useCart from "../../Hook/useCart";
 import CartAdd from "../../page/AddToCart/CartAdd";
 import crossIcon from "../../assets/assets/crossIcon.png";
+import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 const NavBar = () => {
-  const { user, UserLogout } = useContext(UseContext);
+  const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
   const [cart] = useCart();
   // console.log(cart)
   const quantity = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
   const handleUserLogOut = () => {
     UserLogout().then(() => {
@@ -87,10 +88,16 @@ const NavBar = () => {
                       <p className="text-pink-600">Price: {quantity} TK</p>
                     </div>
                     <div className="px-4">
-                      <button className="btn w-full bg-linear-0 to-violet-400 from-violet-600 text-white">
-                        Pay Online
-                      </button>
-                      <button className="btn w-full bg-linear-0 to-cyan-400 from-cyan-800 text-white">
+                      <Link to='/onlinePayment'>
+                        <button className="btn w-full bg-linear-0 to-violet-400 from-violet-600 text-white">
+                          Pay Online
+                        </button>
+                      </Link>
+
+                      <button
+                        onClick={() => setOpen(true)}
+                        className="btn w-full bg-linear-0 to-cyan-400 from-cyan-800 text-white"
+                      >
                         Cash On Delivery
                       </button>
                     </div>
@@ -101,6 +108,7 @@ const NavBar = () => {
                 </ul>
               </div>
             </div>
+            {open && <CashOnDelivery></CashOnDelivery>}
             {/* <div className="dropdown dropdown-end mr-4 dark:text-black">
               <div
                 tabIndex={0}
@@ -151,11 +159,8 @@ const NavBar = () => {
                   className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                 >
                   <li>
-                    <Link to='/wishList'>
-                      <a className="justify-between">
-                        Wish List
-                        
-                      </a>
+                    <Link to="/wishList">
+                      <a className="justify-between">Wish List</a>
                     </Link>
                   </li>
                   <li>

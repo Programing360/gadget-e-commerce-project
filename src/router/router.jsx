@@ -10,6 +10,7 @@ import AddToWishlist from "../page/AddToWishlist/AddToWishlist";
 import ProductList from "../mainLayout/DashBoard/ProductList";
 import ProductAdd from "../mainLayout/DashBoard/ProductAdd";
 import Dashboard from "../mainLayout/DashBoard/Dashboard";
+import CheckoutPage from "../page/PaymentMethod/CheckOutPage";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
         Component: AddToWishlist,
       },
     ],
+  },
+  {
+    path: "/onlinePayment",
+    Component: CheckoutPage,
   },
   {
     path: "/adminDashboard",
