@@ -35,7 +35,7 @@ const ProductCard = ({ product }) => {
       });
       if (data.modifiedCount > 0) {
         cart.map((item) =>
-          item.id === existing._id ? { ...item, quantity: newQty } : item
+          item.id === existing._id ? { ...item, quantity: newQty } : item,
         );
         toast.success("Product also added to cart 🛒");
         refetch();
@@ -61,10 +61,9 @@ const ProductCard = ({ product }) => {
   };
 
   const isInWishlist = wishlist?.find((item) => item.productId === _id);
-//   useEffect(() => {
-//   console.log("wishlist changed:", isInWishlist);
-// }, [isInWishlist]);
-
+  //   useEffect(() => {
+  //   console.log("wishlist changed:", isInWishlist);
+  // }, [isInWishlist]);
 
   const handlewishlistCart = () => {
     const cartItem = {
@@ -84,9 +83,32 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <>
+    <div>
       {/* CARD */}
-      <div className="relative group border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
+      {/* <div>
+        <div className="card bg-base-100 w-96 shadow-sm">
+          <figure className="px-10 pt-10">
+            <img
+              src={image}
+              alt="Shoes"
+              className="rounded-xl w-full h-80 object-cover"
+            />
+          </figure>
+          <div className="card-body items-center text-center">
+            <h2 className="card-title">Card Title</h2>
+            <p>
+              A card component has a figure, a body part, and inside body there
+              are title and actions parts
+            </p>
+            <div className="card-actions">
+              <button className="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      </div> */}
+
+
+      <div className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition ">
         {/* Discount Badge */}
         <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
           -{discountPercentage}%
@@ -107,7 +129,7 @@ const ProductCard = ({ product }) => {
         {/* Image */}
         <div className="relative">
           <Link to={`productDetails/${_id}`}>
-            <img src={image} alt={name} className="w-full h-80 object-cover" />
+            <img src={image} alt={name} className="w-full h-80 object-cover p-4 rounded-2xl" />
           </Link>
 
           {/* Hover Zoom */}
@@ -210,7 +232,7 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

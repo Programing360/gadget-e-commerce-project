@@ -34,7 +34,7 @@ const CartDetails = () => {
 
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
   //   const navigate = useNavigate();
 
@@ -74,10 +74,10 @@ const CartDetails = () => {
         </p>
       </div>
 
-      <div className="overflow-x-auto lg:w-8/12 mx-auto mt-10">
+      <div className="overflow-x-auto lg:w-8/12 w-full mx-auto mt-10">
         <table className="table">
           <thead>
-            <tr className="bg-amber-500 text-center">
+            <tr className="bg-[#006078ce] text-white text-center">
               <th>IMAGE</th>
               <th>PRODUCT NAME</th>
               <th>UNIT PRICE</th>
@@ -92,7 +92,7 @@ const CartDetails = () => {
               <tr key={item._id} className="border bg-gray-200 text-center">
                 <td>
                   <img
-                    className="md:h-20 md:w-20 w mx-auto"
+                    className="md:h-20 md:w-20 mx-auto"
                     src={item.image}
                     alt={item.name}
                   />
@@ -153,10 +153,10 @@ const CartDetails = () => {
       <div className="md:w-8/12 mx-auto bg-gray-200 mt-16 p-8 gap-4 flex flex-col lg:flex-row justify-between items-center ">
         <div className="join lg:w-1/2 w-full">
           <input
-            className="input join-item w-full border-orange-300 dark:bg-white"
+            className="input join-item w-full border-orange-300 dark:bg-white outline-0"
             placeholder="Enter coupon code"
           />
-          <button className="btn rounded-none md:join-item bg-[#f56e06] text-white hover:bg-[#2f333a] dark:border-0">
+          <button className="btn rounded-none md:join-item bg-[#005f78] text-white hover:bg-[#2f333a] dark:border-0">
             Apply Coupon
           </button>
         </div>
@@ -164,13 +164,15 @@ const CartDetails = () => {
         <div className="flex ">
           <button
             onClick={handleAllCartDelete}
-            className="bg-[#f56e06] btn border-0 text-white w-[50%] mr-4 text-[.80rem] md:px-6 md:py-3 md:mr-4 hover:bg-[#2f333a] mb-3 text-center "
+            className="bg-[#005f78] btn border-0 text-white w-[50%] mr-4 text-[.80rem] md:px-6 md:py-3 md:mr-4 hover:bg-[#2f333a] mb-3 text-center "
           >
             CLEAR CART
           </button>
-          <button className="bg-[#2f333a] border-0 btn text-white md:px-6 md:py-3 text-[.70rem] w-[50%] py-3 hover:bg-[#f56e06]">
-            PROCEED TO CHECKOUT
-          </button>
+          <Link className="bg-[#2f333a] border-0 btn text-white md:px-6 md:py-3 text-[.70rem] w-[50%] py-3 hover:bg-[#005f78]" to='/onlinePayment'>
+            <button >
+              PROCEED TO CHECKOUT
+            </button>
+          </Link>
         </div>
       </div>
     </div>

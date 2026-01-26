@@ -58,7 +58,7 @@ const NavBar = () => {
                   </span>
                 </label>
               </div>
-              <div className="drawer-side ">
+              <div className="drawer-side h-full">
                 <label
                   htmlFor="my-drawer-5"
                   aria-label="close sidebar"
@@ -156,7 +156,7 @@ const NavBar = () => {
                 </div>
                 <ul
                   tabIndex="-1"
-                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                  className="menu menu-sm dropdown-content bg-base-100 rounded z-1 mt-3 w-52 p-2 shadow"
                 >
                   <li>
                     <Link to="/wishList">

@@ -3,8 +3,7 @@ import logoIcon from "../../assets/logo.jpg";
 import productIcon from "../../assets/assets/list-text.png";
 import dashboardIcon from "../../assets/assets/dashboardIcon.png";
 import menuList from "../../assets/assets/menulist.png";
-import { Link, NavLink, Outlet } from "react-router";
-import NavBar from "../../component/NavBar/NavBar";
+import { NavLink, Outlet } from "react-router";
 
 const AdminPage = () => {
   return (
@@ -13,7 +12,7 @@ const AdminPage = () => {
       <div className="drawer-content">
         {/* Navbar */}
 
-        <nav className="navbar flex w-full bg-[#030938] block lg:hidden fixed ">
+        <nav className="navbar flex w-full bg-[#030938] lg:hidden fixed ">
           <label
             htmlFor="my-drawer-4"
             aria-label="open sidebar"
@@ -34,7 +33,7 @@ const AdminPage = () => {
         </div>
       </div>
 
-      <div className="drawer-side  is-drawer-close:overflow-visible  ">
+      <div className="drawer-side  is-drawer-close:overflow-visible ">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"
@@ -42,7 +41,7 @@ const AdminPage = () => {
         ></label>
         <div className="flex min-h-full flex-col items-start  lg:is-drawer-close:w-full lg:is-drawer-open:w-full bg-[#231236e0] text-white">
           {/* Sidebar content here */}
-          <ul className="menu md:w-full grow w-[300px]">
+          <ul className="menu md:w-full grow w-75">
             {/* List item */}
             <li>
               <div className="flex flex-col md:flex-row justify-center items-center gap-3 pb-10">
@@ -111,7 +110,7 @@ const AdminPage = () => {
                 >
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                    Product list
+                    Order List
                   </span>
                 </button>
               </li>

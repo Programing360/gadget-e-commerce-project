@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+import { toast } from "react-toastify";
 
 const ProductAdd = () => {
   const {
@@ -9,21 +9,15 @@ const ProductAdd = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const axiosSecure = useAxiosSecure()
-  //   const navigate = useNavigate();
-
+  const axiosSecure = useAxiosSecure();
   const onSubmit = (data) => {
-      // const productInfo = {
-
-      // }
     // 👉 Here you can send data to backend
-     axiosSecure.post('/productAdd', data).then(res => {
-      console.log(res.data)
-    })
-    
-
-    // reset();
-    // navigate("/products"); // optional redirect
+    axiosSecure.post("/productAdd", data).then((res) => {
+      if (res.data) {
+        toast("Publish Your Product");
+        reset();
+      }
+    });
   };
 
   return (
@@ -73,7 +67,7 @@ const ProductAdd = () => {
                 </p>
               )}
             </div>
-            <div className="flex justify-between w-full">
+            <div className="flex justify-between gap-3 w-full">
               {/*Discount Price */}
               <div>
                 <label className="label">

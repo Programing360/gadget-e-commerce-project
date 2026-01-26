@@ -5,7 +5,7 @@ import AllProduct from '../../../page/AllProduct';
 
 const Home = () => {
     return (
-        <div className='w-full md:w-[1200px] mx-auto'>
+        <div className='w-full mx-auto'>
             <Banner></Banner>
             <ItemList></ItemList>
             <AllProduct></AllProduct>

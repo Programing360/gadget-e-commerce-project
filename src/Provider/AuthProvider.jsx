@@ -10,6 +10,7 @@ const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true) 
     const [allProducts, setAllProducts] = useState([]);
     const [open, setOpen] = useState(false);
+    const [orderCount, setOrderCount] = useState([])
     // console.log(wishlistIcon)
     const createUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
@@ -62,7 +63,9 @@ const AuthProvider = ({children}) => {
         setAllProducts,
         allProducts,
         setOpen,
-        open
+        open,
+        setOrderCount,
+        orderCount
     }
     
     return<UseContext value={userInfo}>{children}</UseContext>;

@@ -46,8 +46,8 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/onlinePayment",
-    Component: CheckoutPage,
+    path:'/onlinePayment',
+    Component:CheckoutPage
   },
   {
     path: "/adminDashboard",
