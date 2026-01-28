@@ -11,13 +11,12 @@ const AuthProvider = ({children}) => {
     const [allProducts, setAllProducts] = useState([]);
     const [open, setOpen] = useState(false);
     const [orderCount, setOrderCount] = useState([])
-    // console.log(wishlistIcon)
+  
     const createUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
     const signInUser = (email, password) => {
-        console.log(email, password)
         return signInWithEmailAndPassword(auth, email, password)
     }
 

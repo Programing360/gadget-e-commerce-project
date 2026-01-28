@@ -1,14 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../assets/logo.jpg";
 import { Link, useNavigate } from "react-router";
 import { UseContext } from "../../Context/AuthContext";
 import loginIcon from "../../assets/Icon.png";
-import cartIcon from "../../assets/assets/OrderCart.png";
-import userloginIcon from "../../assets/assets/userloginIcon.png";
+import cartIcon from "../../assets/assets/shopping-bag.png";
+import userloginIcon from "../../assets/assets/user.png";
 import useCart from "../../Hook/useCart";
 import CartAdd from "../../page/AddToCart/CartAdd";
 import crossIcon from "../../assets/assets/crossIcon.png";
 import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
+import SearchInput from "../../page/SearchInput/SearchInput";
 const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
@@ -23,10 +24,10 @@ const NavBar = () => {
       navigate("/login");
     });
   };
-
+  // console.log(user)
   return (
     <div className="sticky top-0 z-50 bg-white">
-      <div className="navbar bg-white px-10 w-full md:w-[1200px] mx-auto">
+      <div className="navbar bg-white px-10 w-full mx-auto">
         <div className="flex-1">
           <div className="flex items-center gap-0">
             <Link className="flex items-center" to="/">
@@ -38,6 +39,9 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
+        <div className="tooltip tooltip-bottom mr-8 " data-tip="Search">
+            <SearchInput></SearchInput>
+          </div>
         <div className="flex-none ">
           <div className="flex items-center">
             <div className="drawer drawer-end">
@@ -46,13 +50,13 @@ const NavBar = () => {
                 type="checkbox"
                 className="drawer-toggle"
               />
-              <div className="drawer-content">
+              <div className="drawer-content tooltip tooltip-bottom" data-tip='Cart'>
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer-5"
                   className="relative drawer-button cursor-pointer"
                 >
-                  <img className="w-8 mr-5" src={cartIcon} alt="" />
+                  <img className="w-6 mr-5" src={cartIcon} alt="" />
                   <span className="absolute -top-2 right-1 badge badge-sm indicator-item text-white bg-cyan-700 dark:bg-black outline-0">
                     {cart.length || 0}
                   </span>
@@ -88,7 +92,7 @@ const NavBar = () => {
                       <p className="text-pink-600">Price: {quantity} TK</p>
                     </div>
                     <div className="px-4">
-                      <Link to='/onlinePayment'>
+                      <Link to="/onlinePayment">
                         <button className="btn w-full bg-linear-0 to-violet-400 from-violet-600 text-white">
                           Pay Online
                         </button>
@@ -144,13 +148,14 @@ const NavBar = () => {
                 <div
                   tabIndex={0}
                   role="button"
-                  className="btn btn-ghost btn-circle avatar"
+                  className="btn btn-ghost btn-circle avatar tooltip tooltip-bottom"
+                  data-tip="Account"
                 >
-                  <div className="w-10 rounded-full">
+                  <div>
                     <img
-                      className="filter bg-fuchsia-600 invert"
-                      alt="Tailwind CSS Navbar component"
+                      className="w-7 rounded-full"
                       src={userloginIcon}
+                      alt="User"
                     />
                   </div>
                 </div>

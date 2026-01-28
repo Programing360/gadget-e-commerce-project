@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
   // const [wishlistIcon, setWishlistIcon] = useState(null)
   const [cart, refetch] = useCart();
   const [wishlist, reload] = useWishList();
-  // const notify = toast("Added to cart successfully!");
+
   const handleCartData = async (id) => {
     const existing = cart.find((item) => item.productId === id);
     if (existing) {
@@ -54,7 +54,7 @@ const ProductCard = ({ product }) => {
 
     axiosSecure.post("/cartData", cartItem).then((res) => {
       if (res.data.insertedId) {
-        toast.success("Product added to cart 🛒");
+        toast.success("Product added to wishlist 🛒");
         refetch();
       }
     });
@@ -74,12 +74,19 @@ const ProductCard = ({ product }) => {
       image,
       email: user.email || "",
     };
-    axiosSecure.post("/addWishList", cartItem).then((res) => {
+
+    if(isInWishlist){
+      toast('Product Already added to wishlist')
+    }
+    else{
+      axiosSecure.post("/addWishList", cartItem).then((res) => {
       if (res.data.insertedId) {
         toast.success("Add to wishlist");
         reload();
       }
     });
+    }
+    
   };
 
   return (

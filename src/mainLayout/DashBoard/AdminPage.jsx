@@ -51,7 +51,7 @@ const AdminPage = () => {
                   <span className="text-[#fdb529]">iro</span>
                 </h1>
               </div>
-               <NavLink to="/">
+              <NavLink to="/">
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
                   data-tip="Homepage"
@@ -93,9 +93,25 @@ const AdminPage = () => {
                   </span>
                 </button>
               </NavLink>
-             
             </li>
-
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "border rounded pl-2 bg-red-400" : ""
+              }
+              to="/adminDashboard/productList"
+            >
+              <li>
+                <button
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
+                  // data-tip="Settings"
+                >
+                  <img className="w-5 m-0" src={productIcon} alt="" />
+                  <span className="is-drawer-close:hidden lg:is-drawer-close:block">
+                   Notifications
+                  </span>
+                </button>
+              </li>
+            </NavLink>
             {/* List item */}
             <NavLink
               className={({ isActive }) =>
@@ -148,6 +164,24 @@ const AdminPage = () => {
                 </button>
               </li>
             </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "border rounded pl-2 bg-red-400" : ""
+              }
+              to="/adminDashboard/productList"
+            >
+              <li>
+                <button
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
+                  // data-tip="Settings"
+                >
+                  <img className="w-5 m-0" src={productIcon} alt="" />
+                  <span className="is-drawer-close:hidden lg:is-drawer-close:block">
+                    Inbox
+                  </span>
+                </button>
+              </li>
+            </NavLink> 
           </ul>
         </div>
       </div>
