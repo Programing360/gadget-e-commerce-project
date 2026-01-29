@@ -11,7 +11,7 @@ const ProductList = () => {
   const [orderCount] = useOrderCount();
   const [confirmOrder, setConfirmOrder] = useState(false);
   const notify = () => toast("Order Confirm");
-  console.log(orders)
+  console.log(orders);
   useEffect(() => {
     const matchedOrder = orders.find((order) =>
       orderCount.some((item) => item.orderId === order._id),
@@ -41,18 +41,16 @@ const ProductList = () => {
   };
 
   const handleOrderCancelBtn = (item) => {
-    const id = item._id
+    const id = item._id;
     axiosSecure.delete(`/orderConfirm/${id}`).then((res) => {
-
-
       if (res.data.deletedCount > 0) {
-          const orderInfo = {
-            name:item.name,
-            email:item.email,
-            phoneNumber:item.phone,
-            address:item.address
-          }
-        axiosSecure.post('/orderCancel', orderInfo)
+        const orderInfo = {
+          name: item.name,
+          email: item.email,
+          phoneNumber: item.phone,
+          address: item.address,
+        };
+        axiosSecure.post("/orderCancel", orderInfo);
         refetch();
         toast("Order Cancel");
       }
@@ -76,10 +74,15 @@ const ProductList = () => {
   }
   return (
     <div>
+      {/* <nav className="">
+        <div className="navbar bg-neutral-600 text-neutral-content">
+          <button className="btn btn-ghost text-xl">daisyUI</button>
+        </div>
+      </nav> */}
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
-          <thead className="text-white">
+          <thead className="text-white bg-amber-400 w-full">
             <tr>
               <th>
                 <label>
@@ -95,7 +98,7 @@ const ProductList = () => {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody className="">
+          <tbody className="mt-20">
             {/* row 1 */}
             {orders.map((item, index) => (
               <tr key={index}>
@@ -139,7 +142,7 @@ const ProductList = () => {
                   </button>
                   <button
                     onClick={() => handleOrderCancelBtn(item)}
-                    className="btn bg-white text-black text-lg rounded mt-2"
+                    className="btn bg-white text-black text-lg rounded mt-2 lg:mt-0"
                   >
                     cancel
                   </button>

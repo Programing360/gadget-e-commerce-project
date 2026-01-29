@@ -6,9 +6,22 @@ import poductIcon from "../../assets/assets/online-shopping.png";
 import ChartComponent from "../GraphChart/ChartComponent";
 import useOrderList from "../../Hook/useOrderList";
 import useOrderCancelList from "../../Hook/useOrderCancelList";
+import useAllProduct from "../../Hook/useAllProduct";
 const Dashboard = () => {
   const [orders] = useOrderList();
   const [orderCancel] = useOrderCancelList()
+  const [allProduct] = useAllProduct()
+  
+  const totalPrice = allProduct?.reduce(
+  (sum, item) => sum + item.price,
+  0
+);
+
+for(const orderPrice of orders){
+  console.log(orderPrice)
+}
+
+  console.log(orders)
   return (
     <main className="p-6">
       <div className="hidden lg:block">
@@ -25,11 +38,11 @@ const Dashboard = () => {
             <div className="border p-4 rounded-lg ">
               <div className="flex gap-3 ">
                 <img className="w-8 pb-2" src={poductIcon} alt="" />
-                <h1 className="text-xl font-bold">Total Percel</h1>
+                <h1 className="text-xl font-bold">Total Product</h1>
               </div>
               <div className="flex justify-around items-center gap-3 pt-4">
-                <p className="text-3xl font-bold">500</p>
-                <p className="text-3xl font-bold">10000</p>
+                <p className="text-3xl font-bold">{allProduct?.length}</p>
+                <p className="text-3xl font-bold">{totalPrice}</p>
               </div>
             </div>
             <div className="border p-4 rounded-lg">
@@ -38,8 +51,8 @@ const Dashboard = () => {
                 <h1 className="text-xl font-bold">Total Delivered</h1>
               </div>
               <div className="flex justify-around items-center gap-3 pt-4">
-                <p className="text-3xl font-bold">500</p>
-                <p className="text-3xl font-bold">10000</p>
+                <p className="text-3xl font-bold">0.00</p>
+                <p className="text-3xl font-bold">00.00</p>
               </div>
             </div>
             <div className="border p-4 rounded-lg">

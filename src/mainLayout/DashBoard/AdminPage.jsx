@@ -9,10 +9,12 @@ const AdminPage = () => {
   return (
     <div className="drawer lg:drawer-open bg-[#010313] text-white">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+      
+      
       <div className="drawer-content">
-        {/* Navbar */}
+        
 
-        <nav className="navbar flex w-full bg-[#030938] lg:hidden fixed ">
+        <nav className="navbar flex w-full bg-[#030938] fixed z-10 ">
           <label
             htmlFor="my-drawer-4"
             aria-label="open sidebar"
@@ -26,23 +28,23 @@ const AdminPage = () => {
             </div>
           </div>
         </nav>
-        {/* Page content here */}
+        
 
-        <div className="mt-10">
+        <div className="mt-20 lg:mt-20 ">
           <Outlet></Outlet>
         </div>
       </div>
 
-      <div className="drawer-side  is-drawer-close:overflow-visible ">
+      <div className="drawer-side  is-drawer-close:overflow-visible">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
         <div className="flex min-h-full flex-col items-start  lg:is-drawer-close:w-full lg:is-drawer-open:w-full bg-[#231236e0] text-white">
-          {/* Sidebar content here */}
+          
           <ul className="menu md:w-full grow w-75">
-            {/* List item */}
+           
             <li>
               <div className="flex flex-col md:flex-row justify-center items-center gap-3 pb-10">
                 <img className="w-16 rounded-full" src={logoIcon} alt="" />
@@ -56,7 +58,7 @@ const AdminPage = () => {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
                   data-tip="Homepage"
                 >
-                  {/* Home icon */}
+               
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -84,9 +86,9 @@ const AdminPage = () => {
               >
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
-                  data-tip="Homepage"
+                  data-tip="Dashboard"
                 >
-                  {/* Home icon */}
+                 
                   <img className="w-4" src={dashboardIcon} alt="" />
                   <span className="lg:is-drawer-close:block is-drawer-close:hidden ">
                     Dashboard
@@ -98,12 +100,12 @@ const AdminPage = () => {
               className={({ isActive }) =>
                 isActive ? "border rounded pl-2 bg-red-400" : ""
               }
-              to="/adminDashboard/productList"
+              to="/adminDashboard/notification"
             >
               <li>
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-                  // data-tip="Settings"
+               
                 >
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
@@ -112,7 +114,7 @@ const AdminPage = () => {
                 </button>
               </li>
             </NavLink>
-            {/* List item */}
+     
             <NavLink
               className={({ isActive }) =>
                 isActive ? "border rounded pl-2 bg-red-400" : ""
@@ -122,7 +124,7 @@ const AdminPage = () => {
               <li>
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-                  // data-tip="Settings"
+                  
                 >
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
@@ -140,9 +142,9 @@ const AdminPage = () => {
               <li>
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
-                  // data-tip="Settings"
+                  
                 >
-                  {/* Settings icon */}
+                 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -168,12 +170,12 @@ const AdminPage = () => {
               className={({ isActive }) =>
                 isActive ? "border rounded pl-2 bg-red-400" : ""
               }
-              to="/adminDashboard/productList"
+              to="/adminDashboard/inbox"
             >
               <li>
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-                  // data-tip="Settings"
+                 
                 >
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">

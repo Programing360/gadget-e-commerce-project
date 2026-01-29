@@ -4,7 +4,6 @@ import bannerImg2 from "../../assets/slider-2-img.png";
 const Banner = () => {
   return (
     <div className="carousel bg-[#e7e7e7] w-full relative group">
-
       {/* -------- Slide 1 -------- */}
       <div id="slide1" className="carousel-item relative w-full">
         <div className="hero bg-[#e7e7e7] min-h-screen">
@@ -12,10 +11,10 @@ const Banner = () => {
             <img src={bannerImg1} className="max-w-sm rounded-lg shadow-2xl " />
             <div>
               <h1 className="text-5xl font-bold">Box Office News!</h1>
-              <p className="py-6">
-                Provident cupiditate voluptatem et in.
-              </p>
-              <button className="btn bg-[#ff7004] text-white border-0 hover:bg-black hover:text-[#ff7004]">Shop Now</button>
+              <p className="py-6">Provident cupiditate voluptatem et in.</p>
+              <button className="btn bg-[#ff7004] text-white border-0 hover:bg-black hover:text-[#ff7004]">
+                Shop Now
+              </button>
             </div>
           </div>
         </div>
@@ -40,10 +39,10 @@ const Banner = () => {
             <img src={bannerImg2} className="max-w-sm rounded-lg shadow-2xl" />
             <div>
               <h1 className="text-5xl font-bold">Box Office News!</h1>
-              <p className="py-6">
-                Provident cupiditate voluptatem et in.
-              </p>
-              <button className="btn translate-2  hover:bg-black hover:text-[#ff7004] bg-[#ff7004] text-white">Shop Now</button>
+              <p className="py-6">Provident cupiditate voluptatem et in.</p>
+              <button className="btn translate-2  hover:bg-black hover:text-[#ff7004] bg-[#ff7004] text-white">
+                Shop Now
+              </button>
             </div>
           </div>
         </div>
@@ -60,7 +59,6 @@ const Banner = () => {
           </a>
         </div>
       </div>
-
     </div>
   );
 };

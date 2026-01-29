@@ -3,6 +3,9 @@ import logo from "../../assets/logo.jpg";
 import { Link, useNavigate } from "react-router";
 import { UseContext } from "../../Context/AuthContext";
 import loginIcon from "../../assets/Icon.png";
+import loginOutIcon from "../../assets/assets/log-out.png";
+import wishListIcon from "../../assets/assets/wishlist.png";
+import adminIcon from "../../assets/assets/dashboard-admin.png";
 import cartIcon from "../../assets/assets/shopping-bag.png";
 import userloginIcon from "../../assets/assets/user.png";
 import useCart from "../../Hook/useCart";
@@ -10,6 +13,7 @@ import CartAdd from "../../page/AddToCart/CartAdd";
 import crossIcon from "../../assets/assets/crossIcon.png";
 import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
+import { UserIcon } from "lucide-react";
 const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
@@ -40,8 +44,8 @@ const NavBar = () => {
           </div>
         </div>
         <div className="tooltip tooltip-bottom mr-8 " data-tip="Search">
-            <SearchInput></SearchInput>
-          </div>
+          <SearchInput></SearchInput>
+        </div>
         <div className="flex-none ">
           <div className="flex items-center">
             <div className="drawer drawer-end">
@@ -50,7 +54,10 @@ const NavBar = () => {
                 type="checkbox"
                 className="drawer-toggle"
               />
-              <div className="drawer-content tooltip tooltip-bottom" data-tip='Cart'>
+              <div
+                className="drawer-content tooltip tooltip-bottom"
+                data-tip="Cart"
+              >
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer-5"
@@ -163,25 +170,61 @@ const NavBar = () => {
                   tabIndex="-1"
                   className="menu menu-sm dropdown-content bg-base-100 rounded z-1 mt-3 w-52 p-2 shadow"
                 >
-                  <li>
+                  <div className="text-center mb-4 bg-gray-300 rounded-lg">
+                    {user.email}
+                    {user.photoURL ? (
+                      <img
+                        className="rounded-full w-14 mx-auto mt-4"
+                        src={user?.photoURL}
+                        alt=""
+                      />
+                    ) : (
+                      <img
+                        className="rounded-full w-14 mx-auto mt-4"
+                        src={UserIcon}
+                        alt=""
+                      />
+                    )}
+
+                    <h1 className="font-bold">{user.displayName}</h1>
+                  </div>
+                  <li className="">
                     <Link to="/wishList">
-                      <a className="justify-between">Wish List</a>
+                      <div className="flex gap-2">
+                        <img className="w-4" src={wishListIcon} alt="" />
+                        <a className="justify-between">Wish List</a>
+                      </div>
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/adminDashboard">
-                      <a>Admin Page</a>
-                    </Link>
-                  </li>
+                  {user.email === "fhlimon360@gmail.com" ? (
+                    <li>
+                      <Link to="/adminDashboard">
+                        <div className="flex">
+                          <img className="w-5" src={adminIcon} alt="" />
+                          <a>Admin Page</a>
+                        </div>
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link to="/adminDashboard">
+                        <a>Your Page</a>
+                      </Link>
+                    </li>
+                  )}
                   <li onClick={handleUserLogOut}>
-                    <a>Logout</a>
+                    <div className="flex">
+                      <img className="w-4" src={loginOutIcon} alt="" />
+                      <a>Logout</a>
+                    </div>
                   </li>
                 </ul>
               </div>
             ) : (
               <Link to="/login">
-                <div>
-                  <img className="w-8" src={loginIcon} alt="" />
+                <div className="tooltip tooltip-bottom" data-tip="Account">
+                  <img className="w-10 "
+                   src={loginIcon} alt="" />
                 </div>
               </Link>
             )}

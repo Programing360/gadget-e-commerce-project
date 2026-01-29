@@ -17,11 +17,11 @@ createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <div className="">
-            <RouterProvider router={router} />,
+            <RouterProvider router={router} />
           </div>
         </AuthProvider>
       </QueryClientProvider>
     </div>
     <ToastContainer position="top-center"></ToastContainer>
-  </StrictMode>,
+  </StrictMode>
 );
