@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import logo from "../../assets/logo.jpg";
 import { Link, useNavigate } from "react-router";
 import { UseContext } from "../../Context/AuthContext";
@@ -7,31 +7,43 @@ import loginOutIcon from "../../assets/assets/log-out.png";
 import wishListIcon from "../../assets/assets/wishlist.png";
 import adminIcon from "../../assets/assets/dashboard-admin.png";
 import cartIcon from "../../assets/assets/shopping-bag.png";
+import notificationIcon from "../../assets/assets/notification.png";
 import userloginIcon from "../../assets/assets/user.png";
 import useCart from "../../Hook/useCart";
 import CartAdd from "../../page/AddToCart/CartAdd";
+import bellIcon from "../../assets/assets/bell.png";
 import crossIcon from "../../assets/assets/crossIcon.png";
 import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
 import { UserIcon } from "lucide-react";
+import useOrderList from "../../Hook/useOrderList";
+
+// import dayjs from "dayjs";
+// import relativeTime from "dayjs/plugin/relativeTime";
+// dayjs.extend(relativeTime);
 const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
   const [cart] = useCart();
-  // console.log(cart)
+  const [orders,refetch] = useOrderList();
+  // const [allProduct] = useAllProduct()
+
   const quantity = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
+
+  const adminUser = user?.email === "fhlimon360@gmail.com";
+
   const handleUserLogOut = () => {
     UserLogout().then(() => {
       navigate("/login");
     });
   };
-  // console.log(user)
+
   return (
-    <div className="sticky top-0 z-50 bg-white">
-      <div className="navbar bg-white px-10 w-full mx-auto">
+    <div className="sticky top-0 z-50 bg-white ">
+      <div className="navbar bg-white md:px-10 w-full mx-auto relative">
         <div className="flex-1">
           <div className="flex items-center gap-0">
             <Link className="flex items-center" to="/">
@@ -43,8 +55,57 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className="tooltip tooltip-bottom mr-8 " data-tip="Search">
+        <div className=" md:mr-8 mr-5">
           <SearchInput></SearchInput>
+        </div>
+
+        <div className="dropdown dropdown-end">
+          <div tabIndex={0} role="button" className="m-2">
+            <div className="">
+              <img
+                className="w-10 mr-6 cursor-pointer bg-gray-200 rounded-full p-2"
+                src={notificationIcon}
+                alt=""
+              />
+              {adminUser ? (
+                <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
+                  {orders.length}
+                </span>
+              ) : (
+                <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
+                  0
+                </span>
+              )}
+              <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
+                {orders.length}
+              </span>
+            </div>
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content bg-base-100 w-64 p-3 shadow rounded-box"
+          >
+            {orders.length === 0 ? (
+              <p className="text-sm text-gray-500">No notifications</p>
+            ) : (
+              orders.map((order) => (
+                <Link to='/adminDashboard/productList'>
+                  <li
+                    key={order._id}
+                    className="flex items-start gap-3 pb-3 hover:bg-gray-200 p-4 rounded-2xl"
+                  >
+                    <img src={bellIcon} className="w-5 mt-1" alt="" />
+                    <div>
+                      <p className="text-sm font-medium">
+                        New Order: {order.name}
+                      </p>
+                      <p className="text-xs text-gray-500"> {order.newDate} </p>
+                    </div>
+                  </li>
+                </Link>
+              ))
+            )}
+          </ul>
         </div>
         <div className="flex-none ">
           <div className="flex items-center">
@@ -54,17 +115,18 @@ const NavBar = () => {
                 type="checkbox"
                 className="drawer-toggle"
               />
-              <div
-                className="drawer-content tooltip tooltip-bottom"
-                data-tip="Cart"
-              >
+              <div>
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer-5"
                   className="relative drawer-button cursor-pointer"
                 >
-                  <img className="w-6 mr-5" src={cartIcon} alt="" />
-                  <span className="absolute -top-2 right-1 badge badge-sm indicator-item text-white bg-cyan-700 dark:bg-black outline-0">
+                  <img
+                    className="w-10 mr-5 bg-gray-200 rounded-full p-2"
+                    src={cartIcon}
+                    alt=""
+                  />
+                  <span className="absolute -top-2 right-1 indicator-item text-white bg-cyan-700 dark:bg-black  rounded-full px-2">
                     {cart.length || 0}
                   </span>
                 </label>
@@ -151,16 +213,15 @@ const NavBar = () => {
               ></div>
             </div> */}
             {user ? (
-              <div className="dropdown dropdown-end">
+              <div className="dropdown dropdown-end ">
                 <div
                   tabIndex={0}
                   role="button"
-                  className="btn btn-ghost btn-circle avatar tooltip tooltip-bottom"
-                  data-tip="Account"
+                  className="btn btn-ghost btn-circle avatar"
                 >
                   <div>
                     <img
-                      className="w-7 rounded-full"
+                      className="md:w-10 rounded-full"
                       src={userloginIcon}
                       alt="User"
                     />
@@ -223,8 +284,7 @@ const NavBar = () => {
             ) : (
               <Link to="/login">
                 <div className="tooltip tooltip-bottom" data-tip="Account">
-                  <img className="w-10 "
-                   src={loginIcon} alt="" />
+                  <img className="w-10 " src={loginIcon} alt="" />
                 </div>
               </Link>
             )}

@@ -7,21 +7,15 @@ import ChartComponent from "../GraphChart/ChartComponent";
 import useOrderList from "../../Hook/useOrderList";
 import useOrderCancelList from "../../Hook/useOrderCancelList";
 import useAllProduct from "../../Hook/useAllProduct";
+import { Link } from "react-router";
 const Dashboard = () => {
   const [orders] = useOrderList();
-  const [orderCancel] = useOrderCancelList()
-  const [allProduct] = useAllProduct()
-  
-  const totalPrice = allProduct?.reduce(
-  (sum, item) => sum + item.price,
-  0
-);
+  const [orderCancel] = useOrderCancelList();
+  const [allProduct] = useAllProduct();
 
-for(const orderPrice of orders){
-  console.log(orderPrice)
-}
+  const totalPrice = allProduct?.reduce((sum, item) => sum + item.price, 0);
 
-  console.log(orders)
+  console.log(orders);
   return (
     <main className="p-6">
       <div className="hidden lg:block">
@@ -35,16 +29,18 @@ for(const orderPrice of orders){
         <div className="lg:col-span-2 bg-[#170f21] rounded-2xl shadow p-6">
           <h2 className="font-semibold text-amber-700 mb-5">Sales Analytics</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 text-gray-400 gap-4">
-            <div className="border p-4 rounded-lg ">
-              <div className="flex gap-3 ">
-                <img className="w-8 pb-2" src={poductIcon} alt="" />
-                <h1 className="text-xl font-bold">Total Product</h1>
+            <Link to="/adminDashboard/allProductList">
+              <div className="border p-4 rounded-lg ">
+                <div className="flex gap-3 ">
+                  <img className="w-8 pb-2" src={poductIcon} alt="" />
+                  <h1 className="text-xl font-bold">Total Product</h1>
+                </div>
+                <div className="flex justify-around items-center gap-3 pt-4">
+                  <p className="text-3xl font-bold">{allProduct?.length}</p>
+                  <p className="text-3xl font-bold">{totalPrice}</p>
+                </div>
               </div>
-              <div className="flex justify-around items-center gap-3 pt-4">
-                <p className="text-3xl font-bold">{allProduct?.length}</p>
-                <p className="text-3xl font-bold">{totalPrice}</p>
-              </div>
-            </div>
+            </Link>
             <div className="border p-4 rounded-lg">
               <div className="flex gap-3">
                 <img className="w-8 pb-2" src={revenueIcon} alt="" />
@@ -55,18 +51,20 @@ for(const orderPrice of orders){
                 <p className="text-3xl font-bold">00.00</p>
               </div>
             </div>
-            <div className="border p-4 rounded-lg">
-              <div>
-                <div className="flex gap-3">
-                  <img className="w-8 pb-2" src={poductIcon} alt="" />
-                  <h1 className="text-xl font-bold">New Order</h1>
+            <Link to='/adminDashboard/productList'>
+              <div className="border p-4 rounded-lg">
+                <div>
+                  <div className="flex gap-3">
+                    <img className="w-8 pb-2" src={poductIcon} alt="" />
+                    <h1 className="text-xl font-bold">New Order</h1>
+                  </div>
+                </div>
+                <div className="flex justify-around items-center gap-3 pt-4">
+                  <p className="text-3xl font-bold">{orders?.length}</p>
+                  <p className="text-3xl font-bold">10000</p>
                 </div>
               </div>
-              <div className="flex justify-around items-center gap-3 pt-4">
-                <p className="text-3xl font-bold">{orders?.length}</p>
-                <p className="text-3xl font-bold">10000</p>
-              </div>
-            </div>
+            </Link>
             <div className="border p-4 rounded-lg">
               <div className="flex gap-3">
                 <img className="w-8 pb-2" src={approvalIcon} alt="" />
@@ -87,16 +85,20 @@ for(const orderPrice of orders){
                 <p className="text-3xl font-bold">10000</p>
               </div>
             </div>
-            <div className="border p-4 rounded-lg">
-              <div className="flex gap-3">
-                <img className="w-8 pb-2" src={cancelIcon} alt="" />
-                <h1 className="text-xl font-bold">Cancel</h1>
+            <Link to="/adminDashboard/orderCencel">
+              <div className="border p-4 rounded-lg">
+                <div className="flex gap-3">
+                  <img className="w-8 pb-2" src={cancelIcon} alt="" />
+                  <h1 className="text-xl font-bold">Cancel</h1>
+                </div>
+                <div className="flex justify-around items-center gap-3 pt-4">
+                  <p className="text-3xl font-bold">
+                    {orderCancel?.length || 0}
+                  </p>
+                  <p className="text-3xl font-bold">10000</p>
+                </div>
               </div>
-              <div className="flex justify-around items-center gap-3 pt-4">
-                <p className="text-3xl font-bold">{orderCancel?.length || 0}</p>
-                <p className="text-3xl font-bold">10000</p>
-              </div>
-            </div>
+            </Link>
           </div>
         </div>
         <div className="bg-white rounded-2xl shadow p-6">

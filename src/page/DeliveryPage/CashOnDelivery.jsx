@@ -4,10 +4,13 @@ import { UseContext } from "../../Context/AuthContext";
 import useCart from "../../Hook/useCart";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
+import moment from "moment";
+import useOrderList from "../../Hook/useOrderList";
 
 const CashOnDelivery = () => {
   const { open, setOpen, user } = useContext(UseContext);
   const [cart] = useCart();
+  const [, refetch] = useOrderList();
   const axiosSecure = useAxiosSecure();
   const {
     register,
@@ -23,7 +26,7 @@ const CashOnDelivery = () => {
 
   // 🧠 Watch shipping value
   const shipping = watch("shipping");
-
+  // console.log(shipping)
   // 🧮 Calculate subtotal
   const subtotal = cart?.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -34,14 +37,16 @@ const CashOnDelivery = () => {
   const shippingCost = shipping === "outside" ? 130 : 70;
   // 💰 Total
   const total = subtotal + shippingCost;
-
   const onSubmit = (data) => {
+    const newDate = moment().calendar();
+
     const orderData = {
       ...data,
       cart,
       subtotal,
       shippingCost,
       total,
+      newDate,
       paymentMethod: "Cash On Delivery",
       email: user?.email,
     };
@@ -50,8 +55,9 @@ const CashOnDelivery = () => {
         toast("Order Confirm");
       }
     });
-    // reset();
-    // setOpen(false);
+    reset();
+    refetch()
+    setOpen(false);
   };
 
   if (!open) return null;

@@ -14,7 +14,7 @@ const ProductList = () => {
   console.log(orders);
   useEffect(() => {
     const matchedOrder = orders.find((order) =>
-      orderCount.some((item) => item.orderId === order._id),
+      orderCount?.some((item) => item.orderId === order._id),
     );
     if (matchedOrder) {
       setConfirmOrder(true);
@@ -129,12 +129,12 @@ const ProductList = () => {
                 )}
 
                 <td>{item.email}</td>
-                <th>
+                <th className="">
                   <button
                     onClick={() => handleOrderBtn(item)}
                     className={
                       confirmOrder
-                        ? "btn-disabled btn bg-gray-300"
+                        ? "btn-disabled btn bg-gray-300 mr-2"
                         : "btn bg-green-400  rounded mr-2"
                     }
                   >

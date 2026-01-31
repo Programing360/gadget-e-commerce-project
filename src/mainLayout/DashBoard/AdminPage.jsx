@@ -30,7 +30,7 @@ const AdminPage = () => {
         </nav>
         
 
-        <div className="mt-20 lg:mt-20 ">
+        <div className="mt-16 lg:mt-16 ">
           <Outlet></Outlet>
         </div>
       </div>
@@ -100,7 +100,7 @@ const AdminPage = () => {
               className={({ isActive }) =>
                 isActive ? "border rounded pl-2 bg-red-400" : ""
               }
-              to="/adminDashboard/notification"
+              to="/adminDashboard/AllProductList"
             >
               <li>
                 <button
@@ -109,7 +109,25 @@ const AdminPage = () => {
                 >
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                   Notifications
+                   All Products
+                  </span>
+                </button>
+              </li>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "border rounded pl-2 bg-red-400" : ""
+              }
+              to="/adminDashboard/orderCencel"
+            >
+              <li>
+                <button
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
+               
+                >
+                  <img className="w-5 m-0" src={productIcon} alt="" />
+                  <span className="is-drawer-close:hidden lg:is-drawer-close:block">
+                   Order Cancel
                   </span>
                 </button>
               </li>

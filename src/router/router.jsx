@@ -13,6 +13,8 @@ import Dashboard from "../mainLayout/DashBoard/Dashboard";
 import CheckoutPage from "../page/PaymentMethod/CheckOutPage";
 import Inbox from "../mainLayout/DashBoard/Inbox";
 import Notification from "../mainLayout/DashBoard/Notification";
+import AllProductList from "../mainLayout/DashBoard/AllProductList";
+import OrderCancel from "../mainLayout/DashBoard/OrderCancel";
 
 export const router = createBrowserRouter([
   {
@@ -72,8 +74,12 @@ export const router = createBrowserRouter([
         Component: Inbox,
       },
       {
-        path: "/adminDashboard/notification",
-        Component: Notification,
+        path: "/adminDashboard/orderCencel",
+        Component: OrderCancel,
+      },
+      {
+        path: "/adminDashboard/allProductList",
+        Component: AllProductList,
       },
     ],
   },
