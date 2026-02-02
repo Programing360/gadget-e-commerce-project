@@ -75,18 +75,16 @@ const ProductCard = ({ product }) => {
       email: user.email || "",
     };
 
-    if(isInWishlist){
-      toast('Product Already added to wishlist')
-    }
-    else{
+    if (isInWishlist) {
+      toast("Product Already added to wishlist");
+    } else {
       axiosSecure.post("/addWishList", cartItem).then((res) => {
-      if (res.data.insertedId) {
-        toast.success("Add to wishlist");
-        reload();
-      }
-    });
+        if (res.data.insertedId) {
+          toast.success("Add to wishlist");
+          reload();
+        }
+      });
     }
-    
   };
 
   return (
@@ -114,7 +112,6 @@ const ProductCard = ({ product }) => {
         </div>
       </div> */}
 
-
       <div className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition ">
         {/* Discount Badge */}
         <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
@@ -136,16 +133,19 @@ const ProductCard = ({ product }) => {
         {/* Image */}
         <div className="relative">
           <Link to={`productDetails/${_id}`}>
-            <img src={image} alt={name} className="w-full h-80 object-cover p-4 rounded-2xl" />
+            <img
+              src={image}
+              alt={name}
+              className="w-full h-80 object-cover p-4 rounded-2xl"
+            />
           </Link>
 
-          {/* Hover Zoom */}
-          <button
+          {/* <button
             onClick={() => setOpen(true)}
             className="absolute top-20 right-2 rounded-full  flex items-center justify-end  opacity-0 group-hover:opacity-100 transition"
           >
             <ZoomIn className="text-white" size={36} />
-          </button>
+          </button> */}
         </div>
 
         {/* Content */}

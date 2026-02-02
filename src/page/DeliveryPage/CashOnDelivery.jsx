@@ -38,7 +38,7 @@ const CashOnDelivery = () => {
   // 💰 Total
   const total = subtotal + shippingCost;
   const onSubmit = (data) => {
-    const newDate = moment().calendar();
+    const newDate = moment().format();
 
     const orderData = {
       ...data,

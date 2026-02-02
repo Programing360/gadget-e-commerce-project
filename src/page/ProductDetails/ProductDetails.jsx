@@ -51,7 +51,7 @@ const ProductDetails = () => {
 
   return (
     <div className="dark:bg-white dark:text-white">
-      <div className="bg-sky-700 text-white text-center w-full py-7">
+      <div className="bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white text-center w-full py-7">
         <h1 className="text-2xl">{name}</h1>
         <div className="breadcrumbs text-sm justify-items-center">
           <ul className="">

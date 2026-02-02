@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-
-dayjs.extend(relativeTime);
-const SetTimeOut = ({time}) => {
-
-    const [, setTick ] = useState(0)
+const TimeAgo = ({ time }) => {
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTick((t) => t + 1); // force re-render
-    }, 60000); // every 1 minute
+      setNow(Date.now()); // force re-render
+    }, 60000); // প্রতি 1 মিনিটে update
 
     return () => clearInterval(interval);
   }, []);
 
-  return <p className="text-xs text-gray-500">{dayjs(time).fromNow()}</p>;
-
+  return <span>{moment(time).fromNow()}</span>;
 };
 
-export default SetTimeOut;
+export default TimeAgo;

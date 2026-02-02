@@ -37,10 +37,10 @@ const SearchInput = () => {
       <input id="top-drawer" type="checkbox" className="peer hidden" />
 
       {/* SEARCH BUTTON */}
-      <label htmlFor="top-drawer" className="cursor-pointer">
+      <label htmlFor="top-drawer" className="cursor-pointer ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
+          className="w-10 bg-gray-200 p-2 rounded-full"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -121,7 +121,7 @@ const SearchInput = () => {
                     </button>
                   </Link>
                 )}
-                <Link to='/ShoppingCart'>
+                <Link to='/cartDetails'>
                   <div className="relative">
                     <img
                       src={cartImg}

@@ -15,6 +15,7 @@ import Inbox from "../mainLayout/DashBoard/Inbox";
 import Notification from "../mainLayout/DashBoard/Notification";
 import AllProductList from "../mainLayout/DashBoard/AllProductList";
 import OrderCancel from "../mainLayout/DashBoard/OrderCancel";
+import UserDashBoard from "../mainLayout/userDashBoard/UserDashBoard";
 
 export const router = createBrowserRouter([
   {
@@ -82,5 +83,9 @@ export const router = createBrowserRouter([
         Component: AllProductList,
       },
     ],
+  },
+  {
+    path: "/userDashBoard",
+    Component: UserDashBoard,
   },
 ]);

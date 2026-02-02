@@ -1,10 +1,20 @@
 import React from "react";
 import useOrderCancelList from "../../Hook/useOrderCancelList";
-
+import removeBtn from '../../assets/assets/cross-button.png' 
+import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+import { toast } from "react-toastify";
 const OrderCancel = () => {
-  const [orderCancel] = useOrderCancelList();
+  const [orderCancel, refetch] = useOrderCancelList();
+    const axiosSecure = useAxiosSecure()
 
-  console.log(orderCancel);
+  const removeOrderCancelBtn = (id) => {
+    axiosSecure.delete(`/deleteOrderCancel/${id}`).then(res => {
+        if(res.data.deletedCount > 0){
+            toast('Order Cancel Successful')
+            refetch()
+        }
+    })
+  }
 
   return (
     <div className="overflow-x-auto ">
@@ -17,9 +27,10 @@ const OrderCancel = () => {
             <th>Email</th>
             <th>Phone Number</th>
             <th>Address</th>
+            <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="h-[500px] overflow-y-auto border border-red-700">
           {/* row 1 */}
 
           {orderCancel?.map((order) => (
@@ -29,10 +40,15 @@ const OrderCancel = () => {
               <td>{order.email}</td>
               <td>{order.phoneNumber}</td>
               <td>{order.address}</td>
+              <td><img 
+                onClick={() => removeOrderCancelBtn(order._id)}
+              className="w-5 cursor-pointer" src={removeBtn} alt="" /></td>
             </tr>
           ))}
         </tbody>
+        
       </table>
+      
     </div>
   );
 };

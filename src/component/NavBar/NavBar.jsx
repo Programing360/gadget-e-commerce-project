@@ -9,6 +9,8 @@ import adminIcon from "../../assets/assets/dashboard-admin.png";
 import cartIcon from "../../assets/assets/shopping-bag.png";
 import notificationIcon from "../../assets/assets/notification.png";
 import userloginIcon from "../../assets/assets/user.png";
+import dotIcon from "../../assets/assets/dots.png";
+import user1 from "../../assets/assets/user (1).png";
 import useCart from "../../Hook/useCart";
 import CartAdd from "../../page/AddToCart/CartAdd";
 import bellIcon from "../../assets/assets/bell.png";
@@ -17,7 +19,7 @@ import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
 import { UserIcon } from "lucide-react";
 import useOrderList from "../../Hook/useOrderList";
-
+import TimeAgo from "../SetTimeOut";
 // import dayjs from "dayjs";
 // import relativeTime from "dayjs/plugin/relativeTime";
 // dayjs.extend(relativeTime);
@@ -25,7 +27,7 @@ const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
   const [cart] = useCart();
-  const [orders,refetch] = useOrderList();
+  const [orders, refetch] = useOrderList();
   // const [allProduct] = useAllProduct()
 
   const quantity = cart.reduce(
@@ -55,7 +57,7 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className=" md:mr-8 mr-5">
+        <div className=" md:mr-6 mr-5">
           <SearchInput></SearchInput>
         </div>
 
@@ -83,23 +85,40 @@ const NavBar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="dropdown-content bg-base-100 w-64 p-3 shadow rounded-box"
+            className="dropdown-content bg-base-100 w-64 p-3 shadow rounded-box h-70 overflow-y-auto"
           >
             {orders.length === 0 ? (
               <p className="text-sm text-gray-500">No notifications</p>
             ) : (
               orders.map((order) => (
-                <Link to='/adminDashboard/productList'>
+                <Link>
                   <li
                     key={order._id}
                     className="flex items-start gap-3 pb-3 hover:bg-gray-200 p-4 rounded-2xl"
                   >
                     <img src={bellIcon} className="w-5 mt-1" alt="" />
-                    <div>
-                      <p className="text-sm font-medium">
-                        New Order: {order.name}
-                      </p>
-                      <p className="text-xs text-gray-500"> {order.newDate} </p>
+                    <Link to="/adminDashboard/productList">
+                      <div>
+                        <p className="text-sm font-medium">
+                          New Order: {order.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          <TimeAgo time={order.newDate}></TimeAgo>
+                        </p>
+                      </div>
+                    </Link>
+                    <div className="dropdown dropdown-bottom dropdown-end">
+                      <div tabIndex={0} role="button" className=" m-1">
+                        <img className="w-4" src={dotIcon} alt="" />
+                      </div>
+                      <ul
+                        tabIndex="-1"
+                        className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                      >
+                        <button className="cursor-pointer">
+                          Delete Notification
+                        </button>
+                      </ul>
                     </div>
                   </li>
                 </Link>
@@ -229,9 +248,9 @@ const NavBar = () => {
                 </div>
                 <ul
                   tabIndex="-1"
-                  className="menu menu-sm dropdown-content bg-base-100 rounded z-1 mt-3 w-52 p-2 shadow"
+                  className="menu menu-sm dropdown-content bg-base-100 rounded z-1 mt-3 p-2 shadow"
                 >
-                  <div className="text-center mb-4 bg-gray-300 rounded-lg">
+                  <div className="text-center mb-4 bg-gray-300 rounded-lg p-3">
                     {user.email}
                     {user.photoURL ? (
                       <img
@@ -242,7 +261,7 @@ const NavBar = () => {
                     ) : (
                       <img
                         className="rounded-full w-14 mx-auto mt-4"
-                        src={UserIcon}
+                        src={userloginIcon}
                         alt=""
                       />
                     )}
@@ -268,7 +287,8 @@ const NavBar = () => {
                     </li>
                   ) : (
                     <li>
-                      <Link to="/adminDashboard">
+                      <Link to="/userDashBoard">
+                        <img className="w-5" src={userloginIcon} alt="" />
                         <a>Your Page</a>
                       </Link>
                     </li>
