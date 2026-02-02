@@ -10,24 +10,24 @@ import cartIcon from "../../assets/assets/shopping-bag.png";
 import notificationIcon from "../../assets/assets/notification.png";
 import userloginIcon from "../../assets/assets/user.png";
 import dotIcon from "../../assets/assets/dots.png";
-import user1 from "../../assets/assets/user (1).png";
 import useCart from "../../Hook/useCart";
 import CartAdd from "../../page/AddToCart/CartAdd";
 import bellIcon from "../../assets/assets/bell.png";
 import crossIcon from "../../assets/assets/crossIcon.png";
 import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
-import { UserIcon } from "lucide-react";
 import useOrderList from "../../Hook/useOrderList";
 import TimeAgo from "../SetTimeOut";
+import { Watch } from "react-hook-form";
 // import dayjs from "dayjs";
 // import relativeTime from "dayjs/plugin/relativeTime";
 // dayjs.extend(relativeTime);
+
 const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
   const [cart] = useCart();
-  const [orders, refetch] = useOrderList();
+  const [orders] = useOrderList();
   // const [allProduct] = useAllProduct()
 
   const quantity = cart.reduce(
@@ -50,7 +50,7 @@ const NavBar = () => {
           <div className="flex items-center gap-0">
             <Link className="flex items-center" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
-              <h1 className=" text-2xl font-bold text-[#000000]">
+              <h1 className=" md:text-2xl font-bold text-[#000000]">
                 Zeroo<span className="text-[#ff4e5c]">m</span>
                 <span className="text-[#fdb529]">iro</span>
               </h1>
@@ -60,72 +60,74 @@ const NavBar = () => {
         <div className=" md:mr-6 mr-5">
           <SearchInput></SearchInput>
         </div>
-
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="m-2">
-            <div className="">
-              <img
-                className="w-10 mr-6 cursor-pointer bg-gray-200 rounded-full p-2"
-                src={notificationIcon}
-                alt=""
-              />
-              {adminUser ? (
+        {adminUser && (
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="m-2">
+              <div className="">
+                <img
+                  className="w-10 md:mr-6 cursor-pointer bg-gray-200 rounded-full p-2"
+                  src={notificationIcon}
+                  alt=""
+                />
+                {adminUser ? (
+                  <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
+                    {orders.length}
+                  </span>
+                ) : (
+                  <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
+                    0
+                  </span>
+                )}
                 <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
                   {orders.length}
                 </span>
-              ) : (
-                <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
-                  0
-                </span>
-              )}
-              <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
-                {orders.length}
-              </span>
+              </div>
             </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content bg-base-100 w-64 p-3 shadow rounded-box h-70 overflow-y-auto"
+            >
+              {orders.length === 0 ? (
+                <p className="text-sm text-gray-500">No notifications</p>
+              ) : (
+                orders.map((order) => (
+                  <Link>
+                    <li
+                      key={order._id}
+                      className="flex items-start gap-3 pb-3 hover:bg-gray-200 p-4 rounded-2xl"
+                    >
+                      <img src={bellIcon} className="w-5 mt-1" alt="" />
+                      <Link to="/adminDashboard/productList">
+                        <div>
+                          <p className="text-sm font-medium">
+                            New Order: {order.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            <TimeAgo time={order.newDate}></TimeAgo>
+                          </p>
+                        </div>
+                      </Link>
+                      <div className="dropdown dropdown-bottom dropdown-end">
+                        <div tabIndex={0} role="button" className=" m-1">
+                          <img className="w-4" src={dotIcon} alt="" />
+                        </div>
+                        <ul
+                          tabIndex="-1"
+                          className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                        >
+                          <button className="cursor-pointer">
+                            Delete Notification
+                          </button>
+                        </ul>
+                      </div>
+                    </li>
+                  </Link>
+                ))
+              )}
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="dropdown-content bg-base-100 w-64 p-3 shadow rounded-box h-70 overflow-y-auto"
-          >
-            {orders.length === 0 ? (
-              <p className="text-sm text-gray-500">No notifications</p>
-            ) : (
-              orders.map((order) => (
-                <Link>
-                  <li
-                    key={order._id}
-                    className="flex items-start gap-3 pb-3 hover:bg-gray-200 p-4 rounded-2xl"
-                  >
-                    <img src={bellIcon} className="w-5 mt-1" alt="" />
-                    <Link to="/adminDashboard/productList">
-                      <div>
-                        <p className="text-sm font-medium">
-                          New Order: {order.name}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          <TimeAgo time={order.newDate}></TimeAgo>
-                        </p>
-                      </div>
-                    </Link>
-                    <div className="dropdown dropdown-bottom dropdown-end">
-                      <div tabIndex={0} role="button" className=" m-1">
-                        <img className="w-4" src={dotIcon} alt="" />
-                      </div>
-                      <ul
-                        tabIndex="-1"
-                        className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
-                      >
-                        <button className="cursor-pointer">
-                          Delete Notification
-                        </button>
-                      </ul>
-                    </div>
-                  </li>
-                </Link>
-              ))
-            )}
-          </ul>
-        </div>
+        )}
+
         <div className="flex-none ">
           <div className="flex items-center">
             <div className="drawer drawer-end">
@@ -141,7 +143,11 @@ const NavBar = () => {
                   className="relative drawer-button cursor-pointer"
                 >
                   <img
-                    className="w-10 mr-5 bg-gray-200 rounded-full p-2"
+                    className={
+                      adminUser
+                        ? "w-10 md:mr-5 bg-gray-200 rounded-full p-2"
+                        : "w-10 mr-5 bg-gray-200 rounded-full p-2"
+                    }
                     src={cartIcon}
                     alt=""
                   />
@@ -201,36 +207,7 @@ const NavBar = () => {
               </div>
             </div>
             {open && <CashOnDelivery></CashOnDelivery>}
-            {/* <div className="dropdown dropdown-end mr-4 dark:text-black">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle"
-              >
-                <div className="indicator">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    {" "}
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />{" "}
-                  </svg>
-                  
-                </div>
-              </div>
-              <div
-                tabIndex={0}
-                className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow mr-4"
-              ></div>
-            </div> */}
+
             {user ? (
               <div className="dropdown dropdown-end ">
                 <div
@@ -304,7 +281,7 @@ const NavBar = () => {
             ) : (
               <Link to="/login">
                 <div className="tooltip tooltip-bottom" data-tip="Account">
-                  <img className="w-10 " src={loginIcon} alt="" />
+                  <img className="w-14 mt-2" src={loginIcon} alt="" />
                 </div>
               </Link>
             )}

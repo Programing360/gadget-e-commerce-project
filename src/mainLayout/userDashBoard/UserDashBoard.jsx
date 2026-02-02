@@ -57,9 +57,11 @@ const UserDashBoard = () => {
                   Shop
                 </h3>
               </Link>
-              <h3 className="font-semibold underline hover:bg-gray-200 p-2 rounded-lg transition decoration-1">
-                Orders
-              </h3>
+              <Link to='/userDashBoard/orders'>
+                <h3 className="font-semibold underline hover:bg-gray-200 p-2 rounded-lg transition decoration-1">
+                  Orders
+                </h3>
+              </Link>
             </div>
           </div>
 
@@ -80,7 +82,7 @@ const UserDashBoard = () => {
                 <img className="w-7" src={userLoginIcon} alt="" />
                 <p>{user.email}</p>
               </div>
-                <hr className="my-2 text-gray-300" />
+              <hr className="my-2 text-gray-300" />
               <li>
                 <a>Profile</a>
               </li>

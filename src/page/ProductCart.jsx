@@ -60,154 +60,142 @@ const ProductCard = ({ product }) => {
     });
   };
 
-  const isInWishlist = wishlist?.find((item) => item.productId === _id);
-  //   useEffect(() => {
-  //   console.log("wishlist changed:", isInWishlist);
-  // }, [isInWishlist]);
+    /* ================= WISHLIST ================= */
+  const isInWishlist = wishlist?.find(
+    (item) => item.productId === _id
+  );
 
-  const handlewishlistCart = () => {
-    const cartItem = {
-      productId: _id,
+  const handleWishlist = async (id) => {
+    if (!user) {
+      toast.error("Please login first");
+      return;
+    }
+
+    if (isInWishlist) {
+      toast.info("Already in wishlist ❤️");
+      return;
+    }
+
+    const wishItem = {
+      productId: id,
       name,
       price: discountPrice,
       quantity: 1,
       image,
-      email: user.email || "",
+      email: user.email,
     };
 
-    if (isInWishlist) {
-      toast("Product Already added to wishlist");
-    } else {
-      axiosSecure.post("/addWishList", cartItem).then((res) => {
-        if (res.data.insertedId) {
-          toast.success("Add to wishlist");
-          reload();
-        }
-      });
+    const res = await axiosSecure.post("/addWishList", wishItem);
+
+    if (res.data.insertedId) {
+      toast.success("Added to wishlist ❤️");
+      reload();
     }
   };
 
   return (
-    <div>
-      {/* CARD */}
-      {/* <div>
-        <div className="card bg-base-100 w-96 shadow-sm">
-          <figure className="px-10 pt-10">
-            <img
-              src={image}
-              alt="Shoes"
-              className="rounded-xl w-full h-80 object-cover"
-            />
-          </figure>
-          <div className="card-body items-center text-center">
-            <h2 className="card-title">Card Title</h2>
-            <p>
-              A card component has a figure, a body part, and inside body there
-              are title and actions parts
-            </p>
-            <div className="card-actions">
-              <button className="btn btn-primary">Buy Now</button>
-            </div>
-          </div>
-        </div>
-      </div> */}
+     <div>
+      {/* ================= CARD ================= */}
+      <div className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition bg-white">
 
-      <div className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition ">
         {/* Discount Badge */}
-        <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
-          -{discountPercentage}%
-        </span>
+        {discountPercentage > 0 && (
+          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
+            -{discountPercentage}%
+          </span>
+        )}
 
         {/* Wishlist */}
         <button
-          onClick={() => handlewishlistCart(_id)}
-          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10 hover:text-red-500 dark:text-red-500"
+          onClick={() => handleWishlist(_id)}
+          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10"
         >
           {isInWishlist ? (
-            <img className="w-4" src={hearIcon} alt="" />
+            <img className="w-4" src={hearIcon} alt="wishlist" />
           ) : (
             <Heart size={16} />
           )}
         </button>
 
-        {/* Image */}
-        <div className="relative">
-          <Link to={`productDetails/${_id}`}>
+        {/* Image (FIXED SIZE) */}
+        <div className="w-full h-48 md:h-64 overflow-hidden">
+          <Link to={`/productDetails/${_id}`}>
             <img
               src={image}
               alt={name}
-              className="w-full h-80 object-cover p-4 rounded-2xl"
+              loading="lazy"
+              className="w-full h-full object-cover rounded-xl p-3 transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
-
-          {/* <button
-            onClick={() => setOpen(true)}
-            className="absolute top-20 right-2 rounded-full  flex items-center justify-end  opacity-0 group-hover:opacity-100 transition"
-          >
-            <ZoomIn className="text-white" size={36} />
-          </button> */}
         </div>
 
         {/* Content */}
         <div className="p-4">
-          <div className="flex justify-between items-center gap-4 ">
-            <h3 className="font-semibold text-sm mb-1">{name}</h3>
+          <div className="flex justify-between items-center gap-2">
+            <h3 className="font-semibold text-sm">{name}</h3>
             {stock === 0 && (
-              <p className="bg-red-600 rounded-2xl text-sm text-white px-2">
+              <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">
                 Stock Out
-              </p>
+              </span>
             )}
           </div>
-          <div className="flex items-center gap-2">
+
+          <div className="flex items-center gap-2 mt-1">
             <span className="text-lg font-bold text-primary">
               ৳{discountPrice}
             </span>
-            <span className="text-sm line-through text-gray-400">৳{price}</span>
+            <span className="text-sm line-through text-gray-400">
+              ৳{price}
+            </span>
           </div>
         </div>
-        <button onClick={() => handleCartData(_id)} className="btn w-full">
-          Quick Add
+
+        {/* Add to Cart Button */}
+        <button
+          disabled={stock === 0}
+          onClick={() => handleCartData(_id)}
+          className={`btn w-full rounded-none ${
+            stock === 0 ? "btn-disabled bg-gray-300" : ""
+          }`}
+        >
+          {stock === 0 ? "Out of Stock" : "Quick Add"}
         </button>
       </div>
 
-      {/* MODAL */}
+      {/* ================= MODAL ================= */}
       {open && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-4xl rounded-2xl p-6 relative">
             <button
               onClick={() => setOpen(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-black"
+              className="absolute top-4 right-4 text-gray-500"
             >
               <X />
             </button>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Left Image */}
-              <div className="relative">
-                <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                  -{discountPercentage}%
-                </span>
-                <div className="">
-                  <Link to={`productDetails/${_id}`}>
-                    <img src={image} alt={name} className="w-full rounded-xl" />
-                  </Link>
-                </div>
-              </div>
+              {/* Modal Image */}
+              <img
+                src={image}
+                alt={name}
+                className="w-full max-h-[450px] object-contain rounded-xl"
+              />
 
-              {/* Right Info */}
+              {/* Modal Info */}
               <div>
-                <h2 className="text-2xl font-bold mb-2 dark:text-black">
-                  {name}
-                </h2>
+                <h2 className="text-2xl font-bold mb-2">{name}</h2>
+
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xl font-bold text-primary">
                     ৳{discountPrice}
                   </span>
-                  <span className="line-through text-gray-400">৳{price}</span>
+                  <span className="line-through text-gray-400">
+                    ৳{price}
+                  </span>
                 </div>
 
                 {/* Quantity */}
-                <div className="flex items-center gap-3 mb-4 dark:text-black">
+                <div className="flex items-center gap-3 mb-4">
                   <button
                     onClick={() => setQty(Math.max(1, qty - 1))}
                     className="p-2 border rounded-lg"
@@ -223,17 +211,14 @@ const ProductCard = ({ product }) => {
                   </button>
                 </div>
 
-                {/* Add to Cart */}
                 <button
                   onClick={() => handleCartData(_id)}
-                  className="bg-cyan-600 w-full text-white px-6 py-3 rounded-xl mb-4 hover:opacity-90"
+                  className="bg-cyan-600 w-full text-white px-6 py-3 rounded-xl mb-4"
                 >
                   Add to Cart
                 </button>
-                {/* Description */}
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {description}
-                </p>
+
+                <p className="text-sm text-gray-600">{description}</p>
               </div>
             </div>
           </div>

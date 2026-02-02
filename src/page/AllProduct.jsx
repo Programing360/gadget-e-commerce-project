@@ -13,10 +13,10 @@ const AllProduct = () => {
   }, [axiosAllProduct, setAllProducts]);
 
   return (
-    <div className="mt-14 container mx-11/12 mx-auto p-10 lg:p-0">
+    <div className="mt-14 container lg:w-8/12 mx-auto lg:p-10 p-4">
       <h1 className="text-center text-3xl font-bold">Our Products</h1>
-      <p className="text-center w-full mx-auto text-gray-500 mt-4">Welcome to our premium product collection where quality meets value. This page showcases carefully selected products with detailed information to help you make confident purchasing decisions. Each product card displays high-quality images, clear pricing, and attractive discount offers for better savings.</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-14">
+      <p className="text-center w-full mx-auto text-gray-500 mt-4">Welcome to our premium product collection where quality meets value.</p>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-14">
         {allProducts.map((product) => (
           <ProductCart key={product._id} product={product}></ProductCart>
         ))}

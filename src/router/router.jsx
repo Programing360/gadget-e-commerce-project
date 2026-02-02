@@ -16,6 +16,8 @@ import Notification from "../mainLayout/DashBoard/Notification";
 import AllProductList from "../mainLayout/DashBoard/AllProductList";
 import OrderCancel from "../mainLayout/DashBoard/OrderCancel";
 import UserDashBoard from "../mainLayout/userDashBoard/UserDashBoard";
+import UserDashBoardHome from "../mainLayout/userDashBoard/UserDashBoardHome";
+import UserOrders from "../mainLayout/userDashBoard/UserOrders";
 
 export const router = createBrowserRouter([
   {
@@ -86,6 +88,12 @@ export const router = createBrowserRouter([
   },
   {
     path: "/userDashBoard",
-    Component: UserDashBoard,
+    Component: UserDashBoardHome,
+    children: [
+      {
+        path: "/userDashBoard/orders",
+        Component: UserOrders,
+      },
+    ],
   },
 ]);
