@@ -18,6 +18,9 @@ import OrderCancel from "../mainLayout/DashBoard/OrderCancel";
 import UserDashBoard from "../mainLayout/userDashBoard/UserDashBoard";
 import UserDashBoardHome from "../mainLayout/userDashBoard/UserDashBoardHome";
 import UserOrders from "../mainLayout/userDashBoard/UserOrders";
+import PrivateRoute from "../PrivetRoutes/PrivateRoute";
+import UserProfile from "../mainLayout/userDashBoard/UserProfile";
+import UserSettion from "../mainLayout/userDashBoard/UserSettion";
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +61,12 @@ export const router = createBrowserRouter([
   },
   {
     path: "/adminDashboard",
-    Component: AdminPage,
+    element: (
+      <PrivateRoute>
+        <AdminPage></AdminPage>
+      </PrivateRoute>
+    ),
+
     children: [
       {
         path: "/adminDashboard",
@@ -88,12 +96,24 @@ export const router = createBrowserRouter([
   },
   {
     path: "/userDashBoard",
-    Component: UserDashBoardHome,
+    element: (
+      <PrivateRoute>
+        <UserDashBoardHome></UserDashBoardHome>
+      </PrivateRoute>
+    ),
     children: [
       {
-        path: "/userDashBoard/orders",
+        path: "/userDashBoard",
         Component: UserOrders,
       },
+      {
+        path: "/userDashBoard/profile",
+        Component: UserProfile,
+      },
+      {
+        path: "/userDashBoard/setting",
+        Component: UserSettion,
+      }
     ],
   },
 ]);

@@ -6,15 +6,13 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 import TimeAgo from "../../component/SetTimeOut";
-// import { useAxiosSecure } from "../Hook/useAxiosSecure";
+import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 
-dayjs.extend(relativeTime);
 const UserOrders = () => {
-  const [orders] = useOrderList();
-  //   const cart = (orders.map(item => console.log(item.cart)));
-  //   const axiosSecure = useAxiosSecure();
-  //   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [orders, refetch, isloading] = useOrderList();
+    console.log(orders)
+    const axiosSecure = useAxiosSecure();
+  
   const [, forceUpdate] = useState(0);
 
   /* ================= FETCH ORDERS ================= */
@@ -34,25 +32,26 @@ const UserOrders = () => {
     return () => clearInterval(interval);
   }, []);
   /* ================= CANCEL ORDER ================= */
-  //   const handleCancelOrder = async (orderId) => {
-  //     const confirm = window.confirm(
-  //       "Are you sure you want to cancel this order?",
-  //     );
-  //     if (!confirm) return;
+    const handleCancelOrder = async (orderId) => {
+      const confirm = window.confirm(
+        "Are you sure you want to cancel this order?",
+      );
+      if (!confirm) return;
 
-  //     const res = await axiosSecure.patch(`/cancelOrder/${orderId}`);
+      const res = await axiosSecure.patch(`/cancelOrder/${orderId}`);
 
-  //     if (res.data.modifiedCount > 0) {
-  //       toast.success("Order cancelled successfully");
-  //       setOrders((prev) =>
-  //         prev.map((order) =>
-  //           order._id === orderId ? { ...order, status: "cancelled" } : order,
-  //         ),
-  //       );
-  //     }
-  //   };
+      if (res.data.modifiedCount > 0) {
+        toast.success("Order cancelled successfully");
+        refetch()
+        // setOrder((prev) =>
+        //   prev.map((order) =>
+        //     order._id === orderId ? { ...order, status: "cancelled" } : order,
+        //   ),
+        // );
+      }
+    };
   /* ================= STATES ================= */
-  if (loading) {
+  if (isloading) {
     return (
       <div className="text-center py-10 text-gray-500">
         Loading your orders...
@@ -77,17 +76,16 @@ const UserOrders = () => {
             key={order._id}
             className="flex gap-4 bg-white shadow-sm rounded-xl p-4"
           >
+            {/* ---------------- */}
             {/* Product Image */}
-            {order.cart.map((item, index) => (
+            {/* {order.cart.map((item, index) => (
               <img
-              key={index}
-              src={item.image}
-              alt={item.name}
-              className="w-20 h-20 object-cover rounded-lg border"
-            />
-            ))}
-            
-
+                key={index}
+                src={item.image}
+                alt={item.name}
+                className="w-20 h-20 object-cover rounded-lg"
+              />
+            ))} */}
             {/* Order Info */}
             <div className="flex-1">
               <h3 className="font-semibold">{order.name}</h3>
@@ -101,7 +99,7 @@ const UserOrders = () => {
               </p>
 
               <div className="text-sm mt-1">
-                Qty: <span className="font-medium">{order.quantity}</span>
+                Qty: <span className="font-medium">{order.cart.length}</span>
               </div>
 
               <div className="text-sm">
@@ -115,7 +113,7 @@ const UserOrders = () => {
             {/* Right Side */}
             <div className="text-right flex flex-col justify-between">
               <div>
-                <p className="font-bold text-cyan-600">৳{order.totalPrice}</p>
+                <p className="font-bold text-cyan-600">৳{order.total}</p>
 
                 <span
                   className={`text-xs px-3 py-1 rounded-full inline-block mt-1 ${
@@ -138,7 +136,7 @@ const UserOrders = () => {
 
                 {order.status === "pending" && (
                   <button
-                    // onClick={() => handleCancelOrder(order._id)}
+                    onClick={() => handleCancelOrder(order._id)}
                     className="btn btn-xs btn-error"
                   >
                     Cancel

@@ -144,9 +144,9 @@ const NavBar = () => {
                 >
                   <img
                     className={
-                      adminUser
+                      user
                         ? "w-10 md:mr-5 bg-gray-200 rounded-full p-2"
-                        : "w-10 mr-5 bg-gray-200 rounded-full p-2"
+                        : "w-10 bg-gray-200 rounded-full p-2"
                     }
                     src={cartIcon}
                     alt=""

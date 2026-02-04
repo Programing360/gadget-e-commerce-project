@@ -11,25 +11,6 @@ const AddToWishlist = () => {
   const [ ,refetch] = useCart();
   const axiosSecure = useAxiosSecure();
   const [wishlist,reload ] = useWishList()
-//   const [allProduct, user] = useContext(UseContext);
-
-
-//   const cartItem = {
-//     productId: _id,
-//     name,
-//     price: discountPrice,
-//     quantity: 1,
-//     image,
-//     email: user.email,
-//   };
-//   localStorage.setItem("cartItem", JSON.stringify({ id }));
-
-//   axiosSecure.post("/cartData", cartItem).then((res) => {
-//     if (res.data.insertedId) {
-//       toast.success("Product added to cart 🛒");
-//       refetch();
-//     }
-//   });
 
 const handleAddToCart = (item) => {
     // console.log(id)

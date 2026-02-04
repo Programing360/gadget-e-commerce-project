@@ -17,11 +17,16 @@ createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <div className="">
-            <RouterProvider router={router} />
+            <RouterProvider
+              router={router}
+              fallbackElement={
+                <span className="loading loading-bars loading-xl"></span>
+              }
+            />
           </div>
         </AuthProvider>
       </QueryClientProvider>
     </div>
     <ToastContainer position="top-center"></ToastContainer>
-  </StrictMode>
+  </StrictMode>,
 );

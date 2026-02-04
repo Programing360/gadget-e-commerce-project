@@ -1,12 +1,25 @@
 import { useContext, useState } from "react";
-import { Heart, ZoomIn, X, Minus, Plus } from "lucide-react";
+import { Heart, X, Minus, Plus } from "lucide-react";
 import { Link } from "react-router";
-import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import { UseContext } from "../Context/AuthContext";
+import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import useCart from "../Hook/useCart";
-import hearIcon from "../assets/assets/heart.png";
 import useWishList from "../Hook/useWishList";
+import hearIcon from "../assets/assets/heart.png";
+
+/* ================= GUEST ID HELPER ================= */
+const getGuestUserId = () => {
+  let guestId = localStorage.getItem("guestCart");
+
+  if (!guestId) {
+    guestId = crypto.randomUUID();
+    localStorage.setItem("guestCart", guestId);
+  }
+
+  return guestId;
+};
+
 const ProductCard = ({ product }) => {
   const {
     _id,
@@ -18,60 +31,76 @@ const ProductCard = ({ product }) => {
     description,
     stock,
   } = product;
+
   const [open, setOpen] = useState(false);
   const [qty, setQty] = useState(1);
+
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(UseContext);
-  // const [wishlistIcon, setWishlistIcon] = useState(null)
   const [cart, refetch] = useCart();
   const [wishlist, reload] = useWishList();
-
+  // console.log(wishlist)
+  /* ================= ADD TO CART ================= */
   const handleCartData = async (id) => {
-    const existing = cart.find((item) => item.productId === id);
+    const userId = user ? user.email : getGuestUserId();
+
+    const existing = cart.find(
+      (item) => item.productId === id && item.userId === userId,
+    );
+
+    // 🟢 If product already in cart → increase quantity
     if (existing) {
       const newQty = existing.quantity + 1;
+
       const { data } = await axiosSecure.patch(`/cartData/${existing._id}`, {
         quantity: newQty,
       });
+
       if (data.modifiedCount > 0) {
-        cart.map((item) =>
-          item.id === existing._id ? { ...item, quantity: newQty } : item,
-        );
-        toast.success("Product also added to cart 🛒");
+        toast.success("Product quantity updated 🛒");
         refetch();
       }
       return;
     }
+
+    // 🟢 New cart item
     const cartItem = {
       productId: _id,
       name,
       price: discountPrice,
       quantity: 1,
       image,
-      email: user.email,
+      userId,
+      email: user?.email || null,
     };
-    localStorage.setItem("cartItem", JSON.stringify({ id }));
 
-    axiosSecure.post("/cartData", cartItem).then((res) => {
-      if (res.data.insertedId) {
-        toast.success("Product added to wishlist 🛒");
-        refetch();
-      }
-    });
+    const res = await axiosSecure.post("/cartData", cartItem);
+
+    if (res.data.insertedId) {
+      toast.success("Product added to Cart 🛒");
+      refetch();
+    }
   };
 
-    /* ================= WISHLIST ================= */
-  const isInWishlist = wishlist?.find(
-    (item) => item.productId === _id
-  );
+  /* ================= WISHLIST ================= */
+
+  const isInWishlist = wishlist?.find((item) => item.productId === _id);
+  // console.log(isInWishlist)
 
   const handleWishlist = async (id) => {
+    const userId = user ? user.email : getGuestUserId();
+
+    const existing = wishlist.find(
+      (item) => item.productId === id && item.userId === userId,
+    );
+    console.log(existing)
+
     if (!user) {
       toast.error("Please login first");
       return;
     }
 
-    if (isInWishlist) {
+    if (existing) {
       toast.info("Already in wishlist ❤️");
       return;
     }
@@ -82,7 +111,8 @@ const ProductCard = ({ product }) => {
       price: discountPrice,
       quantity: 1,
       image,
-      email: user.email,
+      email: user?.email,
+      userId
     };
 
     const res = await axiosSecure.post("/addWishList", wishItem);
@@ -94,10 +124,9 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-     <div>
+    <div>
       {/* ================= CARD ================= */}
       <div className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition bg-white">
-
         {/* Discount Badge */}
         {discountPercentage > 0 && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
@@ -108,16 +137,16 @@ const ProductCard = ({ product }) => {
         {/* Wishlist */}
         <button
           onClick={() => handleWishlist(_id)}
-          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10"
+          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10 cursor-pointer"
         >
           {isInWishlist ? (
-            <img className="w-4" src={hearIcon} alt="wishlist" />
+            <img className="w-4 " src={hearIcon} alt="wishlist" />
           ) : (
             <Heart size={16} />
           )}
         </button>
 
-        {/* Image (FIXED SIZE) */}
+        {/* Image */}
         <div className="w-full h-48 md:h-64 overflow-hidden">
           <Link to={`/productDetails/${_id}`}>
             <img
@@ -144,13 +173,11 @@ const ProductCard = ({ product }) => {
             <span className="text-lg font-bold text-primary">
               ৳{discountPrice}
             </span>
-            <span className="text-sm line-through text-gray-400">
-              ৳{price}
-            </span>
+            <span className="text-sm line-through text-gray-400">৳{price}</span>
           </div>
         </div>
 
-        {/* Add to Cart Button */}
+        {/* Add to Cart */}
         <button
           disabled={stock === 0}
           onClick={() => handleCartData(_id)}
@@ -174,14 +201,12 @@ const ProductCard = ({ product }) => {
             </button>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Modal Image */}
               <img
                 src={image}
                 alt={name}
                 className="w-full max-h-[450px] object-contain rounded-xl"
               />
 
-              {/* Modal Info */}
               <div>
                 <h2 className="text-2xl font-bold mb-2">{name}</h2>
 
@@ -189,12 +214,9 @@ const ProductCard = ({ product }) => {
                   <span className="text-2xl font-bold text-primary">
                     ৳{discountPrice}
                   </span>
-                  <span className="line-through text-gray-400">
-                    ৳{price}
-                  </span>
+                  <span className="line-through text-gray-400">৳{price}</span>
                 </div>
 
-                {/* Quantity */}
                 <div className="flex items-center gap-3 mb-4">
                   <button
                     onClick={() => setQty(Math.max(1, qty - 1))}
@@ -229,7 +251,3 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
-
-/* Example Usage:
-<ProductCard product={productData} />
-*/
