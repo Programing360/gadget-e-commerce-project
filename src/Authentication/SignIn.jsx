@@ -31,7 +31,7 @@ const SignIn = () => {
   }
 
   return (
-    <div className="hero bg-base-200 min-h-screen md:py-30">
+    <div className="hero bg-base-200 min-h-screen md:py-30 p-3">
       <div className="card bg-base-100 w-full lg:max-w-3xl md:max-w-xl shrink-0 shadow-2xl">
         <div className="flex items-center flex-col-reverse md:flex-row-reverse">
           <div className="card-body w-full">

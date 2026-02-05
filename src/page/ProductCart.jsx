@@ -126,7 +126,7 @@ const ProductCard = ({ product }) => {
   return (
     <div>
       {/* ================= CARD ================= */}
-      <div className="relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition bg-white">
+      <div className="relative group overflow-hidden shadow-sm hover:shadow-lg transition bg-white">
         {/* Discount Badge */}
         {discountPercentage > 0 && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
@@ -190,7 +190,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* ================= MODAL ================= */}
-      {open && (
+      {/* {open && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-4xl rounded-2xl p-6 relative">
             <button
@@ -245,7 +245,7 @@ const ProductCard = ({ product }) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

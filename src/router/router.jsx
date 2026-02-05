@@ -21,6 +21,7 @@ import UserOrders from "../mainLayout/userDashBoard/UserOrders";
 import PrivateRoute from "../PrivetRoutes/PrivateRoute";
 import UserProfile from "../mainLayout/userDashBoard/UserProfile";
 import UserSettion from "../mainLayout/userDashBoard/UserSettion";
+import UserAllProducts from "../page/UserAllProducts";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
         Component: ProductDetails,
         loader: ({ params }) =>
           fetch(`http://localhost:5000/allProduct/${params.id}`),
+      },
+      {
+        path: "/userAllProduct",
+        Component: UserAllProducts,
       },
       {
         path: "/login",
@@ -113,7 +118,7 @@ export const router = createBrowserRouter([
       {
         path: "/userDashBoard/setting",
         Component: UserSettion,
-      }
+      },
     ],
   },
 ]);

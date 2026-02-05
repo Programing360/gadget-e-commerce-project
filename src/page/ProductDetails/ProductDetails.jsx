@@ -1,35 +1,52 @@
 import React, { useContext } from "react";
 import { Link, useLoaderData } from "react-router";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { UseContext } from "../../Context/AuthContext";
 import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+/* 🔑 Guest ID helper */
+const getGuestUserId = () => {
+  let guestId = localStorage.getItem("guestCart");
+  if (!guestId) {
+    guestId = crypto.randomUUID();
+    localStorage.setItem("guestCart", guestId);
+  }
+  return guestId;
+};
 
 const ProductDetails = () => {
   const { _id, name, image, stock, price, discountPrice, description } =
     useLoaderData();
+
   const { user } = useContext(UseContext);
   const axiosSecure = useAxiosSecure();
   const [cart, refetch] = useCart();
   const { handleCartIncrement, handleCartDecrement } = useCartItemUpdate();
 
+  const cartItem = cart.find((item) => item.productId === _id);
+
+  /* 🛒 Add to cart */
   const handleCartData = async () => {
     const existing = cart.find((item) => item.productId === _id);
+
     if (existing) {
       const newQty = existing.quantity + 1;
       const { data } = await axiosSecure.patch(`/cartData/${existing._id}`, {
         quantity: newQty,
       });
+
       if (data.modifiedCount > 0) {
-        // cart.map((item) =>
-        //   item._id === existing._id ? { ...item, quantity: newQty } : item,
-        // );
         toast.success("Product also added to cart 🛒");
         refetch();
       }
       return;
     }
+
+    const userId = user ? user.email : getGuestUserId();
 
     const cartItem = {
       productId: _id,
@@ -37,62 +54,75 @@ const ProductDetails = () => {
       price: discountPrice,
       quantity: 1,
       image,
-      email: user.email,
+      userId,
+      email: user?.email || null,
     };
-    localStorage.setItem("cartItem", JSON.stringify({ id: _id }));
-    axiosSecure.post("/cartData", cartItem).then((res) => {
-      if (res.data?.insertedId) {
-        toast.success("Product added to cart 🛒");
-        refetch();
-      }
-    });
+
+    const res = await axiosSecure.post("/cartData", cartItem);
+
+    if (res.data?.insertedId) {
+      toast.success("Product added to cart 🛒");
+      refetch();
+    }
   };
-  const cartItem = cart?.find((item) => item.productId === _id);
 
   return (
-    <div className="dark:bg-white dark:text-white">
-      <div className="bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white text-center w-full py-7">
-        <h1 className="text-2xl">{name}</h1>
-        <div className="breadcrumbs text-sm justify-items-center">
-          <ul className="">
-            <li>
-              <Link to="/">
-                <a>Home</a>
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/products">
-                <a>Product</a>
-              </Link>
-            </li>
-            <li>{name}</li>
-          </ul>
+    <div className="bg-base-100 min-h-screen">
+      {/* 🔝 Header */}
+      <div className="bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white py-6 text-center">
+        <h1 className="text-xl md:text-2xl font-semibold">{name}</h1>
+        <div className="flex justify-center text-sm">
+          <div className="breadcrumbs">
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/products">Products</Link>
+              </li>
+              <li>{name}</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="hero bg-base-200 min-h-screen ">
-        <div className="hero-content flex-col lg:flex-row gap-10">
-          <img
-            src={image}
-            className="w-full h-full md:max-w-[604px] rounded-lg shadow-2xl"
-          />
-          <div className="product-cart leading-10">
-            <div className="">
+
+      {/* 🧱 Content */}
+      <div className="md:px-10">
+        <div className="max-w-6xl mx-auto px-4 py-10 shadow-lg">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            {/* 🖼 Image */}
+            <Carousel
+              showThumbs={true}
+              showStatus={false}
+              infiniteLoop
+              autoPlay
+              className="rounded-xl overflow-hidden"
+            >
+              <div>
+                <img
+                  src={image}
+                  alt={name}
+                  className="object-contain max-h-[400px]"
+                />
+              </div>
+            </Carousel>
+
+            {/* 📦 Info */}
+            <div className="space-y-4">
               <p>
-                <span className="font-semibold">Availability</span>:{" "}
-                <span className="text-emerald-700">{stock} in stoke</span>
+                <span className="font-semibold">Availability:</span>{" "}
+                <span className="text-emerald-600">{stock} in stock</span>
               </p>
-              <h1 className="text-5xl font-bold mb-3">{name}</h1>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-primary">
+
+              <h2 className="text-2xl md:text-4xl font-bold">{name}</h2>
+
+              <div className="flex items-center gap-3">
+                <span className="text-xl font-bold text-primary">
                   ৳{discountPrice}
                 </span>
-                <span className="text-sm line-through text-gray-400">
-                  ৳{price}
-                </span>
+                <span className="line-through text-gray-400">৳{price}</span>
               </div>
-            </div>
-            <div className="flex gap-4 w-full pt-3 items-center">
+
               {/* Quantity */}
               {cartItem && (
                 <div className="flex items-center gap-3">
@@ -100,9 +130,9 @@ const ProductDetails = () => {
                     onClick={() => handleCartDecrement(_id)}
                     className="btn btn-sm"
                   >
-                    -
+                    −
                   </button>
-                  <span className="min-w-5 text-center">
+                  <span className="min-w-6 text-center font-semibold">
                     {cartItem.quantity}
                   </span>
                   <button
@@ -114,24 +144,28 @@ const ProductDetails = () => {
                 </div>
               )}
 
-              {/* Add to Cart */}
               <button
                 onClick={handleCartData}
-                className=" btn flex-1 bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white"
+                className="btn w-full bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white"
               >
                 Add To Cart
               </button>
-            </div>
 
-            <a href="https://www.facebook.com/messages/" target="_blank">
-              <button className="btn w-full bg-linear-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] mt-4 text-white">
-                Chat with Messenger
-              </button>
-            </a>
-            <p className="py-6 bg-gray-200 p-4 mt-4 rounded-tr-2xl rounded-bl-2xl dark:text-black">
-              <span className="font-bold">Description: </span>
-              {description}
-            </p>
+              <a
+                href="https://www.facebook.com/messages/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <button className="btn w-full bg-gradient-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] text-white">
+                  Chat with Messenger
+                </button>
+              </a>
+
+              <p className="bg-gray-100 p-4 rounded-xl text-sm text-gray-700">
+                <span className="font-semibold">Description:</span>{" "}
+                {description}
+              </p>
+            </div>
           </div>
         </div>
       </div>

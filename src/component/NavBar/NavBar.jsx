@@ -27,9 +27,10 @@ const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
   const [cart] = useCart();
-  const [orders] = useOrderList();
+  const [orders,,,watchShowAge] = useOrderList();
+  console.log(watchShowAge)
   // const [allProduct] = useAllProduct()
-
+  
   const quantity = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,

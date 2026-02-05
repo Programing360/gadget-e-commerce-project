@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const CategoryNav = () => {
   return (
@@ -32,7 +33,9 @@ const CategoryNav = () => {
           </ul>
         </li>
 
-        <li className="hover:text-yellow-300 cursor-pointer">All Products</li>
+        <Link to='/userAllProduct'>
+          <li className="hover:text-yellow-300 cursor-pointer">All Products</li>
+        </Link>
         <li className="hover:text-yellow-300 cursor-pointer">Pages</li>
         <li className="hover:text-yellow-300 cursor-pointer">Blog</li>
       </ul>

@@ -6,7 +6,7 @@ const UserProfile = () => {
 
   return (
     <div className="container md:w-8/12 mx-auto mt-10 p-4">
-      <h1 className="text-2xl font-bold">Profile</h1>
+      <h1 className="text-2xl font-bold antialiased">Profile</h1>
       <div className="border border-gray-200 rounded-2xl mt-7 p-6">
         <div className="flex items-center gap-3 pb-4">
           <h1 className="font-semibold">Name</h1>
