@@ -11,9 +11,9 @@ const useOrderCount = () => {
         const res = await axiosSecure.get('/orderConfirm')
         return res.data
     },
-
+    
   });
-
+  
   return [orderCount,refetch];
 };
 

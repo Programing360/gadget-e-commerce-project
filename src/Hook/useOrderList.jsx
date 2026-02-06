@@ -7,7 +7,6 @@ const useOrderList = () => {
   const {
     isLoading,
     refetch,
-    watch,
     data: orders = [],
   } = useQuery({
     queryKey: ["orders"],
@@ -17,9 +16,9 @@ const useOrderList = () => {
       return res.data;
     },
   });
+  const unreadCount = orders.filter(n => !n.isRead).length;
 
-
-  return [orders, refetch ,isLoading];
+  return [orders, refetch ,isLoading,unreadCount];
 };
 
 export default useOrderList;

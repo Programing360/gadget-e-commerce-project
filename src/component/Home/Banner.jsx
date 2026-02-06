@@ -1,62 +1,109 @@
-import bannerImg1 from "../../assets/slider-1-img.png";
-import bannerImg2 from "../../assets/slider-2-img.png";
+import { Carousel } from "react-responsive-carousel";
+import bannerImg1 from "../../assets/assets/unnamed.jpg";
+import bannerImg2 from "../../assets/assets/bannerImg2.jpg";
+import bannerImg3 from "../../assets/assets/bannerImage3.jpg";
+import bannerImg4 from "../../assets/assets/bannerImg4.webp";
+import bannerImg5 from "../../assets/assets/bannerImg5.jpg";
+import logoIcon from "../../assets/assets/logo.jpg";
+import { Link } from "react-router";
+import { useEffect, useState } from "react";
 
 const Banner = () => {
+  const [time, setTime] = useState({
+    days: 1,
+    hours: 2,
+    minutes: 10,
+    seconds: 59,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prev) => {
+        let { days, hours, minutes, seconds } = prev;
+
+        if (seconds > 0) seconds--;
+        else {
+          seconds = 59;
+          if (minutes > 0) minutes--;
+          else {
+            minutes = 59;
+            if (hours > 0) hours--;
+            else {
+              hours = 23;
+              if (days > 0) days--;
+            }
+          }
+        }
+
+        return { days, hours, minutes, seconds };
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="carousel bg-[#e7e7e7] w-full relative group">
-      {/* -------- Slide 1 -------- */}
-      <div id="slide1" className="carousel-item relative w-full">
-        <div className="hero bg-[#e7e7e7] min-h-screen">
-          <div className="hero-content w-full flex-col md:flex-row-reverse dark:text-[#000000]">
-            <img src={bannerImg1} className="max-w-sm rounded-lg shadow-2xl " />
-            <div>
-              <h1 className="text-5xl font-bold">Box Office News!</h1>
-              <p className="py-6">Provident cupiditate voluptatem et in.</p>
-              <button className="btn bg-[#ff7004] text-white border-0 hover:bg-black hover:text-[#ff7004]">
-                Shop Now
-              </button>
-            </div>
+    <div className="container mx-auto px-4 mt-6">
+      {/* Main layout */}
+      <div className="flex flex-col lg:flex-row gap-6 items-start">
+        
+        {/* ===== Carousel Section ===== */}
+        <div className="w-full lg:w-8/12 bg-[#e7e7e7] rounded-xl overflow-hidden">
+          <Carousel
+            showThumbs={false}
+            showStatus={false}
+            infiniteLoop
+            autoPlay
+          >
+            {[bannerImg1, bannerImg2, bannerImg3, bannerImg4, bannerImg5].map(
+              (img, idx) => (
+                <div key={idx}>
+                  <img
+                    src={img}
+                    className="h-[200px] sm:h-[300px] md:h-[380px] lg:h-[420px] w-full object-cover"
+                    alt="banner"
+                  />
+                </div>
+              )
+            )}
+          </Carousel>
+        </div>
+
+        {/* ===== Campaign Section ===== */}
+        <div className="w-full lg:w-4/12 bg-gray-200 rounded-lg p-4">
+          <h1 className="text-lg font-semibold mb-2">
+            Upcoming Campaigns
+          </h1>
+
+          <div className="flex items-center gap-3 py-2">
+            <img className="w-10 h-10 rounded-full" src={logoIcon} alt="" />
+            <h1 className="text-xl font-bold">
+              Zeroo<span className="text-[#ff4e5c]">m</span>
+              <span className="text-[#fdb529]">iro</span>
+            </h1>
           </div>
-        </div>
 
-        {/* Right Button */}
-        <div
-          className="
-            absolute right-5 top-1/2 -translate-y-1/2
-            flex md:hidden md:group-hover:flex
-          "
-        >
-          <a href="#slide2" className="btn btn-circle bg-amber-500 text-white">
-            ❯
-          </a>
-        </div>
-      </div>
+          <p className="text-red-500 mb-3">Campaign starts in</p>
 
-      {/* -------- Slide 2 -------- */}
-      <div id="slide2" className="carousel-item relative w-full">
-        <div className="hero bg-[#e7e7e7] min-h-screen">
-          <div className="hero-content w-full flex-col md:flex-row-reverse">
-            <img src={bannerImg2} className="max-w-sm rounded-lg shadow-2xl" />
-            <div>
-              <h1 className="text-5xl font-bold">Box Office News!</h1>
-              <p className="py-6">Provident cupiditate voluptatem et in.</p>
-              <button className="btn translate-2  hover:bg-black hover:text-[#ff7004] bg-[#ff7004] text-white">
-                Shop Now
-              </button>
-            </div>
+          {/* ===== Countdown ===== */}
+          <div className="grid grid-flow-col gap-3 sm:gap-4 text-center auto-cols-max">
+            {[
+              { label: "days", value: time.days },
+              { label: "hours", value: time.hours },
+              { label: "min", value: time.minutes },
+              { label: "sec", value: time.seconds },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content"
+              >
+                <span className="countdown font-mono text-3xl sm:text-4xl md:text-5xl">
+                  <span style={{ "--value": item.value }}></span>
+                </span>
+                <span className="text-xs sm:text-sm">{item.label}</span>
+              </div>
+            ))}
           </div>
-        </div>
-
-        {/* Left Button */}
-        <div
-          className="
-            absolute left-5 top-1/2 -translate-y-1/2
-            flex md:hidden md:group-hover:flex
-          "
-        >
-          <a href="#slide1" className="btn btn-circle bg-amber-500 text-white">
-            ❮
-          </a>
         </div>
       </div>
     </div>

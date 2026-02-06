@@ -16,7 +16,7 @@ const useNotifications = (email) => {
   // unread count
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  return { notifications, unreadCount, refetch };
+  return [ notifications, unreadCount, refetch ];
 };
 
 export default useNotifications;

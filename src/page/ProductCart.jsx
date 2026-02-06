@@ -32,8 +32,8 @@ const ProductCard = ({ product }) => {
     stock,
   } = product;
 
-  const [open, setOpen] = useState(false);
-  const [qty, setQty] = useState(1);
+  // const [open, setOpen] = useState(false);
+  // const [qty, setQty] = useState(1);
 
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(UseContext);
@@ -93,7 +93,7 @@ const ProductCard = ({ product }) => {
     const existing = wishlist.find(
       (item) => item.productId === id && item.userId === userId,
     );
-    console.log(existing)
+    console.log(existing);
 
     if (!user) {
       toast.error("Please login first");
@@ -112,7 +112,7 @@ const ProductCard = ({ product }) => {
       quantity: 1,
       image,
       email: user?.email,
-      userId
+      userId,
     };
 
     const res = await axiosSecure.post("/addWishList", wishItem);
@@ -160,13 +160,13 @@ const ProductCard = ({ product }) => {
 
         {/* Content */}
         <div className="p-4">
+          {stock === 0 && (
+            <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">
+              Stock Out
+            </span>
+          )}
           <div className="flex justify-between items-center gap-2">
             <h3 className="font-semibold text-sm">{name}</h3>
-            {stock === 0 && (
-              <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">
-                Stock Out
-              </span>
-            )}
           </div>
 
           <div className="flex items-center gap-2 mt-1">

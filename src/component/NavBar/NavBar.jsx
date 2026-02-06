@@ -18,18 +18,12 @@ import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
 import useOrderList from "../../Hook/useOrderList";
 import TimeAgo from "../SetTimeOut";
-import { Watch } from "react-hook-form";
-// import dayjs from "dayjs";
-// import relativeTime from "dayjs/plugin/relativeTime";
-// dayjs.extend(relativeTime);
 
 const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
   const [cart] = useCart();
-  const [orders,,,watchShowAge] = useOrderList();
-  console.log(watchShowAge)
-  // const [allProduct] = useAllProduct()
+  const [orders] = useOrderList();
   
   const quantity = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,

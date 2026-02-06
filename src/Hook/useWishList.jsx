@@ -22,13 +22,11 @@ const useWishList = () => {
     queryKey: ["wishListGet", user?.email || "guestCart"],
     queryFn: async () => {
       const userId = user ? user?.email : getGuestUserId();
-      console.log(userId)
       const res = await axiosSecure.get("/wishListGet");
       const data = res.data;
 
       // 🔥 Correct filtering
       const userCart = data?.filter((item) => item.userId === userId);
-      console.log(userCart,data)
       return userCart;
     },
   });
