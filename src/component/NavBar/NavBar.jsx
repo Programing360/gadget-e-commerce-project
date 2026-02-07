@@ -24,12 +24,12 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [cart] = useCart();
   const [orders] = useOrderList();
-  
+
   const quantity = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
-
+  const formatted = quantity.toLocaleString();
   const adminUser = user?.email === "fhlimon360@gmail.com";
 
   const handleUserLogOut = () => {
@@ -37,6 +37,9 @@ const NavBar = () => {
       navigate("/login");
     });
   };
+
+  // navber animition scroll---------------
+
 
   return (
     <div className="sticky top-0 z-50 bg-white ">
@@ -162,34 +165,44 @@ const NavBar = () => {
                   {/* Sidebar content here */}
 
                   <div className=" h-150 overflow-auto">
-                    <label
-                      className="flex justify-end"
-                      htmlFor="my-drawer-5"
-                      aria-label="close sidebar"
-                    >
-                      <img
-                        className="w-7 cursor-pointer"
-                        src={crossIcon}
-                        alt=""
-                      />
-                    </label>
+                    <div className="flex justify-between items-center pb-3 bg-[#e9edf1] p-3 border-b border-gray-300 mb-6">
+                      <h1 className="text-2xl font-medium">Shopping Cart</h1>
+                      <label
+                        className="flex justify-end"
+                        htmlFor="my-drawer-5"
+                        aria-label="close sidebar"
+                      >
+                        <img
+                          className="w-5 cursor-pointer"
+                          src={crossIcon}
+                          alt=""
+                        />
+                      </label>
+                    </div>
                     <CartAdd></CartAdd>
                   </div>
                   <div className="bg-gray-200 leading-16 mt-10">
                     <div className="flex justify-between items-center px-6">
-                      <h2 className="text-2xl text-cyan-700">Subtitle:</h2>
-                      <p className="text-pink-600">Price: {quantity} TK</p>
+                      <h2 className="text-xl text-gray-700">Subtitle:</h2>
+                      <p className="">৳{formatted}</p>
+                      
+                    </div>
+                    <hr className="mx-6 text-gray-400" />
+                    <div className="flex justify-between items-center px-6">
+                      
+                      <h1 className="text-2xl font-semibold">Total</h1>
+                      <p className="text-sky-800 text-sm">৳{formatted}</p>
                     </div>
                     <div className="px-4">
                       <Link to="/onlinePayment">
-                        <button className="btn w-full bg-linear-0 to-violet-400 from-violet-600 text-white">
+                        <button className="btn w-full bg-linear-0 to-[#0f1624] from-violet-600 text-white">
                           Pay Online
                         </button>
                       </Link>
 
                       <button
                         onClick={() => setOpen(true)}
-                        className="btn w-full bg-linear-0 to-cyan-400 from-cyan-800 text-white"
+                        className="btn w-full bg-linear-0 to-[#0f1624] from-cyan-800 text-white hover:bg-[#0f1624]"
                       >
                         Cash On Delivery
                       </button>

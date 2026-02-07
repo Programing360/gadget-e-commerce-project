@@ -93,7 +93,6 @@ const ProductCard = ({ product }) => {
     const existing = wishlist.find(
       (item) => item.productId === id && item.userId === userId,
     );
-    console.log(existing);
 
     if (!user) {
       toast.error("Please login first");
@@ -126,7 +125,7 @@ const ProductCard = ({ product }) => {
   return (
     <div>
       {/* ================= CARD ================= */}
-      <div className="relative group overflow-hidden shadow-sm hover:shadow-lg transition bg-white">
+      <div className="relative group overflow-hidden shadow-sm hover:shadow-xl transition bg-white">
         {/* Discount Badge */}
         {discountPercentage > 0 && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
@@ -161,7 +160,7 @@ const ProductCard = ({ product }) => {
         {/* Content */}
         <div className="p-4">
           {stock === 0 && (
-            <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-red-600 text-white px-2 rounded-full">
               Stock Out
             </span>
           )}

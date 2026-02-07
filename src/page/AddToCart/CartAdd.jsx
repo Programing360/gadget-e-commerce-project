@@ -23,7 +23,7 @@ const CartAdd = () => {
     <div>
         
       {cart.map((item) => (
-        <div key={item._id} className="flex gap-4 mb-4 items-center ">
+        <div key={item._id} className="flex gap-4 mb-4 items-center shadow-lg p-2">
           <img
             className="w-[40%] h-[50%] border border-gray-300 p-4"
             src={item?.image}

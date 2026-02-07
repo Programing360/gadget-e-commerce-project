@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import useAllProduct from "../Hook/useAllProduct";
 import { IoIosArrowDown } from "react-icons/io";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 const UserAllProducts = () => {
   const [allProduct] = useAllProduct();
   const [allProducts, setAllProducts] = useState([]);
   const [open, setOpen] = useState(false);
-  console.log(allProducts);
+  const [activeSort, setActiveSort] = useState("");
+
   useEffect(() => {
     if (allProduct?.length) {
       setAllProducts(allProduct);
@@ -15,15 +16,15 @@ const UserAllProducts = () => {
   }, [allProduct]);
 
   const handleAToZ = () => {
-    const sorted = [...allProducts].sort((a, b) => 
-      a.name.localeCompare(b.name)
-  );
+    const sorted = [...allProducts].sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
     setAllProducts(sorted);
   };
   const handleZToA = () => {
-    const sorted = [...allProducts].sort((a, b) => 
-      b.name.localeCompare(a.name)
-  );
+    const sorted = [...allProducts].sort((a, b) =>
+      b.name.localeCompare(a.name),
+    );
     setAllProducts(sorted);
   };
 
@@ -38,11 +39,11 @@ const UserAllProducts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 mt-18">
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* SIDEBAR */}
-        <aside className="hidden md:block md:col-span-2 border-r bg-white p-4">
-          <h1 className="font-semibold text-lg">Sidebar</h1>
+        <aside className="hidden md:block md:col-span-2 border-r bg-white p-4 h-screen">
+          <h1 className="font-semibold text-lg">Filders</h1>
         </aside>
 
         {/* MAIN CONTENT */}
@@ -61,22 +62,73 @@ const UserAllProducts = () => {
           {open && (
             <ul className="menu bg-base-100 rounded-lg shadow-xl w-56 absolute z-20">
               <li>
-                <button onClick={handleAToZ}>Alphabetically, A-Z</button>
+                <button
+                  onClick={() => {
+                    handleAToZ();
+                    setActiveSort("a-z");
+                  }}
+                  className={
+                    activeSort === "a-z"
+                      ? "active font-semibold text-blue-600"
+                      : ""
+                  }
+                >
+                  Alphabetically, A-Z
+                </button>
               </li>
+
               <li>
-                <button onClick={handleZToA}>Alphabetically, Z-A</button>
+                <button
+                  onClick={() => {
+                    handleZToA();
+                    setActiveSort("z-a");
+                  }}
+                  className={
+                    activeSort === "z-a"
+                      ? "active font-semibold text-blue-600"
+                      : ""
+                  }
+                >
+                  Alphabetically, Z-A
+                </button>
               </li>
+
               <li>
-                <button onClick={handleLowToHigh}>Price, Low to High</button>
+                <button
+                  onClick={() => {
+                    handleLowToHigh();
+                    setActiveSort("low-high");
+                  }}
+                  className={
+                    activeSort === "low-high"
+                      ? "active font-semibold text-blue-600"
+                      : ""
+                  }
+                >
+                  Price, Low to High
+                </button>
               </li>
+
               <li>
-                <button onClick={handleHighToLow}>Price, High to Low</button>
+                <button
+                  onClick={() => {
+                    handleHighToLow();
+                    setActiveSort("high-low");
+                  }}
+                  className={
+                    activeSort === "high-low"
+                      ? "active font-semibold text-blue-600"
+                      : ""
+                  }
+                >
+                  Price, High to Low
+                </button>
               </li>
             </ul>
           )}
 
           {/* PRODUCTS GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 ">
             {allProducts?.map((item) => (
               <div
                 key={item._id}

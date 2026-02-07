@@ -22,6 +22,7 @@ import PrivateRoute from "../PrivetRoutes/PrivateRoute";
 import UserProfile from "../mainLayout/userDashBoard/UserProfile";
 import UserSettion from "../mainLayout/userDashBoard/UserSettion";
 import UserAllProducts from "../page/UserAllProducts";
+import About from "../page/About";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "/wishList",
         Component: AddToWishlist,
+      },
+      {
+        path: "/about",
+        Component: About,
       },
     ],
   },
