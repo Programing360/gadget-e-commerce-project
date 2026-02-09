@@ -5,38 +5,45 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { UseContext } from "../../Context/AuthContext";
 import useOrderCount from "../../Hook/useOrderCount";
 import { Link } from "react-router";
+import useOrderConfirmList from "../../Hook/useOrderConfirmList";
 const ProductList = () => {
   const [orders, refetch] = useOrderList();
+  const [orderConfirm] = useOrderConfirmList();
   const axiosSecure = useAxiosSecure();
   const [orderCount] = useOrderCount();
   const [confirmOrder, setConfirmOrder] = useState(false);
   const notify = () => toast("Order Confirm");
-  console.log(orders);
-  useEffect(() => {
-    const matchedOrder = orders.find((order) =>
-      orderCount?.some((item) => item.orderId === order._id),
-    );
+
+  const handleOrderBtn = async (id) => {
+    const matchedOrder = orders?.find((order) => (order._id === id) );
     if (matchedOrder) {
       setConfirmOrder(true);
     } else {
       setConfirmOrder(false);
     }
-  }, [orders, orderCount]);
 
-  const handleOrderBtn = (orderItem) => {
-    const orderInfo = {
-      orderId: orderItem._id,
-    };
+    // আগে চেক করো এই order confirm আছে কিনা
+    const matchOrderId = orderCount?.find((item) => item.orderId === id);
 
-    if (confirmOrder) {
-      toast("Order Already Confirm");
-    } else {
-      axiosSecure.post("/orderConfirm", orderInfo).then((res) => {
-        if (res.data.insertedId) {
-          notify();
-          refetch();
-        }
-      });
+    if (matchOrderId) {
+      toast("Order Already Confirmed");
+      return;
+    }
+
+    try {
+      const orderInfo = {
+        orderId: id,
+      };
+
+      const res = await axiosSecure.post("/orderConfirm", orderInfo);
+
+      if (res.data.insertedId) {
+        notify();
+        refetch();
+      }
+    } catch (error) {
+      console.error(error);
+      toast("Something went wrong!");
     }
   };
 
@@ -131,7 +138,7 @@ const ProductList = () => {
                 <td>{item.email}</td>
                 <th className="">
                   <button
-                    onClick={() => handleOrderBtn(item)}
+                    onClick={() => handleOrderBtn(item._id)}
                     className={
                       confirmOrder
                         ? "btn-disabled btn bg-gray-300 mr-2"
