@@ -1,53 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAllProduct from "../Hook/useAllProduct";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link, NavLink } from "react-router";
+import Filters from "./filters";
+import { UseContext } from "../Context/AuthContext";
 
 const UserAllProducts = () => {
   const [allProduct] = useAllProduct();
-  const [allProducts, setAllProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
+  const {products, setProducts} = useContext(UseContext)
   const [open, setOpen] = useState(false);
   const [activeSort, setActiveSort] = useState("");
 
   useEffect(() => {
     if (allProduct?.length) {
-      setAllProducts(allProduct);
+      setProducts(allProduct);
     }
-  }, [allProduct]);
+  }, [allProduct, setProducts]);
 
   const handleAToZ = () => {
-    const sorted = [...allProducts].sort((a, b) =>
+    const sorted = [...products].sort((a, b) =>
       a.name.localeCompare(b.name),
     );
-    setAllProducts(sorted);
+    setProducts(sorted);
   };
   const handleZToA = () => {
-    const sorted = [...allProducts].sort((a, b) =>
+    const sorted = [...products].sort((a, b) =>
       b.name.localeCompare(a.name),
     );
-    setAllProducts(sorted);
+    setProducts(sorted);
   };
 
   const handleLowToHigh = () => {
-    const sorted = [...allProducts].sort((a, b) => a.price - b.price);
-    setAllProducts(sorted);
+    const sorted = [...products].sort((a, b) => a.price - b.price);
+    setProducts(sorted);
   };
 
   const handleHighToLow = () => {
-    const sorted = [...allProducts].sort((a, b) => b.price - a.price);
-    setAllProducts(sorted);
+    const sorted = [...products].sort((a, b) => b.price - a.price);
+    setProducts(sorted);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-18">
+    <div className="min-h-screen bg-gray-50 mt-18 container w-11/12 mx-auto mb-10">
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* SIDEBAR */}
-        <aside className="hidden md:block md:col-span-2 border-r bg-white p-4 h-screen">
+        <aside className="hidden md:block md:col-span-3  bg-white md:p-4 h-screen">
           <h1 className="font-semibold text-lg">Filders</h1>
+          <Filters></Filters>
         </aside>
 
         {/* MAIN CONTENT */}
-        <main className="md:col-span-10 p-4 relative">
+        <main className="md:col-span-9 md:p-4 relative">
           {/* SORT HEADER */}
           <div className="flex justify-between items-center mb-4">
             <h1
@@ -128,18 +132,18 @@ const UserAllProducts = () => {
           )}
 
           {/* PRODUCTS GRID */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 ">
-            {allProducts?.map((item) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 md:gap-5 gap-2">
+            {products?.map((item) => (
               <div
                 key={item._id}
-                className="bg-white rounded-xl shadow hover:shadow-lg transition"
+                className="bg-white rounded-xl shadow hover:shadow-lg transition border hover:border-indigo-400 delay-75"
               >
                 <Link to={`/productDetails/${item._id}`}>
                   <figure className="w-full h-48 md:h-64 overflow-hidden rounded-t-xl">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </figure>
                 </Link>
@@ -164,10 +168,16 @@ const UserAllProducts = () => {
                       Product
                     </span>
                   </div>
-                  <button className="border w-full py-1 ">Add to Cart</button>
+                  <button className="border w-full py-1 bg-indigo-950 text-white rounded-lg">Add to Cart</button>
                 </div>
               </div>
+              
             ))}
+            { products.length === 0 && (
+              <h1 className="text-center text-gray-500 mt-4 text-2xl w-full border">No product found</h1>
+              
+              
+            )}
           </div>
         </main>
       </div>

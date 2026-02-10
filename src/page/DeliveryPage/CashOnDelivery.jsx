@@ -50,13 +50,15 @@ const CashOnDelivery = () => {
       paymentMethod: "Cash On Delivery",
       email: user?.email,
     };
+
     axiosSecure.post("/orders", orderData).then((res) => {
       if (res.data) {
         toast("Order Confirm");
       }
     });
+
     reset();
-    refetch()
+    refetch();
     setOpen(false);
   };
 

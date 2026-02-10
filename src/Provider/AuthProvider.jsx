@@ -16,6 +16,7 @@ const AuthProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [orderCount, setOrderCount] = useState([]);
+   const [products, setProducts] = useState([]);
   
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -69,6 +70,8 @@ const AuthProvider = ({ children }) => {
     open,
     setOrderCount,
     orderCount,
+    setProducts,
+    products
   };
 
   return <UseContext value={userInfo}>{children}</UseContext>;

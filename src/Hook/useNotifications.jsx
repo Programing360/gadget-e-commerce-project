@@ -4,19 +4,16 @@ import { useAxiosSecure } from "./useAxiosSecure";
 const useNotifications = (email) => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: notifications = [], refetch } = useQuery({
-    queryKey: ["notifications", email],
-    enabled: !!email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/notifications?email=${email}`);
-      return res.data;
-    },
-  });
+  const { data:notifications, refetch } = useQuery({
+  queryKey: ["notificationCount"],
+  queryFn: async () => {
+    const res = await axiosSecure.get("/notifications/unread-count");
+    return res.data.count;
+  },
+  refetchInterval: 5000, // auto update
+});
 
-  // unread count
-  const unreadCount = notifications.filter(n => !n.isRead).length;
-
-  return [ notifications, unreadCount, refetch ];
+  return [ notifications, refetch ];
 };
 
 export default useNotifications;

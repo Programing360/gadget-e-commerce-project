@@ -18,12 +18,43 @@ import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
 import useOrderList from "../../Hook/useOrderList";
 import TimeAgo from "../SetTimeOut";
+import useNotifications from "../../Hook/useNotifications";
+import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
   const [cart] = useCart();
   const [orders] = useOrderList();
+  const axiosSecure = useAxiosSecure();
+  // console.log(notifications)
+
+ // 🔔 get notifications
+  const {
+    data: notificationsCount = [],
+    refetch,
+  } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/notifications");
+      return res.data;
+    },
+    // enabled: adminUser
+  });
+  const unreadCount = notificationsCount?.filter(
+    (n) => n.isRead === false
+  ).length;
+
+  const handleOpenNotifications = async () => {
+  try {
+    await axiosSecure.patch("/notifications/read-all");
+    refetch();
+  } catch (error) {
+    alert(error);
+  }
+};
+
 
   const quantity = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -37,9 +68,9 @@ const NavBar = () => {
       navigate("/login");
     });
   };
+  
 
   // navber animition scroll---------------
-
 
   return (
     <div className="sticky top-0 z-50 bg-white ">
@@ -55,72 +86,51 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className=" md:mr-6 mr-5">
+        <div className=" md:mr-6 mr-3">
           <SearchInput></SearchInput>
         </div>
         {adminUser && (
-          <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="m-2">
-              <div className="">
-                <img
-                  className="w-10 md:mr-6 cursor-pointer bg-gray-200 rounded-full p-2"
-                  src={notificationIcon}
-                  alt=""
-                />
-                {adminUser ? (
-                  <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
-                    {orders.length}
-                  </span>
-                ) : (
-                  <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
-                    0
-                  </span>
-                )}
-                <span className="absolute top-0 md:right-5 right-5 bg-red-500 text-white px-2 rounded-full">
-                  {orders.length}
+          <div className="dropdown dropdown-end " onClick={handleOpenNotifications}>
+            <div
+              tabIndex={0}
+              role="button"
+              className="relative cursor-pointer mr-3"
+              
+            >
+              <img
+                src={notificationIcon}
+                className="w-10 bg-gray-200 p-2 rounded-full"
+              />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 rounded-full">
+                  {unreadCount}
                 </span>
-              </div>
+              )}
             </div>
+
             <ul
               tabIndex={0}
-              className="dropdown-content bg-base-100 w-64 p-3 shadow rounded-box h-70 overflow-y-auto"
+              className="dropdown-content bg-base-100 w-72 p-3 shadow rounded-box max-h-80 overflow-y-auto"
             >
-              {orders.length === 0 ? (
-                <p className="text-sm text-gray-500">No notifications</p>
-              ) : (
-                orders.map((order) => (
-                  <Link>
-                    <li
-                      key={order._id}
-                      className="flex items-start gap-3 pb-3 hover:bg-gray-200 p-4 rounded-2xl"
-                    >
-                      <img src={bellIcon} className="w-5 mt-1" alt="" />
-                      <Link to="/adminDashboard/productList">
-                        <div>
-                          <p className="text-sm font-medium">
-                            New Order: {order.name}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            <TimeAgo time={order.newDate}></TimeAgo>
-                          </p>
-                        </div>
-                      </Link>
-                      <div className="dropdown dropdown-bottom dropdown-end">
-                        <div tabIndex={0} role="button" className=" m-1">
-                          <img className="w-4" src={dotIcon} alt="" />
-                        </div>
-                        <ul
-                          tabIndex="-1"
-                          className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
-                        >
-                          <button className="cursor-pointer">
-                            Delete Notification
-                          </button>
-                        </ul>
-                      </div>
-                    </li>
-                  </Link>
+              {notificationsCount?.length > 0 ? (
+                notificationsCount?.map((n) => (
+                  <li
+                    key={n._id}
+                    className="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-xl"
+                  >
+                    <img src={bellIcon} className="w-5 mt-1" />
+                    <div>
+                      <p className="text-sm font-medium">{n.message}</p>
+                      <p className="text-xs text-gray-500">
+                        <TimeAgo time={n.createdAt} />
+                      </p>
+                    </div>
+                  </li>
                 ))
+              ) : (
+                <p className="text-sm text-gray-500 text-center">
+                  No notifications
+                </p>
               )}
             </ul>
           </div>
@@ -134,22 +144,22 @@ const NavBar = () => {
                 type="checkbox"
                 className="drawer-toggle"
               />
-              <div>
+              <div className="mr-3 md:mr-2">
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer-5"
-                  className="relative drawer-button cursor-pointer"
+                  className="relative drawer-button cursor-pointer "
                 >
                   <img
                     className={
                       user
-                        ? "w-10 md:mr-5 bg-gray-200 rounded-full p-2"
+                        ? "w-10 md:mr-1 bg-gray-200 rounded-full p-2"
                         : "w-10 bg-gray-200 rounded-full p-2"
                     }
                     src={cartIcon}
                     alt=""
                   />
-                  <span className="absolute -top-2 right-1 indicator-item text-white bg-cyan-700 dark:bg-black  rounded-full px-2">
+                  <span className="absolute -top-2 -right-3 indicator-item text-white bg-red-500 dark:bg-black  rounded-full px-2">
                     {cart.length || 0}
                   </span>
                 </label>
@@ -185,11 +195,9 @@ const NavBar = () => {
                     <div className="flex justify-between items-center px-6">
                       <h2 className="text-xl text-gray-700">Subtitle:</h2>
                       <p className="">৳{formatted}</p>
-                      
                     </div>
                     <hr className="mx-6 text-gray-400" />
                     <div className="flex justify-between items-center px-6">
-                      
                       <h1 className="text-2xl font-semibold">Total</h1>
                       <p className="text-sky-800 text-sm">৳{formatted}</p>
                     </div>

@@ -14,8 +14,9 @@ const Dashboard = () => {
   const [allProduct] = useAllProduct();
 
   const totalPrice = allProduct?.reduce((sum, item) => sum + item.price, 0);
+  const totalPriceOfOrders = orders?.reduce((sum, item) => sum + item.price, 0);
 
-  console.log(orders, totalPrice);
+  // console.log(orders, totalPrice);
   return (
     <main className="p-6">
       <div className="hidden lg:block">
@@ -61,7 +62,7 @@ const Dashboard = () => {
                 </div>
                 <div className="flex justify-around items-center gap-3 pt-4">
                   <p className="text-3xl font-bold">{orders?.length}</p>
-                  <p className="text-3xl font-bold">{totalPrice}</p>
+                  <p className="text-3xl font-bold">{totalPriceOfOrders}</p>
                 </div>
               </div>
             </Link>
@@ -82,7 +83,7 @@ const Dashboard = () => {
               </div>
               <div className="flex justify-around items-center gap-3 pt-4">
                 <p className="text-3xl font-bold">{orders.length}</p>
-                <p className="text-3xl font-bold">{totalPrice}</p>
+                <p className="text-3xl font-bold">{totalPriceOfOrders}</p>
               </div>
             </div>
             <Link to="/adminDashboard/orderCencel">
