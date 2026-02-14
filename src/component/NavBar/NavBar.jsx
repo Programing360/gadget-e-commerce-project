@@ -9,32 +9,25 @@ import adminIcon from "../../assets/assets/dashboard-admin.png";
 import cartIcon from "../../assets/assets/shopping-bag.png";
 import notificationIcon from "../../assets/assets/notification.png";
 import userloginIcon from "../../assets/assets/user.png";
-import dotIcon from "../../assets/assets/dots.png";
 import useCart from "../../Hook/useCart";
 import CartAdd from "../../page/AddToCart/CartAdd";
 import bellIcon from "../../assets/assets/bell.png";
 import crossIcon from "../../assets/assets/crossIcon.png";
 import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
-import useOrderList from "../../Hook/useOrderList";
 import TimeAgo from "../SetTimeOut";
-import useNotifications from "../../Hook/useNotifications";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const NavBar = () => {
   const { user, UserLogout, setOpen, open } = useContext(UseContext);
   const navigate = useNavigate();
-  const [cart] = useCart();
-  const [orders] = useOrderList();
+  const [cart, , isLoading] = useCart();
   const axiosSecure = useAxiosSecure();
-  // console.log(notifications)
+  // console.log(cart)
 
- // 🔔 get notifications
-  const {
-    data: notificationsCount = [],
-    refetch,
-  } = useQuery({
+  // 🔔 get notifications
+  const { data: notificationsCount = [], refetch } = useQuery({
     queryKey: ["notifications"],
     queryFn: async () => {
       const res = await axiosSecure.get("/notifications");
@@ -43,18 +36,17 @@ const NavBar = () => {
     // enabled: adminUser
   });
   const unreadCount = notificationsCount?.filter(
-    (n) => n.isRead === false
+    (n) => n.isRead === false,
   ).length;
 
   const handleOpenNotifications = async () => {
-  try {
-    await axiosSecure.patch("/notifications/read-all");
-    refetch();
-  } catch (error) {
-    alert(error);
-  }
-};
-
+    try {
+      await axiosSecure.patch("/notifications/read-all");
+      refetch();
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const quantity = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -68,7 +60,6 @@ const NavBar = () => {
       navigate("/login");
     });
   };
-  
 
   // navber animition scroll---------------
 
@@ -90,12 +81,14 @@ const NavBar = () => {
           <SearchInput></SearchInput>
         </div>
         {adminUser && (
-          <div className="dropdown dropdown-end " onClick={handleOpenNotifications}>
+          <div
+            className="dropdown dropdown-end "
+            onClick={handleOpenNotifications}
+          >
             <div
               tabIndex={0}
               role="button"
               className="relative cursor-pointer mr-3"
-              
             >
               <img
                 src={notificationIcon}
@@ -159,8 +152,14 @@ const NavBar = () => {
                     src={cartIcon}
                     alt=""
                   />
-                  <span className="absolute -top-2 -right-3 indicator-item text-white bg-red-500 dark:bg-black  rounded-full px-2">
-                    {cart.length || 0}
+                  <span className={user ? "absolute -top-2 -right-3 indicator-item text-white bg-red-500 dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center" : 'absolute -top-2 right-3 indicator-item text-white bg-red-500 dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center'}>
+                    {isLoading ? (
+                      <span className={user ? "w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" : 'w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin'}></span>
+                    ) : cart.length > 0 ? (
+                      cart.length
+                    ) : (
+                      0
+                    )}
                   </span>
                 </label>
               </div>
@@ -174,7 +173,7 @@ const NavBar = () => {
                 <ul className="menu bg-base-200 min-h-full lg:w-100 w-[350px] p-4 dark:bg-white dark:text-black">
                   {/* Sidebar content here */}
 
-                  <div className=" h-150 overflow-auto">
+                  <div className={cart.length === 0 ? "overflow-hidden": " h-150 overflow-auto"}>
                     <div className="flex justify-between items-center pb-3 bg-[#e9edf1] p-3 border-b border-gray-300 mb-6">
                       <h1 className="text-2xl font-medium">Shopping Cart</h1>
                       <label
@@ -191,7 +190,11 @@ const NavBar = () => {
                     </div>
                     <CartAdd></CartAdd>
                   </div>
-                  <div className="bg-gray-200 leading-16 mt-10">
+                  {cart.length === 0 ? <div>
+                    <img className="w-8 mx-auto pb-2" src={cartIcon} alt="" />
+                    <h1 className="text-center text-2xl font-bold">Your Cart is empty</h1>
+                    <p className="text-center pt-3 text-gray-500">Add some products to get started!</p>
+                  </div> : <div className="bg-gray-200 leading-16 mt-10">
                     <div className="flex justify-between items-center px-6">
                       <h2 className="text-xl text-gray-700">Subtitle:</h2>
                       <p className="">৳{formatted}</p>
@@ -218,7 +221,8 @@ const NavBar = () => {
                     <Link to="/cartDetails">
                       <p className="underline text-center">View Cart</p>
                     </Link>
-                  </div>
+                  </div>}
+                  
                 </ul>
               </div>
             </div>
@@ -241,9 +245,9 @@ const NavBar = () => {
                 </div>
                 <ul
                   tabIndex="-1"
-                  className="menu menu-sm dropdown-content bg-base-100 rounded z-1 mt-3 p-2 shadow"
+                  className="menu menu-md dropdown-content bg-base-100 rounded z-1 mt-3 p-4 shadow-2xl "
                 >
-                  <div className="text-center mb-4 bg-gray-300 rounded-lg p-3">
+                  <div className="text-center mb-4 bg-gray-300 rounded-lg p-6">
                     {user.email}
                     {user.photoURL ? (
                       <img
@@ -264,7 +268,7 @@ const NavBar = () => {
                   <li className="">
                     <Link to="/wishList">
                       <div className="flex gap-2">
-                        <img className="w-4" src={wishListIcon} alt="" />
+                        <img className="w-4 " src={wishListIcon} alt="" />
                         <a className="justify-between">Wish List</a>
                       </div>
                     </Link>

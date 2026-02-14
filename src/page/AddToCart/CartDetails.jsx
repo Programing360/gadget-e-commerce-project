@@ -66,7 +66,7 @@ const CartDetails = () => {
 
   // 🟢 CART WITH PRODUCTS
   return (
-    <div className="dark:bg-white dark:text-black">
+    <div className="dark:bg-white dark:text-black my-16">
       <div className="bg-cyan-800 py-10 text-white">
         <h1 className="text-4xl text-center font-bold">Cart</h1>
         <p className="text-center pt-4">

@@ -7,6 +7,7 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+// import asusImg from '../../assets/assets/laptop-asus'
 
 /* 🔑 Guest ID helper */
 const getGuestUserId = () => {
@@ -67,7 +68,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="bg-base-100 min-h-screen">
+    <div className="bg-base-100 min-h-screen mt-14">
       {/* 🔝 Header */}
       <div className="bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white py-6 text-center">
         <h1 className="text-xl md:text-2xl font-semibold">{name}</h1>
@@ -98,6 +99,13 @@ const ProductDetails = () => {
               autoPlay
               className="rounded-xl overflow-hidden"
             >
+              <div>
+                <img
+                  src={image}
+                  alt={name}
+                  className="object-contain max-h-[400px]"
+                />
+              </div>
               <div>
                 <img
                   src={image}

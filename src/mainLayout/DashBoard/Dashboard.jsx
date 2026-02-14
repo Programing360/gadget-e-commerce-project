@@ -14,9 +14,16 @@ const Dashboard = () => {
   const [allProduct] = useAllProduct();
 
   const totalPrice = allProduct?.reduce((sum, item) => sum + item.price, 0);
-  const totalPriceOfOrders = orders?.reduce((sum, item) => sum + item.price, 0);
-
-  // console.log(orders, totalPrice);
+  const totalPriceOfOrders = orders?.reduce((sum, item) => sum + item.total, 0);
+  const totalPriceOfCancel = orderCancel?.reduce(
+    (sum, item) => sum + item.total,
+    0,
+  );
+  // const appro
+  const totalLoss = totalPriceOfCancel ? (totalPriceOfOrders / totalPriceOfCancel) % 100 : 0;
+  console.log(
+   totalLoss.toFixed(1)
+  );
   return (
     <main className="p-6">
       <div className="hidden lg:block">
@@ -52,7 +59,7 @@ const Dashboard = () => {
                 <p className="text-3xl font-bold">00.00</p>
               </div>
             </div>
-            <Link to='/adminDashboard/productList'>
+            <Link to="/adminDashboard/productList">
               <div className="border p-4 rounded-lg">
                 <div>
                   <div className="flex gap-3">
@@ -94,9 +101,9 @@ const Dashboard = () => {
                 </div>
                 <div className="flex justify-around items-center gap-3 pt-4">
                   <p className="text-3xl font-bold">
-                    {orderCancel?.length || 0}
+                    {orderCancel?.length || 0} (<span>{totalLoss.toFixed(1)}%</span>)
                   </p>
-                  <p className="text-3xl font-bold">10000</p>
+                  <p className="text-3xl font-bold">{totalPriceOfCancel}</p>
                 </div>
               </div>
             </Link>

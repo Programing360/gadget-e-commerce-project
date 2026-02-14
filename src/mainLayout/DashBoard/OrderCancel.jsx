@@ -14,6 +14,7 @@ const OrderCancel = () => {
             refetch()
         }
     })
+    
   }
 
   return (
@@ -30,16 +31,16 @@ const OrderCancel = () => {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody className="h-[500px] overflow-y-auto border border-red-700">
+        <tbody className=" overflow-y-auto border border-red-700">
           {/* row 1 */}
 
           {orderCancel?.map((order) => (
             <tr className="">
               <th>{order._id}</th>
-              <td>{order.name}</td>
+              <td className="capitalize">{order.name}</td>
               <td>{order.email}</td>
-              <td>{order.phoneNumber}</td>
-              <td>{order.address}</td>
+              <td>{order.mobile}</td>
+              <td className="capitalize">{order.address}</td>
               <td><img 
                 onClick={() => removeOrderCancelBtn(order._id)}
               className="w-5 cursor-pointer" src={removeBtn} alt="" /></td>

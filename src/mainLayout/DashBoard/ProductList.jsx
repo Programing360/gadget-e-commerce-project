@@ -5,66 +5,60 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 
 import useOrderCount from "../../Hook/useOrderCount";
 import { Link } from "react-router";
+import { set } from "react-hook-form";
 
 const ProductList = () => {
   const [orders, refetch] = useOrderList();
   const axiosSecure = useAxiosSecure();
-  const [orderCount] = useOrderCount();
-  const [confirmOrder, setConfirmOrder] = useState(false);
+  const [orderCount, refetchOrderCount] = useOrderCount();
+  // const [confirmOrder, setConfirmOrder] = useState(false);
   const notify = () => toast("Order Confirm");
 
-  useEffect(() => {
-    const matchOrderId = orders.find((item) =>
-      orderCount.some((id) => id.orderId === item._id),
-    );
-    console.log(matchOrderId);
-  }, [orders, orderCount]);
+  // useEffect(() => {
+  //   const matchOrderId = orders?.find((item) =>
+  //     orderCount.some((id) => id._id === item._id),
+  //   );
+  //   console.log(orderCount, matchOrderId);
+  //   setConfirmOrder(!!matchOrderId);
+  // }, [orders, orderCount]);
 
   const handleOrderBtn = async (id) => {
-  console.log(id);
+    // 🔍 order আগে থেকেই confirm কিনা চেক
+    const isConfirmed = orderCount.find((item) => item.orderId === id);
 
-  // 🔍 order আগে থেকেই confirm কিনা চেক
-  const isConfirmed = orderCount.find(
-    (item) => item.orderId === id
-  );
-
-  if (isConfirmed) {
-    toast("Order Already Confirmed");
-    return;
-  }
-
-  try {
-    const orderInfo = {
-      orderId: id,
-    };
-
-    const res = await axiosSecure.post(
-      `/orderConfirm/${id}`,
-      orderInfo
-    );
-
-    if (res.data.insertedId) {
-      notify();
-      refetch();
+    if (isConfirmed) {
+      toast("Order Already Confirmed");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    toast("Something went wrong!");
-  }
-};
 
+    try {
+      const orderInfo = {
+        orderId: id,
+      };
+
+      const res = await axiosSecure.post(`/orderConfirm/${id}`, orderInfo);
+
+      if (res.data.insertedId) {
+        notify();
+        refetchOrderCount();
+      }
+    } catch (error) {
+      console.error(error);
+      toast("Something went wrong!");
+    }
+  };
 
   const handleOrderCancelBtn = (item) => {
     const id = item._id;
     axiosSecure.delete(`/orderDelete/${id}`).then((res) => {
       if (res.data.deletedCount > 0) {
-        const orderInfo = {
-          name: item.name,
-          email: item.email,
-          phoneNumber: item.phone,
-          address: item.address,
-        };
-        axiosSecure.post("/orderCancel", orderInfo);
+        // const orderInfo = {
+        //   name: item.name,
+        //   email: item.email,
+        //   phoneNumber: item.phone,
+        //   address: item.address,
+        // };
+        axiosSecure.post("/orderCancel", item);
         refetch();
         toast("Order Cancel");
       }
@@ -109,7 +103,8 @@ const ProductList = () => {
               <th>Payment Status</th>
               <th>Order Status</th>
               <th>Customer Email</th>
-              <th>Action</th>
+              <th>Mobile Number</th>
+              <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody className="mt-20">
@@ -122,12 +117,12 @@ const ProductList = () => {
                 <td>
                   <div className="flex items-center gap-3">
                     <div>
-                      <div className="font-bold">{item.name}</div>
+                      <div className="font-bold capitalize">{item.name}</div>
                       {/* <div className="text-sm opacity-50">{(item.address) + (item.shipping)}</div> */}
                     </div>
                   </div>
                 </td>
-                <td>
+                <td className="capitalize">
                   {item.address},{item.shipping}
                 </td>
                 <td>{item.total} TK</td>
@@ -136,20 +131,21 @@ const ProductList = () => {
                     {item.paymentMethod}
                   </button>
                 </th>
-                {confirmOrder ? (
+                {orderCount?.some((order) => order._id === item._id) ? (
                   <td className="text-green-400">Order Confirm</td>
                 ) : (
                   <td className="text-amber-700">Pending</td>
                 )}
 
                 <td>{item.email}</td>
-                <th className="">
+                <td>{item.mobileNumber}</td>
+                <th className="text-center">
                   <button
                     onClick={() => handleOrderBtn(item._id)}
                     className={
-                      confirmOrder
+                      orderCount?.some((order) => order._id === item._id)
                         ? "btn-disabled btn bg-gray-300 mr-2"
-                        : "btn bg-green-400  rounded mr-2"
+                        : "btn bg-green-400 rounded mr-2"
                     }
                   >
                     Confirm

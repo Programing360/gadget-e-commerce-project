@@ -43,7 +43,7 @@ const Banner = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 mt-16">
+    <div className="container mx-auto px-4 mt-22">
       {/* Main layout */}
       <div className="flex flex-col lg:flex-row gap-6 items-start">
         

@@ -11,8 +11,8 @@ const PageLogo = () => {
     <div className="flex items-center justify-between bg-white max-w-6xl mx-auto p-4 relative">
       <div className="flex items-center justify-center gap-0">
         <Link className="flex items-center gap-2 py-3 pl-3" to="/">
-          <img className="w-10 rounded-full" src={logoIcon} alt="" />
-          <h1 className=" text-2xl font-bold text-[#000000]">
+          <img className="w-16 rounded-full" src={logoIcon} alt="" />
+          <h1 className=" text-4xl font-bold text-[#000000]">
             Zeroo<span className="text-[#ff4e5c]">m</span>
             <span className="text-[#fdb529]">iro</span>
           </h1>
@@ -21,7 +21,7 @@ const PageLogo = () => {
       <div className="">
         <Link to="/cartDetails">
           <img
-            className="w-7 bg-amber-200 rounded-lg "
+            className="w-9 bg-amber-200 rounded-lg "
             src={shippingBag}
             alt=""
           />

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAxiosSecure } from "./useAxiosSecure";
 
-const useNotifications = (email) => {
+const useNotifications = () => {
   const axiosSecure = useAxiosSecure();
 
   const { data:notifications, refetch } = useQuery({

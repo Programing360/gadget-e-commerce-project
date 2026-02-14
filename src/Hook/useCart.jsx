@@ -22,7 +22,7 @@ const useCart = () => {
   const {
     isLoading,
     refetch,
-    data: cart = [],
+    data:cart = [],
   } = useQuery({
     queryKey: ["cartData", user?.email || "guest"],
     queryFn: async () => {
@@ -32,7 +32,7 @@ const useCart = () => {
       const data = res.data;
 
       // 🔥 Correct filtering
-      const userCart = data.filter(
+      const userCart = data?.filter(
         (item) => item.userId === userId
       );
 

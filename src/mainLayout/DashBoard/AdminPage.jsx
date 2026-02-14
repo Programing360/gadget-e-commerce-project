@@ -4,8 +4,14 @@ import productIcon from "../../assets/assets/list-text.png";
 import dashboardIcon from "../../assets/assets/dashboardIcon.png";
 import menuList from "../../assets/assets/menulist.png";
 import { NavLink, Outlet } from "react-router";
+import useOrderCancelList from "../../Hook/useOrderCancelList";
+import useOrderList from "../../Hook/useOrderList";
 
 const AdminPage = () => {
+
+  const orderCancel = useOrderCancelList()
+  const orderList = useOrderList()
+
   return (
     <div className="drawer lg:drawer-open bg-[#010313] text-white">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -127,7 +133,7 @@ const AdminPage = () => {
                 >
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                   Order Cancel
+                   Order Cancel - {orderCancel[0]?.length}
                   </span>
                 </button>
               </li>
@@ -146,7 +152,7 @@ const AdminPage = () => {
                 >
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                    Order List
+                    Order List - {orderList[0]?.length}
                   </span>
                 </button>
               </li>

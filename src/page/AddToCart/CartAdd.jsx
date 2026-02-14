@@ -13,9 +13,9 @@ const CartAdd = () => {
   const handleCartDelete = (id) => {
     axiosSecure.delete(`/cartDelete/${id}`).then((res) => {
       if (res.data.deletedCount > 0) {
-        refetch();
         toast.success("item removed from cart");
         localStorage.removeItem("cartItem");
+        refetch();
       }
     });
   };

@@ -5,7 +5,7 @@ import { useAxiosSecure } from "./useAxiosSecure";
 const useOrderCount = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data:orderCount = [], refetch } = useQuery({
+  const { data:orderCount = [], refetch:refetchOrderCount } = useQuery({
     queryKey: ['orderConfirm'],
     queryFn: async () => {
         const res = await axiosSecure.get('/orderConfirm')
@@ -14,7 +14,7 @@ const useOrderCount = () => {
     
   });
   
-  return [orderCount,refetch];
+  return [orderCount,refetchOrderCount];
 };
 
 export default useOrderCount;

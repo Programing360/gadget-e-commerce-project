@@ -1,37 +1,71 @@
 import { useContext, useEffect, useState } from "react";
-import useAllProduct from "../Hook/useAllProduct";
-import useCart from "../Hook/useCart";
 import { UseContext } from "../Context/AuthContext";
+import useAllProduct from "../Hook/useAllProduct";
 
 const Filters = () => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
   const [allProduct] = useAllProduct();
-  const [cart] = useCart();
-  const { products, setProducts } = useContext(UseContext);
-  /* ======================
-            SEARCH HANDLER
-        ====================== */
+  const { setProducts } = useContext(UseContext);
 
-    // useEffect(() => {
-    //     setProducts(allProduct)
-    // }, [setProducts, allProduct])
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [brand, setBrand] = useState("All");
 
-  const handleSearch = (value) => {
-    setQuery(value);
+  // 🔥 Main Filter Logic
+  useEffect(() => {
+    let filtered = [...allProduct];
 
-    if (!value.trim()) {
-      setResults([]);
-      return;
+    // Search filter
+    if (query.trim() !== "") {
+      filtered = filtered.filter((product) =>
+        product.name?.toLowerCase().includes(query.toLowerCase())
+      );
     }
 
-    const filtered = allProduct.filter((product) =>
-      product.name?.toLowerCase().includes(value.toLowerCase()),
-    );
+    // Category filter
+    if (category !== "All") {
+      filtered = filtered.filter(
+        (product) =>
+          product.category?.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    // Brand filter
+    if (brand !== "All") {
+      filtered = filtered.filter(
+        (product) => product.brand?.toLowerCase() === brand.toLowerCase()
+      );
+    }
+
+    // Price filter
+    if (minPrice !== "") {
+      filtered = filtered.filter(
+        (product) => product.price >= Number(minPrice)
+      );
+    }
+
+    if (maxPrice !== "") {
+      filtered = filtered.filter(
+        (product) => product.price <= Number(maxPrice)
+      );
+    }
+
     setProducts(filtered);
+  }, [query, category, minPrice, maxPrice, brand, allProduct, setProducts]);
+
+  // Clear filters
+  const handleClear = () => {
+    setQuery("");
+    setCategory("All");
+    setMinPrice("");
+    setMaxPrice("");
+    setBrand("All");
+    setProducts(allProduct);
   };
+
   return (
-    <div className="w-72 bg-white p-6 rounded-xl shadow-md">
+    <div className="w-full bg-white p-6 rounded-xl shadow-md">
       <h2 className="text-lg font-semibold mb-4">Filters</h2>
 
       {/* Search */}
@@ -42,17 +76,21 @@ const Filters = () => {
           placeholder="Search products..."
           className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
           value={query}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
         />
       </div>
 
       {/* Category */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Category</label>
-        <select className="w-full border rounded-md px-3 py-2">
-          <option>All Categories</option>
-          <option>Electronics</option>
-          <option>Fashion</option>
+        <select
+          className="w-full border rounded-md px-3 py-2"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="All">All Categories</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Laptop">Laptop</option>
         </select>
       </div>
 
@@ -64,11 +102,15 @@ const Filters = () => {
             type="number"
             placeholder="Min ৳"
             className="w-1/2 border rounded-md px-3 py-2"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
           />
           <input
             type="number"
             placeholder="Max ৳"
             className="w-1/2 border rounded-md px-3 py-2"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
           />
         </div>
       </div>
@@ -76,17 +118,15 @@ const Filters = () => {
       {/* Brand */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Brand</label>
-        <select className="w-full border rounded-md px-3 py-2">
-          <option>All Brands</option>
-          <option>Apple</option>
-          <option>Samsung</option>
+        <select
+          className="w-full border rounded-md px-3 py-2"
+          value={brand}
+          onChange={(e) => setBrand(e.target.value)}
+        >
+          <option value="All">All Brands</option>
+          <option value="Apple">Apple</option>
+          <option value="Samsung">Samsung</option>
         </select>
-      </div>
-
-      {/* On Sale */}
-      <div className="flex items-center gap-2 mb-5">
-        <input type="checkbox" />
-        <span className="text-sm">On Sale Only</span>
       </div>
 
       {/* Buttons */}
@@ -94,7 +134,10 @@ const Filters = () => {
         Apply Filters
       </button>
 
-      <button className="w-full text-sm text-gray-500 mt-2 hover:underline">
+      <button
+        onClick={handleClear}
+        className="w-full text-sm text-gray-500 mt-2 hover:underline"
+      >
         Clear Filters
       </button>
     </div>

@@ -9,6 +9,7 @@ import {
 import { auth } from "../Authentication/firebase.init";
 import { useEffect, useState } from "react";
 import { UseContext } from "../Context/AuthContext";
+import { useAxiosSecure } from "../Hook/useAxiosSecure";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState([]);
@@ -17,7 +18,9 @@ const AuthProvider = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [orderCount, setOrderCount] = useState([]);
    const [products, setProducts] = useState([]);
-  
+  const [deliveryArea, setDeliveryArea] = useState("outside");
+   const axiosSecure = useAxiosSecure();
+
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -42,16 +45,15 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log(currentUser)
-      //   if (currentUser) {
-      //     axiosSecure.post("/jwt", { email: currentUser?.email }).then((res) => {
-      //       if (res.data?.token) {
-      //         localStorage.setItem("access-token", res.data.token);
-      //       } else {
-      //         localStorage.removeItem("access-token");
-      //       }
-      //     });
-      //   }
+        if (currentUser) {
+          axiosSecure.post("/jwt", { email: currentUser?.email }).then((res) => {
+            if (res.data?.token) {
+              localStorage.setItem("access-token", res.data.token);
+            } else {
+              localStorage.removeItem("access-token");
+            }
+          });
+        }
       setLoading(false);
     });
     return () => unsub();
@@ -71,7 +73,10 @@ const AuthProvider = ({ children }) => {
     setOrderCount,
     orderCount,
     setProducts,
-    products
+    products,
+    deliveryArea,
+    setDeliveryArea
+    
   };
 
   return <UseContext value={userInfo}>{children}</UseContext>;

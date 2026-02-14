@@ -12,6 +12,7 @@ const CashOnDelivery = () => {
   const [cart] = useCart();
   const [, refetch] = useOrderList();
   const axiosSecure = useAxiosSecure();
+
   const {
     register,
     handleSubmit,
@@ -24,63 +25,71 @@ const CashOnDelivery = () => {
     },
   });
 
-  // 🧠 Watch shipping value
   const shipping = watch("shipping");
-  // console.log(shipping)
-  // 🧮 Calculate subtotal
-  const subtotal = cart?.reduce(
+
+  // যদি cart empty হয়
+  if (!cart || cart.length === 0) {
+    return null;
+  }
+
+  // subtotal safe calculate
+  const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
 
-  // 🚚 Calculate shipping cost (NO STATE)
+  // shipping cost
   const shippingCost = shipping === "outside" ? 130 : 70;
-  // 💰 Total
+
   const total = subtotal + shippingCost;
-  const onSubmit = (data) => {
-    const newDate = moment().format();
 
-    const orderData = {
-      ...data,
-      cart,
-      subtotal,
-      shippingCost,
-      total,
-      newDate,
-      paymentMethod: "Cash On Delivery",
-      email: user?.email,
-    };
+  const onSubmit = async (data) => {
+    try {
+      const newDate = moment().format();
 
-    axiosSecure.post("/orders", orderData).then((res) => {
+      const orderData = {
+        ...data,
+        cart,
+        subtotal,
+        shippingCost,
+        total,
+        newDate,
+        paymentMethod: "Cash On Delivery",
+        email: user?.email,
+      };
+
+      const res = await axiosSecure.post("/orders", orderData);
+
       if (res.data) {
-        toast("Order Confirm");
+        toast.success("Order Confirmed ✅");
+        reset();
+        refetch();
+        setOpen(false);
       }
-    });
-
-    reset();
-    refetch();
-    setOpen(false);
+    } catch (error) {
+      toast.error("Something went wrong ❌");
+    }
   };
 
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 overflow-y-scroll top-0 h-full">
-      <div className="h-full bg-white">
-        <div className=" rounded-lg p-5 relative w-full max-w-lg h-full ">
-          {/* Close */}
-          <button
-            onClick={() => setOpen(false)}
-            className="absolute right-3 top-3 btn btn-sm btn-circle"
-          >
-            ✕
-          </button>
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-3">
+      <div className="bg-white w-full max-w-lg rounded-lg shadow-lg max-h-[95vh] overflow-y-auto relative">
+        {/* Close */}
+        <button
+          onClick={() => setOpen(false)}
+          className="absolute right-3 top-3 btn btn-sm btn-circle"
+        >
+          ✕
+        </button>
 
-          <h2 className="text-xl w-100 mx-auto font-bold mb-4 text-center">
+        <div className="p-5">
+          <h2 className="text-lg md:text-xl font-bold mb-4 text-center">
             ক্যাশ অন ডেলিভারিতে অর্ডার করতে আপনার তথ্য দিন
           </h2>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name */}
             <input
               type="text"
@@ -97,7 +106,7 @@ const CashOnDelivery = () => {
               type="text"
               placeholder="ফোন নাম্বার"
               className="input input-bordered w-full"
-              {...register("phone", {
+              {...register("mobileNumber", {
                 required: "ফোন নাম্বার দিন",
                 minLength: {
                   value: 11,
@@ -105,8 +114,10 @@ const CashOnDelivery = () => {
                 },
               })}
             />
-            {errors.phone && (
-              <p className="text-red-500 text-sm">{errors.phone.message}</p>
+            {errors.mobileNumber && (
+              <p className="text-red-500 text-sm">
+                {errors.mobileNumber.message}
+              </p>
             )}
 
             {/* Address */}
@@ -120,30 +131,41 @@ const CashOnDelivery = () => {
             )}
 
             {/* Shipping */}
-            <div className="border rounded p-3 space-y-2">
-              <label className="flex justify-between">
+            <div className="border rounded p-3 space-y-2 text-sm md:text-base">
+              <label className="flex justify-between items-center">
                 <span>
-                  <input type="radio" value="dhaka" {...register("shipping")} />{" "}
+                  <input
+                    type="radio"
+                    value="dhaka"
+                    {...register("shipping")}
+                    className="mr-2"
+                  />
                   ঢাকা সিটির ভিতরে
                 </span>
                 <span>৳70</span>
               </label>
 
-              <label className="flex justify-between">
+              <label className="flex justify-between items-center">
                 <span>
-                  <input type="radio" value="ctg" {...register("shipping")} />{" "}
+                  <input
+                    type="radio"
+                    value="ctg"
+                    {...register("shipping")}
+                    className="mr-2"
+                  />
                   চট্টগ্রাম সিটির ভিতরে
                 </span>
                 <span>৳70</span>
               </label>
 
-              <label className="flex justify-between">
+              <label className="flex justify-between items-center">
                 <span>
                   <input
                     type="radio"
                     value="outside"
                     {...register("shipping")}
-                  />{" "}
+                    className="mr-2"
+                  />
                   ঢাকা ও চট্টগ্রামের বাইরে
                 </span>
                 <span>৳130</span>
@@ -151,14 +173,17 @@ const CashOnDelivery = () => {
             </div>
 
             {/* Cart Items */}
-            <div className="overflow-y-scroll h-50  ">
+            <div className="max-h-40 overflow-y-auto">
               {cart.map((item) => (
-                <div key={item._id} className="flex gap-4 py-3 border-b">
+                <div
+                  key={item._id}
+                  className="flex gap-3 py-3 border-b text-sm"
+                >
                   <div className="relative">
                     <img
                       src={item.image}
-                      className="w-14 h-14 rounded border"
-                      alt=""
+                      className="w-14 h-14 rounded border object-cover"
+                      alt={item.name}
                     />
                     <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                       {item.quantity}
@@ -174,33 +199,34 @@ const CashOnDelivery = () => {
             </div>
 
             {/* Price Summary */}
-            <div className="bg-gray-100 p-4 rounded-lg space-y-2">
-              <div className="flex justify-between font-medium">
+            <div className="p-3 rounded-lg bg-gray-50 space-y-2 text-sm md:text-base">
+              <div className="flex justify-between">
                 <span>সাব টোটাল</span>
                 <span>৳{subtotal}</span>
               </div>
 
-              <div className="flex justify-between font-medium">
+              <div className="flex justify-between">
                 <span>ডেলিভারি চার্জ</span>
                 <span>৳{shippingCost}</span>
               </div>
 
-              <div className="flex justify-between font-bold text-lg">
+              <div className="flex justify-between font-bold text-base md:text-lg">
                 <span>মোট</span>
                 <span>৳{total}</span>
               </div>
             </div>
-            <div className="flex items-center justify-between gap-6">
-              <h1 className="font-bold">Order Note</h1>
+
+            {/* Order Note */}
+            <div className="flex flex-col md:flex-row md:items-center gap-2">
+              <h1 className="font-bold md:w-32">Order Note</h1>
               <input
                 type="text"
-                name=""
-                id=""
-                {...register("order")}
+                {...register("orderNote")}
                 placeholder="Order note"
                 className="border border-gray-400 py-2 flex-1 rounded pl-3"
               />
             </div>
+
             <button type="submit" className="btn bg-cyan-500 w-full">
               অর্ডার কনফার্ম করুন
             </button>

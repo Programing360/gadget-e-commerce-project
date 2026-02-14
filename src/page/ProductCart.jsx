@@ -28,7 +28,6 @@ const ProductCard = ({ product }) => {
     discountPercentage,
     image,
     discountPrice,
-    description,
     stock,
   } = product;
 
@@ -42,9 +41,9 @@ const ProductCard = ({ product }) => {
   // console.log(wishlist)
   /* ================= ADD TO CART ================= */
   const handleCartData = async (id) => {
-    const userId = user ? user.email : getGuestUserId();
+    const userId = user ? user?.email : getGuestUserId();
 
-    const existing = cart.find(
+    const existing = cart?.find(
       (item) => item.productId === id && item.userId === userId,
     );
 
@@ -160,7 +159,7 @@ const ProductCard = ({ product }) => {
         {/* Content */}
         <div className="p-4">
           {stock === 0 && (
-            <span className="text-xs bg-red-600 text-white px-2 rounded-full">
+            <span className="text-xs bg-red-600 text-white px-2 rounded-full absolute top-55">
               Stock Out
             </span>
           )}
@@ -181,7 +180,7 @@ const ProductCard = ({ product }) => {
           disabled={stock === 0}
           onClick={() => handleCartData(_id)}
           className={`btn w-full rounded-none ${
-            stock === 0 ? "btn-disabled bg-gray-300" : ""
+            stock === 0 ? "btn-disabled bg-gray-300" : "bg-[#111827] text-white"
           }`}
         >
           {stock === 0 ? "Out of Stock" : "Quick Add"}
