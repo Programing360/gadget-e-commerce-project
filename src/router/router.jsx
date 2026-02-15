@@ -12,10 +12,8 @@ import ProductAdd from "../mainLayout/DashBoard/ProductAdd";
 import Dashboard from "../mainLayout/DashBoard/Dashboard";
 import CheckoutPage from "../page/PaymentMethod/CheckOutPage";
 import Inbox from "../mainLayout/DashBoard/Inbox";
-import Notification from "../mainLayout/DashBoard/Notification";
 import AllProductList from "../mainLayout/DashBoard/AllProductList";
 import OrderCancel from "../mainLayout/DashBoard/OrderCancel";
-import UserDashBoard from "../mainLayout/userDashBoard/UserDashBoard";
 import UserDashBoardHome from "../mainLayout/userDashBoard/UserDashBoardHome";
 import UserOrders from "../mainLayout/userDashBoard/UserOrders";
 import PrivateRoute from "../PrivetRoutes/PrivateRoute";
@@ -23,6 +21,9 @@ import UserProfile from "../mainLayout/userDashBoard/UserProfile";
 import UserSettion from "../mainLayout/userDashBoard/UserSettion";
 import UserAllProducts from "../page/UserAllProducts";
 import About from "../page/About";
+import PageNotFound from "../page/PageNotFound";
+import ContactUs from "../page/ContractUs/ContractUs";
+import FAQSection from "../page/FAQSection";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
         Component: UserAllProducts,
       },
       {
+        path: "/contract",
+        Component: ContactUs,
+      },
+      {
         path: "/login",
         Component: Login,
       },
@@ -62,6 +67,14 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         Component: About,
+      },
+      {
+        path: "*",
+        Component: PageNotFound,
+      },
+      {
+        path: "/FAQSection",
+        Component: FAQSection,
       },
     ],
   },

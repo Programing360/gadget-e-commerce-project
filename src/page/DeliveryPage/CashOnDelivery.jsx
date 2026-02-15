@@ -61,7 +61,7 @@ const CashOnDelivery = () => {
       const res = await axiosSecure.post("/orders", orderData);
 
       if (res.data) {
-        toast.success("Order Confirmed ✅");
+        toast("Order Confirmed ✅");
         reset();
         refetch();
         setOpen(false);

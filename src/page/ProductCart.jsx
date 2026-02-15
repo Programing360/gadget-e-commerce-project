@@ -124,7 +124,7 @@ const ProductCard = ({ product }) => {
   return (
     <div>
       {/* ================= CARD ================= */}
-      <div className="relative group overflow-hidden shadow-sm hover:shadow-xl transition bg-white">
+      <div className="relative group overflow-hidden shadow-sm hover:shadow-xl transition bg-white hover:text-blue-600">
         {/* Discount Badge */}
         {discountPercentage > 0 && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
@@ -180,7 +180,7 @@ const ProductCard = ({ product }) => {
           disabled={stock === 0}
           onClick={() => handleCartData(_id)}
           className={`btn w-full rounded-none ${
-            stock === 0 ? "btn-disabled bg-gray-300" : "bg-[#111827] text-white"
+            stock === 0 ? "btn-disabled bg-gray-300" : "bg-[#111827] text-white hover:bg-[#2363d1]"
           }`}
         >
           {stock === 0 ? "Out of Stock" : "Quick Add"}

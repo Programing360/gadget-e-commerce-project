@@ -30,10 +30,10 @@ const CategoryNav = () => {
         <ul className="flex justify-center gap-8 text-white py-5 relative">
           {/* Category Dropdown */}
           <li className="relative group cursor-pointer">
-            <span className="hover:text-yellow-300">Category</span>
+            <Link to="/"><span className="hover:text-yellow-300">Home</span></Link>
 
             {/* Dropdown */}
-            <ul
+            {/* <ul
               className="
               absolute top-full left-0 mt-2
               bg-white text-black
@@ -41,19 +41,21 @@ const CategoryNav = () => {
               w-48
               opacity-0 invisible
               group-hover:opacity-100 group-hover:visible
-              transition-all duration-200 z-50
+              transition-all duration-200 z-100
             "
             >
               <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Electronics Shop
               </li>
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Clothes Shop
+              <Link to={`/userAllProducts?category=${encodeURIComponent("Laptop")}`}>
+                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                Laptop Shop
               </li>
+              </Link>
               <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Shoe Shop
+                Mobile Shop
               </li>
-            </ul>
+            </ul> */}
           </li>
 
           <Link to="/userAllProduct">
@@ -61,7 +63,11 @@ const CategoryNav = () => {
               All Products
             </li>
           </Link>
-          <li className="hover:text-yellow-300 cursor-pointer">Pages</li>
+          <Link to="/contract">
+            <li className="hover:text-yellow-300 cursor-pointer">
+              Contact Us
+            </li>
+          </Link>
           <NavLink to='/about'>
             <li className="hover:text-yellow-300 cursor-pointer">About</li>
           </NavLink>

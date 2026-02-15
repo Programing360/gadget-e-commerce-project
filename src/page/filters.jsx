@@ -91,6 +91,7 @@ const Filters = () => {
           <option value="All">All Categories</option>
           <option value="Electronics">Electronics</option>
           <option value="Laptop">Laptop</option>
+          <option value="smartPhone">Mobile</option>
         </select>
       </div>
 
@@ -126,11 +127,20 @@ const Filters = () => {
           <option value="All">All Brands</option>
           <option value="Apple">Apple</option>
           <option value="Samsung">Samsung</option>
+          <option value="Xiaomi">Xiaomi</option>
+          <option value="Google">Google</option>
+          <option value="OnePlus">OnePlus</option>
+          <option value="vivo">vivo</option>
+          <option value="Oppo">Oppo</option>
+          <option value="Motorola">Motorola</option>
+          <option value="Realme">Realme</option>
         </select>
       </div>
 
       {/* Buttons */}
-      <button className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700">
+      <button 
+        // onClick={handleApplyFilter}
+      className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700">
         Apply Filters
       </button>
 

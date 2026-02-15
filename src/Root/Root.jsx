@@ -3,6 +3,7 @@ import NavBar from "../component/NavBar/NavBar";
 import { Outlet, useLocation } from "react-router";
 import Footer from "../component/Footer/Footer";
 import CategoryNav from "../component/NavBar/CetagoryNav";
+import ScrollToTop from "../page/ScrollToTop";
 
 const Root = () => {
   const location = useLocation();
@@ -13,12 +14,13 @@ const Root = () => {
 
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 800); // spinner duration
+    }, 1000); // spinner duration
 
     return () => clearTimeout(timer);
   }, [location.pathname]);
   return (
     <div>
+      <ScrollToTop></ScrollToTop>
       <NavBar></NavBar>
       <CategoryNav></CategoryNav>
       {loading && (

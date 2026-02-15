@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import useAllProduct from "../Hook/useAllProduct";
 import { IoIosArrowDown } from "react-icons/io";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLoaderData, useParams } from "react-router";
 import Filters from "./filters";
 import { UseContext } from "../Context/AuthContext";
 import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import useCart from "../Hook/useCart";
+import { set } from "react-hook-form";
 
 const getGuestUserId = () => {
   let guestId = localStorage.getItem("guestCart");
@@ -27,6 +28,10 @@ const UserAllProducts = () => {
   const [activeSort, setActiveSort] = useState("");
   const [cart, refetch] = useCart();
   const axiosSecure = useAxiosSecure();
+
+
+  // const category = useLoaderData() || {};
+  // console.log(category)
 
   useEffect(() => {
     if (allProduct?.length) {
@@ -95,12 +100,30 @@ const UserAllProducts = () => {
       refetch();
     }
   };
+  // const filteredProducts = products.filter(
+  //   (product) => product.category === category,
+  // );
+  // useEffect(() => {
+  //   fetch(
+  //     `http://localhost:5000/allProducts${category ? `?category=${category}` : ""}`,
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) =>console.log(data));
+  // }, [category]);
+  // useEffect(() => {
+  //   if (category && products.length > 0) {
+  //     const filtered = products.filter(
+  //       (product) => product.category === category,
+  //     );
+  //     setProducts(filtered);
+  //   }
+  // }, [category, products, setProducts]);
 
   return (
     <div className="min-h-screen bg-gray-50 mt-18 container w-11/12 mx-auto mb-10">
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* SIDEBAR */}
-        <aside className="hidden md:block md:col-span-3  bg-white md:p-4 h-screen">
+        <aside className="hidden md:block md:col-span-3 bg-white md:p-4 h-screen">
           <h1 className="font-semibold text-lg">Filders</h1>
           <Filters></Filters>
         </aside>
@@ -227,7 +250,9 @@ const UserAllProducts = () => {
                     disabled={item.stock === 0}
                     onClick={() => handleCartData(item._id)}
                     className={`btn w-full rounded-none ${
-                      item.stock === 0 ? "btn-disabled bg-gray-300" : "bg-[#111827] text-white"
+                      item.stock === 0
+                        ? "btn-disabled bg-gray-300"
+                        : "bg-[#111827] text-white"
                     }`}
                   >
                     {item.stock === 0 ? "Out of Stock" : "Quick Add"}

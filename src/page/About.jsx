@@ -165,10 +165,12 @@ const About = () => {
                 </button>
               </Link>
 
-              <button className="flex items-center gap-2 border border-white text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition">
-                <Mail size={18} />
-                Contact Us
-              </button>
+              <Link to='/contract'>
+                <button className="flex items-center gap-2 border border-white text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition">
+                  <Mail size={18} />
+                  Contact Us
+                </button>
+              </Link>
             </div>
           </div>
         </section>

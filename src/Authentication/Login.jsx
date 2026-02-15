@@ -2,13 +2,17 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { UseContext } from "../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const { signInUser,googleLogin } = useContext(UseContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
+  console.log(location, from);
 
   const notify = () => toast("Wow so easy!");
 
@@ -16,7 +20,7 @@ const Login = () => {
     signInUser(data.email, data.password)
       .then((res) => {
         if (res.user) {
-          navigate("/");
+          navigate(from, { replace: true });
           notify();
         }
       })
@@ -29,7 +33,7 @@ const Login = () => {
   const handleSocialLogin = () => {
     googleLogin().then((res) => {
       if (res.user) {
-        navigate("/");
+        navigate(from, { replace: true });
       }
     });
   };

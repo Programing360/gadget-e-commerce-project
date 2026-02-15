@@ -14,18 +14,21 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <div className=" ">
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <div className="">
-            <RouterProvider
-              router={router}
-              fallbackElement={
-                <span className="loading loading-bars loading-xl"></span>
-              }
-            />
-          </div>
-        </AuthProvider>
-      </QueryClientProvider>
+      
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <div className="">
+              
+              <RouterProvider
+                router={router}
+                fallbackElement={
+                  <span className="loading loading-bars loading-xl"></span>
+                }
+              />
+            </div>
+          </AuthProvider>
+        </QueryClientProvider>
+     
     </div>
     <ToastContainer position="top-center"></ToastContainer>
   </StrictMode>,

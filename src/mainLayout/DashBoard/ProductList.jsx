@@ -46,6 +46,10 @@ const ProductList = () => {
       console.error(error);
       toast("Something went wrong!");
     }
+    const res = await axiosSecure.patch(`/updateOrderStatus/${id}`, { status: "confirmed" });
+    if (res.data.modifiedCount > 0) {
+      refetch();
+    }
   };
 
   const handleOrderCancelBtn = (item) => {
