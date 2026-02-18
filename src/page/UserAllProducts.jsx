@@ -29,10 +29,6 @@ const UserAllProducts = () => {
   const [cart, refetch] = useCart();
   const axiosSecure = useAxiosSecure();
 
-
-  // const category = useLoaderData() || {};
-  // console.log(category)
-
   useEffect(() => {
     if (allProduct?.length) {
       setProducts(allProduct);
@@ -83,8 +79,6 @@ const UserAllProducts = () => {
     }
 
     // 🟢 New cart item
-
-    //  console.log(allData)
     const cartItem = {
       productId: id,
       userId,
@@ -100,24 +94,6 @@ const UserAllProducts = () => {
       refetch();
     }
   };
-  // const filteredProducts = products.filter(
-  //   (product) => product.category === category,
-  // );
-  // useEffect(() => {
-  //   fetch(
-  //     `http://localhost:5000/allProducts${category ? `?category=${category}` : ""}`,
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) =>console.log(data));
-  // }, [category]);
-  // useEffect(() => {
-  //   if (category && products.length > 0) {
-  //     const filtered = products.filter(
-  //       (product) => product.category === category,
-  //     );
-  //     setProducts(filtered);
-  //   }
-  // }, [category, products, setProducts]);
 
   return (
     <div className="min-h-screen bg-gray-50 mt-18 container w-11/12 mx-auto mb-10">

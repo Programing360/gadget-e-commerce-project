@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router";
-
+import { NavLink } from "react-router";
+import homeIcon from "../../assets/assets/home (2).png";
+import { motion } from "motion/react"
 const CategoryNav = () => {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -8,9 +9,9 @@ const CategoryNav = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY) {
-        setShow(false); // scroll down
+        setShow(false);
       } else {
-        setShow(true); // scroll up
+        setShow(true);
       }
       setLastScrollY(window.scrollY);
     };
@@ -19,61 +20,73 @@ const CategoryNav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  const activeClass = "text-yellow-300 border-b-2 border-yellow-300 pb-1";
+
+  const normalClass = "hover:text-yellow-300 transition duration-200";
+
   return (
-    <div
-      className={`fixed top-16 left-0 w-full z-5
-      bg-white shadow-md
+    <motion.div
+      layoutId="underline"
+      className={`fixed top-16 left-0 w-full
+      bg-white shadow-md z-20
       transition-transform duration-300 ease-in-out
       ${show ? "translate-y-0" : "-translate-y-full"}`}
     >
-      <div className="bg-gray-400 sticky z-20">
-        <ul className="flex justify-center gap-8 text-white py-5 relative">
-          {/* Category Dropdown */}
-          <li className="relative group cursor-pointer">
-            <Link to="/"><span className="hover:text-yellow-300">Home</span></Link>
-
-            {/* Dropdown */}
-            {/* <ul
-              className="
-              absolute top-full left-0 mt-2
-              bg-white text-black
-              rounded-lg shadow-lg
-              w-48
-              opacity-0 invisible
-              group-hover:opacity-100 group-hover:visible
-              transition-all duration-200 z-100
-            "
+      <div className="bg-[#1e3c96]">
+        <ul className="flex justify-center gap-6 md:gap-10 text-white py-4">
+          {/* Home */}
+          <li>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? activeClass : normalClass
+              }
             >
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Electronics Shop
-              </li>
-              <Link to={`/userAllProducts?category=${encodeURIComponent("Laptop")}`}>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Laptop Shop
-              </li>
-              </Link>
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Mobile Shop
-              </li>
-            </ul> */}
+              <div className="flex items-center">
+                <img src={homeIcon} alt="Home" className="w-5 h-5 mr-2" />
+                Home
+              </div>
+            </NavLink>
           </li>
 
-          <Link to="/userAllProduct">
-            <li className="hover:text-yellow-300 cursor-pointer">
+          {/* All Products */}
+          <li>
+            <NavLink
+              to="/userAllProduct"
+              className={({ isActive }) =>
+                isActive ? activeClass : normalClass
+              }
+            >
               All Products
-            </li>
-          </Link>
-          <Link to="/contract">
-            <li className="hover:text-yellow-300 cursor-pointer">
+            </NavLink>
+          </li>
+
+          {/* About */}
+          <li>
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                isActive ? activeClass : normalClass
+              }
+            >
+              About
+            </NavLink>
+          </li>
+
+          {/* Contact */}
+          <li>
+            <NavLink
+              to="/contract"
+              className={({ isActive }) =>
+                isActive ? activeClass : normalClass
+              }
+            >
               Contact Us
-            </li>
-          </Link>
-          <NavLink to='/about'>
-            <li className="hover:text-yellow-300 cursor-pointer">About</li>
-          </NavLink>
+            </NavLink>
+          </li>
         </ul>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

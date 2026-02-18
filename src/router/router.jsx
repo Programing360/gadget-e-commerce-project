@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
         path: "/productDetails/:id",
         Component: ProductDetails,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/allProduct/${params.id}`),
+          fetch(`https://zeromiroo-api.vercel.app/allProduct/${params.id}`),
       },
       {
         path: "/userAllProduct",

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -6,14 +6,12 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { UseContext } from "../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 const Login = () => {
-  const { register, handleSubmit } = useForm();
-  const { signInUser,googleLogin } = useContext(UseContext);
+  const { register, handleSubmit, watch } = useForm();
+  const { signInUser, googleLogin, forgetPassword } = useContext(UseContext);
   const navigate = useNavigate();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/";
-  console.log(location, from);
-
+  const email = watch("email");
   const notify = () => toast("Wow so easy!");
 
   const handleLoginForm = (data) => {
@@ -37,6 +35,22 @@ const Login = () => {
       }
     });
   };
+
+  const handleForgetPassword = () => {
+    if (!email) {
+      toast.error("Please enter your email first");
+      return;
+    }
+
+    forgetPassword(email)
+      .then(() => {
+        toast("Password reset email sent!");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
   return (
     <div className="hero bg-base-200 min-h-screen md:py-30 px-3">
       <div className="card bg-base-100 w-full lg:max-w-3xl md:max-w-xl shrink-0 shadow-2xl">
@@ -49,6 +63,7 @@ const Login = () => {
                   <label className="label">Email</label>
                   <input
                     type="email"
+                    // onChange={(e) => setEmail(e.target.value)}
                     {...register("email", { required: true })}
                     className="input w-full outline-0 border-cyan-700"
                     placeholder="Email"
@@ -67,7 +82,13 @@ const Login = () => {
                   <FaLock className="absolute right-4 top-8"></FaLock>
                 </div>
                 <div>
-                  <a className="link link-hover">Forgot password?</a>
+                  <button
+                    type="button"
+                    className="link link-hover"
+                    onClick={handleForgetPassword}
+                  >
+                    Forgot password?
+                  </button>
                 </div>
                 <button className="btn bg-cyan-700 text-white mt-4">
                   Login
@@ -76,9 +97,10 @@ const Login = () => {
             </form>
             <div className="text-center mt-4">
               <p>or register with social platforms</p>
-              <button 
+              <button
                 onClick={handleSocialLogin}
-              className="btn bg-white text-black border-[#e5e5e5] mt-4">
+                className="btn bg-white text-black border-[#e5e5e5] mt-4"
+              >
                 <svg
                   aria-label="Google logo"
                   width="16"

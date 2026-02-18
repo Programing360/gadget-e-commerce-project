@@ -18,7 +18,6 @@ const ProductList = () => {
   //   const matchOrderId = orders?.find((item) =>
   //     orderCount.some((id) => id._id === item._id),
   //   );
-  //   console.log(orderCount, matchOrderId);
   //   setConfirmOrder(!!matchOrderId);
   // }, [orders, orderCount]);
 

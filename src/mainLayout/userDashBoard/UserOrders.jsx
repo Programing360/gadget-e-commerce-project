@@ -10,7 +10,6 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 
 const UserOrders = () => {
   const [orders, refetch, isloading] = useOrderList();
-    console.log(orders)
     const axiosSecure = useAxiosSecure();
   
   const [, forceUpdate] = useState(0);

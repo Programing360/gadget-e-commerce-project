@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
   const { user } = useContext(UseContext);
   const [cart, refetch] = useCart();
   const [wishlist, reload] = useWishList();
-  // console.log(wishlist)
+
   /* ================= ADD TO CART ================= */
   const handleCartData = async (id) => {
     const userId = user ? user?.email : getGuestUserId();
@@ -84,7 +84,7 @@ const ProductCard = ({ product }) => {
   /* ================= WISHLIST ================= */
 
   const isInWishlist = wishlist?.find((item) => item.productId === _id);
-  // console.log(isInWishlist)
+
 
   const handleWishlist = async (id) => {
     const userId = user ? user.email : getGuestUserId();
@@ -159,7 +159,7 @@ const ProductCard = ({ product }) => {
         {/* Content */}
         <div className="p-4">
           {stock === 0 && (
-            <span className="text-xs bg-red-600 text-white px-2 rounded-full absolute top-55">
+            <span className="text-xs bg-red-600 text-white px-2 rounded-full absolute md:top-55 top-40">
               Stock Out
             </span>
           )}

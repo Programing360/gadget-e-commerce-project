@@ -12,7 +12,6 @@ const SignIn = () => {
   const notify = () => toast("User Login successful!");
 
   const handleRegisterForm = (data) => {
-    console.log(data);
     createUser(data.email, data.password).then((res) => {
       if (res.user) {
         navigate("/");

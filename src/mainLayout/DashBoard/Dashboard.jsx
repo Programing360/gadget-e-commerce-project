@@ -21,9 +21,6 @@ const Dashboard = () => {
   );
   // const appro
   const totalLoss = totalPriceOfCancel ? (totalPriceOfOrders / totalPriceOfCancel) % 100 : 0;
-  console.log(
-   totalLoss.toFixed(1)
-  );
   return (
     <main className="p-6">
       <div className="hidden lg:block">
@@ -45,7 +42,7 @@ const Dashboard = () => {
                 </div>
                 <div className="flex justify-around items-center gap-3 pt-4">
                   <p className="text-3xl font-bold">{allProduct?.length}</p>
-                  <p className="text-3xl font-bold">{totalPrice}</p>
+                  <p className="text-3xl font-bold">{totalPrice} BDT</p>
                 </div>
               </div>
             </Link>
@@ -69,7 +66,7 @@ const Dashboard = () => {
                 </div>
                 <div className="flex justify-around items-center gap-3 pt-4">
                   <p className="text-3xl font-bold">{orders?.length}</p>
-                  <p className="text-3xl font-bold">{totalPriceOfOrders}</p>
+                  <p className="text-3xl font-bold">{totalPriceOfOrders} BDT</p>
                 </div>
               </div>
             </Link>
@@ -80,7 +77,7 @@ const Dashboard = () => {
               </div>
               <div className="flex justify-around items-center gap-3 pt-4">
                 <p className="text-3xl font-bold">500</p>
-                <p className="text-3xl font-bold">10000</p>
+                <p className="text-3xl font-bold">10000 BDT</p>
               </div>
             </div>
             <div className="border p-4 rounded-lg">
@@ -90,7 +87,7 @@ const Dashboard = () => {
               </div>
               <div className="flex justify-around items-center gap-3 pt-4">
                 <p className="text-3xl font-bold">{orders.length}</p>
-                <p className="text-3xl font-bold">{totalPriceOfOrders}</p>
+                <p className="text-3xl font-bold">{totalPriceOfOrders} BDT</p>
               </div>
             </div>
             <Link to="/adminDashboard/orderCencel">
@@ -103,7 +100,7 @@ const Dashboard = () => {
                   <p className="text-3xl font-bold">
                     {orderCancel?.length || 0} (<span>{totalLoss.toFixed(1)}%</span>)
                   </p>
-                  <p className="text-3xl font-bold">{totalPriceOfCancel}</p>
+                  <p className="text-3xl font-bold">{totalPriceOfCancel} BDT</p>
                 </div>
               </div>
             </Link>

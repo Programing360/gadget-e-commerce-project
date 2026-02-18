@@ -1,6 +1,8 @@
 import React from "react";
 import logoIcon from "../../assets/logo.jpg";
 import productIcon from "../../assets/assets/list-text.png";
+import product from "../../assets/assets/allProductIcon.png";
+import orderList from "../../assets/assets/listOrder.png";
 import dashboardIcon from "../../assets/assets/dashboardIcon.png";
 import menuList from "../../assets/assets/menulist.png";
 import { NavLink, Outlet } from "react-router";
@@ -113,9 +115,28 @@ const AdminPage = () => {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
                
                 >
-                  <img className="w-5 m-0" src={productIcon} alt="" />
+                  <img className="w-5 m-0" src={product} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
                    All Products
+                  </span>
+                </button>
+              </li>
+            </NavLink>
+
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "border rounded pl-2 bg-red-400" : ""
+              }
+              to="/adminDashboard/productList"
+            >
+              <li>
+                <button
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
+                  
+                >
+                  <img className="w-5 m-0" src={orderList} alt="" />
+                  <span className="is-drawer-close:hidden lg:is-drawer-close:block">
+                    Order List - {orderList[0]?.length}
                   </span>
                 </button>
               </li>
@@ -139,24 +160,7 @@ const AdminPage = () => {
               </li>
             </NavLink>
      
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? "border rounded pl-2 bg-red-400" : ""
-              }
-              to="/adminDashboard/productList"
-            >
-              <li>
-                <button
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-                  
-                >
-                  <img className="w-5 m-0" src={productIcon} alt="" />
-                  <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                    Order List - {orderList[0]?.length}
-                  </span>
-                </button>
-              </li>
-            </NavLink>
+            
             <NavLink
               className={({ isActive }) =>
                 isActive ? "border rounded pl-2 bg-red-400" : ""

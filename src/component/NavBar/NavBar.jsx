@@ -24,7 +24,6 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [cart, , isLoading] = useCart();
   const axiosSecure = useAxiosSecure();
-  // console.log(cart)
 
   // 🔔 get notifications
   const { data: notificationsCount = [], refetch } = useQuery({
@@ -53,7 +52,7 @@ const NavBar = () => {
     0,
   );
   const formatted = quantity.toLocaleString();
-  const adminUser = user?.email === "fhlimon360@gmail.com";
+  const adminUser = user?.email === "zeromiro@gmail.com";
 
   const handleUserLogOut = () => {
     UserLogout().then(() => {
@@ -70,7 +69,7 @@ const NavBar = () => {
           <div className="flex items-center gap-0">
             <Link className="flex items-center" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
-              <h1 className=" md:text-2xl font-bold text-[#000000]">
+              <h1 className="text-xl md:text-2xl font-bold text-[#000000]">
                 Zeroo<span className="text-[#ff4e5c]">m</span>
                 <span className="text-[#fdb529]">iro</span>
               </h1>
@@ -263,7 +262,7 @@ const NavBar = () => {
                       />
                     )}
 
-                    <h1 className="font-bold">{user.displayName}</h1>
+                    <h1 className="font-bold">{user?.displayName}</h1>
                   </div>
                   <li className="">
                     <Link to="/wishList">
@@ -273,7 +272,7 @@ const NavBar = () => {
                       </div>
                     </Link>
                   </li>
-                  {user.email === "fhlimon360@gmail.com" ? (
+                  {adminUser ? (
                     <li>
                       <Link to="/adminDashboard">
                         <div className="flex">

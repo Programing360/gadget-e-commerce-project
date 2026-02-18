@@ -15,7 +15,6 @@ const OrderSummary = () => {
     deliveryArea === "inside" ? 50 : deliveryArea === "outside" ? 100 : 0;
   const total = subtotal + shipping;
   const isCartEmpty = cart.length === 0;
-  //  console.log(subtotal);
   return (
     <div className="bg-base-200 p-4 rounded space-y-4 shadow-2xl px-9">
       <h1 className="text-2xl font-bold">Order Summary</h1>

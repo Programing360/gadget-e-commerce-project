@@ -7,6 +7,8 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import cartIcon from "../../assets/assets/ProductAddIcon.png";
+
 // import asusImg from '../../assets/assets/laptop-asus'
 
 /* 🔑 Guest ID helper */
@@ -133,29 +135,63 @@ const ProductDetails = () => {
 
               {/* Quantity */}
               {cartItem && (
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => handleCartDecrement(_id)}
-                    className="btn btn-sm"
-                  >
-                    −
-                  </button>
-                  <span className="min-w-6 text-center font-semibold">
-                    {cartItem.quantity}
-                  </span>
-                  <button
-                    onClick={() => handleCartIncrement(_id)}
-                    className="btn btn-sm"
-                  >
-                    +
-                  </button>
+                <div className="flex items-center gap-3 border p-4 border-indigo-600 justify-between bg-indigo-100">
+                  <div className="flex items-center gap-4 ">
+                    <input
+                      type="radio"
+                      name="quantity"
+                      id="quantity1"
+                      defaultChecked
+                      className=""
+                    />
+                    <div>
+                      <h2 className=" font-bold">{name}</h2>
+                      <div className="flex items-center gap-3">
+                        <span className=" font-bold text-primary">
+                          ৳{discountPrice}
+                        </span>
+                        <span className="line-through text-gray-400">
+                          ৳{price}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 bg-blue-200">
+                    <button
+                      onClick={() => handleCartDecrement(_id)}
+                      className="btn btn-ghost"
+                    >
+                      −
+                    </button>
+                    <span className="min-w-6 text-center font-normal">
+                      {cartItem.quantity}
+                    </span>
+                    <button
+                      onClick={() => handleCartIncrement(_id)}
+                      className="btn btn-ghost hover:bg-blue-400"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               )}
 
+              <Link to='/onlinePayment'>
+                <button className="btn w-full bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white mb-4">
+                  Buy Now
+                </button>
+              </Link>
               <button
                 onClick={handleCartData}
-                className="btn w-full bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white"
+                className="btn w-full border-fuchsia-700 hover:bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] hover:text-white text-purple-600"
               >
+                <span>
+                  <img
+                    src={cartIcon}
+                    alt="Cart Icon"
+                    className="w-5 h-5 mr-2"
+                  />
+                </span>
                 Add To Cart
               </button>
 
@@ -164,7 +200,7 @@ const ProductDetails = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <button className="btn w-full bg-gradient-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] text-white">
+                <button className="btn w-full bg-gradient-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] text-white mb-4">
                   Chat with Messenger
                 </button>
               </a>

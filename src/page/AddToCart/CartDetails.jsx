@@ -103,14 +103,14 @@ const CartDetails = () => {
                 <td>{item.price} TK</td>
 
                 <td>
-                  <div className="flex justify-center items-center gap-4 bg-gray-100 py-1">
+                  <div className="flex justify-center items-center gap-4 bg-gray-100 py-1 p-2">
                     <button
                       className="text-2xl"
                       onClick={() => handleCartDecrement(item.productId)}
                     >
                       -
                     </button>
-                    <span>{item.quantity}</span>
+                    <p className="mt-1">{item.quantity}</p>
                     <button
                       className="text-2xl"
                       onClick={() => handleCartIncrement(item.productId)}
