@@ -6,24 +6,33 @@ import crossIcon from "../../assets/assets/crossIcon.png";
 import emptyCartImg from "../../assets/assets/7612.jpg"; // 👉 add an image
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const CartDetails = () => {
   const [cart, refetch] = useCart();
   const { handleCartIncrement, handleCartDecrement } = useCartItemUpdate();
   const axiosSecure = useAxiosSecure();
+  const [loading, setLoading] = useState(null);
+  const handleCartDelete = async (id) => {
+    try {
+      setLoading(id);
 
-  const handleCartDelete = (id) => {
-    axiosSecure.delete(`/cartDelete/${id}`).then((res) => {
+      const res = await axiosSecure.delete(`/cartDelete/${id}`);
+
       if (res.data.deletedCount > 0) {
         refetch();
         toast.success("Item removed from cart");
         localStorage.removeItem("cartItem");
       }
-    });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(null);
+    }
   };
 
-  const handleAllCartDelete = () => {
-    axiosSecure.delete("/cartDeleteAll").then((res) => {
+  const handleAllCartDelete = async () => {
+    await axiosSecure.delete("/cartDeleteAll").then((res) => {
       if (res.data.deletedCount > 0) {
         refetch();
         toast.success("Removed all cart items");
@@ -56,7 +65,7 @@ const CartDetails = () => {
           Looks like you haven’t added anything to your cart yet
         </p>
         <Link to="/">
-          <button className="bg-[#f56e06] text-white px-6 py-3 rounded hover:bg-[#2f333a]">
+          <button className="bg-[#f56e06] text-white px-6 py-3 rounded hover:bg-[#2f333a] active:scale-95">
             Go to Shop
           </button>
         </Link>
@@ -131,12 +140,33 @@ const CartDetails = () => {
                         alt="edit"
                       />
                     </Link>
-                    <img
+                    <button
                       onClick={() => handleCartDelete(item._id)}
-                      className="w-5 cursor-pointer"
-                      src={crossIcon}
+                      disabled={loading}
+                      className="text-red-500 underline cursor-pointer ml-3 flex items-center gap-2"
+                    >
+                      {loading === item._id ? (
+                        <span className="loading loading-spinner loading-sm"></span>
+                      ) : (
+                        <img
+                          className="w-5 cursor-pointer"
+                          src={crossIcon}
+                          alt="delete"
+                        />
+                      )}
+                    </button>
+                    {/* <img
+                      onClick={() => handleCartDelete(item._id)}
+                      
+                      src={
+                        loading === item._id ? (
+                          <span className="loading loading-spinner loading-sm"></span>
+                        ) : (
+                          
+                        )
+                      }
                       alt="delete"
-                    />
+                    /> */}
                   </div>
                 </td>
               </tr>
@@ -164,14 +194,15 @@ const CartDetails = () => {
         <div className="flex ">
           <button
             onClick={handleAllCartDelete}
-            className="bg-[#005f78] btn border-0 text-white w-[50%] mr-4 text-[.80rem] md:px-6 md:py-3 md:mr-4 hover:bg-[#2f333a] mb-3 text-center "
+            className="bg-[#005f78] btn border-0 text-white w-[50%] mr-4 text-[.80rem] md:px-6 md:py-3 md:mr-4 hover:bg-[#2f333a] mb-3 text-center active:scale-95"
           >
             CLEAR CART
           </button>
-          <Link className="bg-[#2f333a] border-0 btn text-white md:px-6 md:py-3 text-[.70rem] w-[50%] py-3 hover:bg-[#005f78]" to='/onlinePayment'>
-            <button >
-              PROCEED TO CHECKOUT
-            </button>
+          <Link
+            className="bg-[#2f333a] border-0 btn text-white md:px-6 md:py-3 text-[.70rem] w-[50%] py-3 hover:bg-[#005f78]"
+            to="/onlinePayment"
+          >
+            <button>PROCEED TO CHECKOUT</button>
           </Link>
         </div>
       </div>

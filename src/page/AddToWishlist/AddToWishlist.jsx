@@ -13,6 +13,7 @@ const AddToWishlist = () => {
   const [wishlist,reload ] = useWishList()
 
 const handleAddToCart = (item) => {
+    
     axiosSecure.post("/cartData", item).then((res) => {
     if (res.data.insertedId) {
       toast.success("Product added to cart 🛒");

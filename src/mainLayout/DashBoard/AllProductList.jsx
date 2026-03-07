@@ -5,6 +5,7 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 const AllProductList = () => {
   const [allProducts, refetch] = useAllProduct();
+  console.log(allProducts);
   const axiosSecure = useAxiosSecure();
   const onRemove = (id) => {
     axiosSecure.delete(`/allProduct/${id}`).then((res) => {
@@ -33,7 +34,7 @@ const AllProductList = () => {
               />
 
               <div>
-                <h4 className="font-semibold text-sm">{product.name}</h4>
+                <h4 className="font-semibold text-sm dark:text-black">{product.name}</h4>
                 <p className="text-gray-500 text-sm">৳{product.price}</p>
               </div>
             </div>

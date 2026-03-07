@@ -20,7 +20,7 @@ const getGuestUserId = () => {
   return guestId;
 };
 
-const ProductCard = ({ product }) => {
+const  ProductCard = ({ product }) => {
   const {
     _id,
     name,
@@ -88,10 +88,10 @@ const ProductCard = ({ product }) => {
 
   const handleWishlist = async (id) => {
     const userId = user ? user.email : getGuestUserId();
-
     const existing = wishlist.find(
       (item) => item.productId === id && item.userId === userId,
     );
+    // console.log(isInWishlist,wishlist, existing,id)
 
     if (!user) {
       toast.error("Please login first");
@@ -114,7 +114,7 @@ const ProductCard = ({ product }) => {
     };
 
     const res = await axiosSecure.post("/addWishList", wishItem);
-
+    // if(isInWishlist)
     if (res.data.insertedId) {
       toast.success("Added to wishlist ❤️");
       reload();
@@ -124,7 +124,7 @@ const ProductCard = ({ product }) => {
   return (
     <div>
       {/* ================= CARD ================= */}
-      <div className="relative group overflow-hidden shadow-sm hover:shadow-xl transition bg-white hover:text-blue-600">
+      <div className="relative group overflow-hidden shadow-sm hover:shadow-xl transition bg-white hover:text-blue-600 dark:text-black">
         {/* Discount Badge */}
         {discountPercentage > 0 && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
@@ -180,7 +180,7 @@ const ProductCard = ({ product }) => {
           disabled={stock === 0}
           onClick={() => handleCartData(_id)}
           className={`btn w-full rounded-none ${
-            stock === 0 ? "btn-disabled bg-gray-300" : "bg-[#111827] text-white hover:bg-[#2363d1]"
+            stock === 0 ? "btn-disabled bg-gray-300 dark:text-black" : "bg-[#111827] text-white hover:bg-[#2363d1] active:scale-95"
           }`}
         >
           {stock === 0 ? "Out of Stock" : "Quick Add"}

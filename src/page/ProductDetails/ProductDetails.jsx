@@ -7,9 +7,6 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import cartIcon from "../../assets/assets/ProductAddIcon.png";
-
-// import asusImg from '../../assets/assets/laptop-asus'
 
 /* 🔑 Guest ID helper */
 const getGuestUserId = () => {
@@ -33,7 +30,7 @@ const ProductDetails = () => {
   const cartItem = cart.find((item) => item.productId === _id);
 
   /* 🛒 Add to cart */
-  const handleCartData = async () => {
+  const handleCartData = async (_id) => {
     const existing = cart.find((item) => item.productId === _id);
 
     if (existing) {
@@ -105,14 +102,14 @@ const ProductDetails = () => {
                 <img
                   src={image}
                   alt={name}
-                  className="object-contain max-h-[400px]"
+                  className="object-contain max-h-100"
                 />
               </div>
               <div>
                 <img
                   src={image}
                   alt={name}
-                  className="object-contain max-h-[400px]"
+                  className="object-contain max-h-100"
                 />
               </div>
             </Carousel>
@@ -159,7 +156,7 @@ const ProductDetails = () => {
                   <div className="flex items-center gap-2 bg-blue-200">
                     <button
                       onClick={() => handleCartDecrement(_id)}
-                      className="btn btn-ghost"
+                      className="btn btn-ghost active:scale-95"
                     >
                       −
                     </button>
@@ -168,7 +165,7 @@ const ProductDetails = () => {
                     </span>
                     <button
                       onClick={() => handleCartIncrement(_id)}
-                      className="btn btn-ghost hover:bg-blue-400"
+                      className="btn btn-ghost hover:bg-blue-400 active:scale-95"
                     >
                       +
                     </button>
@@ -176,31 +173,28 @@ const ProductDetails = () => {
                 </div>
               )}
 
-              <Link to='/onlinePayment'>
-                <button className="btn w-full bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white mb-4">
+              <Link to="/onlinePayment">
+                <button className="btn w-full bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white mb-4 active:scale-95">
                   Buy Now
                 </button>
               </Link>
               <button
-                onClick={handleCartData}
-                className="btn w-full border-fuchsia-700 hover:bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] hover:text-white text-purple-600"
+                disabled={stock === 0}
+                onClick={() => handleCartData(_id)}
+                className={`btn w-full rounded-none ${
+                  stock === 0
+                    ? "btn-disabled bg-gray-300 dark:text-black"
+                    : "btn w-full border-fuchsia-700 hover:bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] hover:text-white text-purple-600 active:scale-95"
+                }`}
               >
-                <span>
-                  <img
-                    src={cartIcon}
-                    alt="Cart Icon"
-                    className="w-5 h-5 mr-2"
-                  />
-                </span>
-                Add To Cart
+                {stock === 0 ? "Out of Stock" : "Quick Add"}
               </button>
-
               <a
                 href="https://www.facebook.com/messages/"
                 target="_blank"
                 rel="noreferrer"
               >
-                <button className="btn w-full bg-gradient-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] text-white mb-4">
+                <button className="btn w-full bg-linear-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] text-white mb-4 active:scale-95">
                   Chat with Messenger
                 </button>
               </a>

@@ -66,14 +66,14 @@ const UserOrders = () => {
     );
   }
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6">
+    <div className="max-w-5xl mx-auto px-4 py-6 ">
       <h2 className="text-2xl font-bold mb-6">My Orders</h2>
 
       <div className="space-y-4">
         {orders.map((order) => (
           <div
             key={order._id}
-            className="flex gap-4 bg-white shadow-sm rounded-xl p-4"
+            className="flex gap-4 bg-white dark:bg-amber-700 hover:bg-amber-500 transition decoration-2 delay-100 shadow-sm rounded-xl p-4"
           >
             {/* ---------------- */}
             {/* Product Image */}
@@ -87,15 +87,12 @@ const UserOrders = () => {
             ))} */}
             {/* Order Info */}
             <div className="flex-1">
-              <h3 className="font-semibold">{order.name}</h3>
-
               <p className="text-xs text-gray-400">
                 Order ID: <span className="font-medium">{order._id}</span>
               </p>
+              <h3 className="font-semibold capitalize dark:text-black">{order.name}</h3>
 
-              <p className="text-sm text-gray-500 mt-1">
-                Ordered <TimeAgo time={order.newDate}></TimeAgo>
-              </p>
+
 
               <div className="text-sm mt-1">
                 Qty: <span className="font-medium">{order.cart.length}</span>
@@ -106,6 +103,9 @@ const UserOrders = () => {
                 <span className="font-medium capitalize">
                   {order.paymentMethod}
                 </span>
+              <p className="text-sm text-gray-500 mt-1">
+                Ordered <TimeAgo time={order.newDate}></TimeAgo>
+              </p>
               </div>
             </div>
 

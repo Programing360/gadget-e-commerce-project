@@ -4,6 +4,7 @@ import { Outlet, useLocation } from "react-router";
 import Footer from "../component/Footer/Footer";
 import CategoryNav from "../component/NavBar/CetagoryNav";
 import ScrollToTop from "../page/ScrollToTop";
+import Dock from "../component/Dock";
 
 const Root = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const Root = () => {
         </div>
       )}
       <Outlet></Outlet>
+      <Dock></Dock>
       <Footer></Footer>
     </div>
   );

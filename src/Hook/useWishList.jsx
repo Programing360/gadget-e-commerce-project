@@ -23,11 +23,13 @@ const useWishList = () => {
     queryFn: async () => {
       const userId = user ? user?.email : getGuestUserId();
       const res = await axiosSecure.get("/wishListGet");
-      const data = res.data;
+      if (userId) {
+        return res.data;
+      }
 
       // 🔥 Correct filtering
-      const userCart = data?.filter((item) => item.userId === userId);
-      return userCart;
+      // const userCart = data?.filter((item) => item.userId === userId);
+      // return userCart;
     },
   });
 

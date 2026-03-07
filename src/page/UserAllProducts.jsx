@@ -1,13 +1,12 @@
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAllProduct from "../Hook/useAllProduct";
 import { IoIosArrowDown } from "react-icons/io";
-import { Link, NavLink, useLoaderData, useParams } from "react-router";
+import { Link } from "react-router";
 import Filters from "./filters";
 import { UseContext } from "../Context/AuthContext";
 import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import useCart from "../Hook/useCart";
-import { set } from "react-hook-form";
 
 const getGuestUserId = () => {
   let guestId = localStorage.getItem("guestCart");
@@ -100,7 +99,7 @@ const UserAllProducts = () => {
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* SIDEBAR */}
         <aside className="hidden md:block md:col-span-3 bg-white md:p-4 h-screen">
-          <h1 className="font-semibold text-lg">Filders</h1>
+          <h1 className="font-semibold text-lg dark:text-black">Filders</h1>
           <Filters></Filters>
         </aside>
 
@@ -110,7 +109,7 @@ const UserAllProducts = () => {
           <div className="flex justify-between items-center mb-4">
             <h1
               onClick={() => setOpen(!open)}
-              className="font-semibold flex items-center gap-1 cursor-pointer select-none"
+              className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black"
             >
               Best Selling <IoIosArrowDown />
             </h1>
@@ -186,7 +185,7 @@ const UserAllProducts = () => {
           )}
 
           {/* PRODUCTS GRID */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 md:gap-5 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black">
             {products?.map((item) => (
               <div
                 key={item._id}
@@ -225,7 +224,7 @@ const UserAllProducts = () => {
                   <button
                     disabled={item.stock === 0}
                     onClick={() => handleCartData(item._id)}
-                    className={`btn w-full rounded-none ${
+                    className={`btn w-full rounded-none active:scale-95 ${
                       item.stock === 0
                         ? "btn-disabled bg-gray-300"
                         : "bg-[#111827] text-white"

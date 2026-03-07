@@ -40,7 +40,7 @@ const SearchInput = () => {
       <label htmlFor="top-drawer" className="cursor-pointer ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-10 bg-gray-200 p-2 rounded-full"
+          className="w-10 bg-gray-200 dark:text-black p-2 rounded-full"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

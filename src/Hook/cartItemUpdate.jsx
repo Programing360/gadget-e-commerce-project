@@ -2,6 +2,7 @@ import React from 'react';
 import { useAxiosSecure } from './useAxiosSecure';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useCart from './useCart';
+import { toast } from 'react-toastify';
 
 const useCartItemUpdate = () => {
     const [cart] = useCart();
@@ -11,6 +12,7 @@ const useCartItemUpdate = () => {
     const cartUpdateIncrement = useMutation({
         mutationFn: async ({productId, quantity}) => {
             const response = await axiosSecure.patch(`/cart/DataIncrement/${productId}`, {quantity});
+            toast.success('Cart Data Increment')
             return response.data
         },
         onSuccess: () => {
@@ -20,6 +22,7 @@ const useCartItemUpdate = () => {
     const cartUpdateDecrement = useMutation({
         mutationFn: async ({productId, quantity}) => {
             const response = await axiosSecure.patch(`/cart/DataDecrement/${productId}`, {quantity});
+            toast.success('Cart Data Decrement')
             return response.data
         },
         onSuccess: () => {

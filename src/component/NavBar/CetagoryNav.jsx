@@ -20,9 +20,9 @@ const CategoryNav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const activeClass = "text-yellow-300 border-b-2 border-yellow-300 pb-1";
+  const activeClass = "text-blue-500 border-b-2 border-blue-500 pb-1";
 
-  const normalClass = "hover:text-yellow-300 transition duration-200";
+  const normalClass = "hover:text-blue-500 transition duration-200";
 
   return (
     <motion.div
@@ -32,8 +32,8 @@ const CategoryNav = () => {
       transition-transform duration-300 ease-in-out
       ${show ? "translate-y-0" : "-translate-y-full"}`}
     >
-      <div className="bg-[#1e3c96]">
-        <ul className="flex justify-center gap-6 md:gap-10 text-white py-4">
+      <div className="bg-gray-200 ">
+        <ul className="flex justify-center gap-6 md:gap-10 text-black py-4 ">
           {/* Home */}
           <li>
             <NavLink

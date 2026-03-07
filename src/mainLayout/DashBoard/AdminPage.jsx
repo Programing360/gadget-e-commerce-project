@@ -2,7 +2,6 @@ import React from "react";
 import logoIcon from "../../assets/logo.jpg";
 import productIcon from "../../assets/assets/list-text.png";
 import product from "../../assets/assets/allProductIcon.png";
-import orderList from "../../assets/assets/listOrder.png";
 import dashboardIcon from "../../assets/assets/dashboardIcon.png";
 import menuList from "../../assets/assets/menulist.png";
 import { NavLink, Outlet } from "react-router";
@@ -10,18 +9,14 @@ import useOrderCancelList from "../../Hook/useOrderCancelList";
 import useOrderList from "../../Hook/useOrderList";
 
 const AdminPage = () => {
-
-  const orderCancel = useOrderCancelList()
-  const orderList = useOrderList()
+  const orderCancel = useOrderCancelList();
+  const orderList = useOrderList();
 
   return (
     <div className="drawer lg:drawer-open bg-[#010313] text-white">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-      
-      
-      <div className="drawer-content">
-        
 
+      <div className="drawer-content">
         <nav className="navbar flex w-full bg-[#030938] fixed z-10 ">
           <label
             htmlFor="my-drawer-4"
@@ -36,7 +31,6 @@ const AdminPage = () => {
             </div>
           </div>
         </nav>
-        
 
         <div className="mt-16 lg:mt-16 ">
           <Outlet></Outlet>
@@ -50,9 +44,7 @@ const AdminPage = () => {
           className="drawer-overlay"
         ></label>
         <div className="flex min-h-full flex-col items-start  lg:is-drawer-close:w-full lg:is-drawer-open:w-full bg-[#231236e0] text-white">
-          
           <ul className="menu md:w-full grow w-75">
-           
             <li>
               <div className="flex flex-col md:flex-row justify-center items-center gap-3 pb-10">
                 <img className="w-16 rounded-full" src={logoIcon} alt="" />
@@ -66,7 +58,6 @@ const AdminPage = () => {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
                   data-tip="Homepage"
                 >
-               
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -96,7 +87,6 @@ const AdminPage = () => {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
                   data-tip="Dashboard"
                 >
-                 
                   <img className="w-4" src={dashboardIcon} alt="" />
                   <span className="lg:is-drawer-close:block is-drawer-close:hidden ">
                     Dashboard
@@ -111,13 +101,10 @@ const AdminPage = () => {
               to="/adminDashboard/AllProductList"
             >
               <li>
-                <button
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-               
-                >
+                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center">
                   <img className="w-5 m-0" src={product} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                   All Products
+                    All Products
                   </span>
                 </button>
               </li>
@@ -130,10 +117,7 @@ const AdminPage = () => {
               to="/adminDashboard/productList"
             >
               <li>
-                <button
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-                  
-                >
+                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center">
                   <img className="w-5 m-0" src={orderList} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
                     Order List - {orderList[0]?.length}
@@ -148,19 +132,15 @@ const AdminPage = () => {
               to="/adminDashboard/orderCencel"
             >
               <li>
-                <button
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-               
-                >
+                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center">
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                   Order Cancel - {orderCancel[0]?.length}
+                    Order Cancel - {orderCancel[0]?.length || 0}
                   </span>
                 </button>
               </li>
             </NavLink>
-     
-            
+
             <NavLink
               className={({ isActive }) =>
                 isActive ? "border rounded pl-2 bg-red-400" : ""
@@ -168,11 +148,7 @@ const AdminPage = () => {
               to="/adminDashboard/productAdd"
             >
               <li>
-                <button
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3"
-                  
-                >
-                 
+                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -201,17 +177,14 @@ const AdminPage = () => {
               to="/adminDashboard/inbox"
             >
               <li>
-                <button
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center"
-                 
-                >
+                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center">
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
                     Inbox
                   </span>
                 </button>
               </li>
-            </NavLink> 
+            </NavLink>
           </ul>
         </div>
       </div>

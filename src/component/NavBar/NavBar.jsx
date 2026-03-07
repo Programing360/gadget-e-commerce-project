@@ -52,7 +52,7 @@ const NavBar = () => {
     0,
   );
   const formatted = quantity.toLocaleString();
-  const adminUser = user?.email === "zeromiro@gmail.com";
+  const adminUser = user?.email === "fhlimon360@gmail.com";
 
   const handleUserLogOut = () => {
     UserLogout().then(() => {
