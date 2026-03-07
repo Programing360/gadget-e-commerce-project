@@ -24,6 +24,7 @@ import About from "../page/About";
 import PageNotFound from "../page/PageNotFound";
 import ContactUs from "../page/ContractUs/ContractUs";
 import FAQSection from "../page/FAQSection";
+import SearchInput from "../page/SearchInput/SearchInput";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
       {
         path: "/FAQSection",
         Component: FAQSection,
+      },
+      {
+        path: "/searchInput",
+        Component: SearchInput,
       },
     ],
   },
