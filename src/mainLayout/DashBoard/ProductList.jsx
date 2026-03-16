@@ -6,6 +6,7 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import useOrderCount from "../../Hook/useOrderCount";
 import { Link } from "react-router";
 import { set } from "react-hook-form";
+import OrderDetails from "./OrderDetails";
 
 const ProductList = () => {
   const [orders, refetch] = useOrderList();
@@ -45,7 +46,9 @@ const ProductList = () => {
       console.error(error);
       toast("Something went wrong!");
     }
-    const res = await axiosSecure.patch(`/updateOrderStatus/${id}`, { status: "confirmed" });
+    const res = await axiosSecure.patch(`/updateOrderStatus/${id}`, {
+      status: "confirmed",
+    });
     if (res.data.modifiedCount > 0) {
       refetch();
     }
@@ -101,12 +104,14 @@ const ProductList = () => {
                 </label>
               </th>
               <th>Customer Name</th>
-              <th>Location</th>
-              <th>Total Amount</th>
-              <th>Payment Status</th>
-              <th>Order Status</th>
               <th>Customer Email</th>
               <th>Mobile Number</th>
+              <th>Location</th>
+              <th>Payment Status</th>
+              <th>Order Status</th>
+              <th>Qty</th>
+              <th>Total Amount</th>
+              <th>Order Details</th>
               <th className="text-center">Action</th>
             </tr>
           </thead>
@@ -125,10 +130,12 @@ const ProductList = () => {
                     </div>
                   </div>
                 </td>
+                <td>{item.email}</td>
+                <td>{item.mobileNumber}</td>
                 <td className="capitalize">
                   {item.address},{item.shipping}
                 </td>
-                <td>{item.total} TK</td>
+
                 <th>
                   <button className="bg-white text-black p-1 rounded">
                     {item.paymentMethod}
@@ -139,9 +146,24 @@ const ProductList = () => {
                 ) : (
                   <td className="text-amber-700">Pending</td>
                 )}
+                <td>
+                  {item.cart.reduce(
+                    (total, current) => total + current.quantity,
+                    0,
+                  )}
+                </td>
 
-                <td>{item.email}</td>
-                <td>{item.mobileNumber}</td>
+                <td>{item.total} TK</td>
+                <th>
+                  <button
+                    onClick={() =>
+                      document.getElementById("my_modal_4").showModal()
+                    }
+                    className="hover:bg-blue-500 border px-4 py-2 rounded-lg hover:shadow-2xl"
+                  >
+                    View
+                  </button>
+                </th>
                 <th className="text-center">
                   <button
                     onClick={() => handleOrderBtn(item._id)}
@@ -165,6 +187,8 @@ const ProductList = () => {
           </tbody>
         </table>
       </div>
+       {/* modal open */}
+      <OrderDetails></OrderDetails>
     </div>
   );
 };

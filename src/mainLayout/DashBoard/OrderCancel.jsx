@@ -28,6 +28,7 @@ const OrderCancel = () => {
             <th>Email</th>
             <th>Phone Number</th>
             <th>Address</th>
+            <th>Qty</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -39,8 +40,9 @@ const OrderCancel = () => {
               <th>{order._id}</th>
               <td className="capitalize">{order.name}</td>
               <td>{order.email}</td>
-              <td>{order.mobile}</td>
+              <td>{order.phone}</td>
               <td className="capitalize">{order.address}</td>
+              <td className="capitalize">{order.cart.length}</td>
               <td><img 
                 onClick={() => removeOrderCancelBtn(order._id)}
               className="w-5 cursor-pointer" src={removeBtn} alt="" /></td>
