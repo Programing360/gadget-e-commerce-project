@@ -16,7 +16,7 @@ const OrderSummary = () => {
   const total = subtotal + shipping;
   const isCartEmpty = cart.length === 0;
   return (
-    <div className="bg-base-200 p-4 rounded space-y-4 shadow-2xl px-9">
+    <div className="bg-base-200 p-4 rounded space-y-4 shadow-2xl px-9 dark:text-white dark:bg-[#140b1e]">
       <h1 className="text-2xl font-bold">Order Summary</h1>
       <hr className="mb-10" />
       <h3>Items in Cart</h3>

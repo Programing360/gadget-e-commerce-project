@@ -19,26 +19,18 @@ const useCart = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(UseContext);
 
+  const userId = user ? user.email : getGuestUserId();
+
   const {
     isLoading,
     refetch,
-    data:cart = [],
+    data: cart = [],
   } = useQuery({
-    queryKey: ["cartData", user?.email || "guest"],
+    queryKey: ["cartData", userId],
     queryFn: async () => {
-      const userId = user ? user?.email : getGuestUserId();
-
-      const res = await axiosSecure.get("/cartData");
-      const data = res.data;
-
-      // 🔥 Correct filtering
-      const userCart = data?.filter(
-        (item) => item.userId === userId
-      );
-
-      return userCart;
+      const res = await axiosSecure.get(`/cartData?userId=${userId}`);
+      return res.data;
     },
-    enabled: true,
   });
 
   return [cart, refetch, isLoading];

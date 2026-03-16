@@ -35,6 +35,7 @@ const AuthProvider = ({ children }) => {
 };
 
 
+// email verification
 
   const googleProvider = new GoogleAuthProvider();
 
@@ -54,6 +55,7 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
         if (currentUser) {
           axiosSecure.post("/jwt", { email: currentUser?.email }).then((res) => {
+            console.log(res.data)
             if (res.data?.token) {
               localStorage.setItem("access-token", res.data.token);
             } else {

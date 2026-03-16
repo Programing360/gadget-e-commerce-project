@@ -124,8 +124,9 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {values.map((item, index) => (
               <div
+              data-aos="flip-left"
                 key={index}
-                className="bg-white rounded-3xl shadow-lg p-8 text-center hover:shadow-xl transition"
+                className="bg-white rounded-3xl shadow-lg p-8 text-center hover:shadow-xl transition hover:bg-gray-100 cursor-pointer"
               >
                 {/* Icon */}
                 <div className="w-16 h-16 mx-auto mb-5 flex items-center justify-center rounded-full bg-indigo-500">
@@ -151,7 +152,7 @@ const About = () => {
 
             {/* Description */}
             <p className="text-lg text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed">
-              Join content creators and tech enthusiasts who trust BDSHOP for
+              Join content creators and tech enthusiasts who trust Zeroomiro for
               100% original electronics. Discover authentic products, expert
               guidance, and exceptional support since 2014.
             </p>

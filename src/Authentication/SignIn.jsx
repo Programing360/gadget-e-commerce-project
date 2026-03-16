@@ -1,129 +1,187 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FaLock, FaUser } from "react-icons/fa";
-import { MdEmail, MdPassword } from "react-icons/md";
+import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
 import { UseContext } from "../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
+import { sendEmailVerification } from "firebase/auth";
+
 const SignIn = () => {
-  const { register, handleSubmit } = useForm();
-  const { createUser, googleLogin } = useContext(UseContext);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const { createUser, googleLogin, UserLogout } = useContext(UseContext);
   const navigate = useNavigate();
-  const notify = () => toast("User Login successful!");
+
+  const password = watch("password");
+
+  // const notify = () => toast("Registration successful!");
 
   const handleRegisterForm = (data) => {
-    createUser(data.email, data.password).then((res) => {
-      if (res.user) {
-        navigate("/");
-        notify();
+    createUser(data.email, data.password).then(async (res) => {
+      const user = res.user;
+
+      if (user) {
+        await sendEmailVerification(user);
+
+        toast("Verification email sent. Please check your email.");
+
+        await UserLogout(); // 🔥 logout
+
+        navigate("/login");
       }
     });
   };
 
   const handleSocialLogin = () => {
-    googleLogin()
-    .then(res => {
-        if(res.user){
-            navigate('/')
-        }
-    })
-  }
+    googleLogin().then((res) => {
+      if (res.user) {
+        toast("Google Login Successful!");
+        navigate("/");
+      }
+    });
+  };
 
   return (
     <div className="hero bg-base-200 min-h-screen md:py-30 p-3">
-      <div className="card bg-base-100 w-full lg:max-w-3xl md:max-w-xl shrink-0 shadow-2xl">
-        <div className="flex items-center flex-col-reverse md:flex-row-reverse">
+      <div className="card bg-base-100 w-full lg:max-w-3xl md:max-w-xl shadow-2xl">
+        <div className="flex flex-col-reverse md:flex-row-reverse">
+          {/* FORM SECTION */}
           <div className="card-body w-full">
             <h1 className="text-center text-3xl font-bold">Registration</h1>
-            <form onSubmit={handleSubmit(handleRegisterForm)}>
-              <fieldset className="fieldset ">
-                <div className="relative">
-                  <label className="label">Name</label>
-                  <input
-                    type="text"
-                    {...register("text")}
-                    className="input w-full outline-0 relative border-cyan-700"
-                    placeholder="UserName"
-                  />
-                  <FaUser className="absolute right-4 top-8 "></FaUser>
-                </div>
-                <div className="relative">
-                  <label className="label">Email</label>
-                  <input
-                    type="email"
-                    {...register("email", { required: true })}
-                    className="input w-full outline-0 border-cyan-700"
-                    placeholder="Email"
-                  />
-                  <MdEmail className="absolute right-4 top-8"></MdEmail>
-                </div>
 
-                <div className="relative">
-                  <label className="label">Password</label>
-                  <input
-                    type="password"
-                    {...register("password", { required: true })}
-                    className="input w-full outline-0 border-cyan-700"
-                    placeholder="Password"
-                  />
-                  <FaLock className="absolute right-4 top-8"></FaLock>
-                </div>
-                <div>
-                  <a className="link link-hover">Forgot password?</a>
-                </div>
-                <button className="btn bg-cyan-700 text-white mt-4">
-                  Register
-                </button>
-              </fieldset>
+            <form onSubmit={handleSubmit(handleRegisterForm)}>
+              {/* NAME */}
+              <div className="relative mt-3">
+                <label className="label">Name</label>
+                <input
+                  type="text"
+                  {...register("name", {
+                    required: "Name is required",
+                    minLength: {
+                      value: 3,
+                      message: "Name must be at least 3 characters",
+                    },
+                  })}
+                  className="input w-full border-cyan-700"
+                  placeholder="User Name"
+                />
+                <FaUser className="absolute right-4 top-9" />
+
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{errors.name.message}</p>
+                )}
+              </div>
+
+              {/* EMAIL */}
+              <div className="relative mt-3">
+                <label className="label">Email</label>
+                <input
+                  type="email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Invalid email address",
+                    },
+                  })}
+                  className="input w-full border-cyan-700"
+                  placeholder="Email"
+                />
+                <MdEmail className="absolute right-4 top-9" />
+
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                )}
+              </div>
+
+              {/* PASSWORD */}
+              <div className="relative mt-3">
+                <label className="label">Password</label>
+                <input
+                  type="password"
+                  {...register("password", {
+                    required: "Password required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                  className="input w-full border-cyan-700"
+                  placeholder="Password"
+                />
+                <FaLock className="absolute right-4 top-9" />
+
+                {errors.password && (
+                  <p className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              {/* CONFIRM PASSWORD */}
+              <div className="mt-3">
+                <label className="label">Confirm Password</label>
+                <input
+                  type="password"
+                  {...register("confirmPassword", {
+                    required: "Confirm password required",
+                    validate: (value) =>
+                      value === password || "Passwords do not match",
+                  })}
+                  className="input w-full border-cyan-700"
+                  placeholder="Confirm Password"
+                />
+
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+
+              <button className="btn bg-cyan-700 text-white mt-5 w-full">
+                Register
+              </button>
             </form>
-            <div className="text-center mt-4">
+
+            {/* SOCIAL LOGIN */}
+
+            <div className="text-center mt-5">
               <p>or register with social platforms</p>
+
               <button
                 onClick={handleSocialLogin}
-              className="btn bg-white text-black border-[#e5e5e5] mt-4">
-                <svg
-                  aria-label="Google logo"
-                  width="16"
-                  height="16"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <g>
-                    <path d="m0 0H512V512H0" fill="#fff"></path>
-                    <path
-                      fill="#34a853"
-                      d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
-                    ></path>
-                    <path
-                      fill="#4285f4"
-                      d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
-                    ></path>
-                    <path
-                      fill="#fbbc02"
-                      d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
-                    ></path>
-                    <path
-                      fill="#ea4335"
-                      d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
-                    ></path>
-                  </g>
-                </svg>
+                className="btn bg-white text-black border mt-4 active:scale-95"
+              >
                 Login with Google
               </button>
             </div>
           </div>
-          <div className="bg-cyan-700 md:rounded-r-[70px] md:py-40 login text-center text-white leading-14">
-            <h1 className="lg:text-3xl text-2xl font-bold">Welcome Back!</h1>
-            <p>Already have an account?</p>
+
+          {/* RIGHT SIDE */}
+
+          <div className="bg-cyan-700 md:rounded-r-[70px] md:py-40 text-center text-white p-6">
+            <h1 className="text-3xl font-bold">Welcome Back!</h1>
+
+           
+
             <Link to="/login">
-              <button className="border px-8 rounded-xl border-blue-500 hover:bg-cyan-800 register-btn">
+              <button className="active:scale-95 border px-8 rounded-xl border-blue-500 hover:bg-cyan-800 btn register-btn mt-4">
                 Login
               </button>
-              <ToastContainer></ToastContainer>
             </Link>
+             <p className="mt-3">Already have an account?</p>
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };

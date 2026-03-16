@@ -19,7 +19,6 @@ const Dashboard = () => {
     (sum, item) => sum + item.total,
     0,
   );
-  // const appro
   const totalLoss = totalPriceOfCancel ? (totalPriceOfOrders / totalPriceOfCancel) % 100 : 0;
   return (
     <main className="p-6">

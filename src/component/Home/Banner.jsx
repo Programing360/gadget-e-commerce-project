@@ -71,10 +71,10 @@ const Banner = () => {
 
           <div className="flex items-center gap-3 py-2">
             <img className="w-10 h-10 rounded-full" src={logoIcon} alt="" />
-            <h1 className="text-xl font-bold dark:text-black">
-              Zeroo<span className="text-[#ff4e5c]">m</span>
-              <span className="text-[#fdb529]">iro</span>
-            </h1>
+            <h1 className="text-xl md:text-2xl font-bold text-[#FF6D1F]">
+                Zeroo<span className="text-[#fdb529]">m</span>
+                <span className="text-[#FF6D1F]">iro</span>
+              </h1>
           </div>
 
           <p className="text-red-500 mb-3 dark:text-black">

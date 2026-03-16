@@ -63,15 +63,15 @@ const NavBar = () => {
   // navber animition scroll---------------
 
   return (
-    <div className="sticky top-0 z-50 bg-white ">
-      <div className="navbar bg-white md:px-10 w-full mx-auto relative">
+    <div className="sticky top-0 z-50 bg-[#131921] ">
+      <div className="navbar bg-[#131921] md:px-10 w-full mx-auto relative">
         <div className="flex-1">
           <div className="flex items-center gap-0">
-            <Link className="flex items-center" to="/">
+            <Link className="flex items-center gap-2" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
-              <h1 className="text-xl md:text-2xl font-bold text-[#000000]">
-                Zeroo<span className="text-[#ff4e5c]">m</span>
-                <span className="text-[#fdb529]">iro</span>
+              <h1 className="text-xl md:text-2xl font-bold text-[#FF6D1F]">
+                Zeroo<span className="text-[#fdb529]">m</span>
+                <span className="text-[#FF6D1F]">iro</span>
               </h1>
             </Link>
           </div>
@@ -151,7 +151,7 @@ const NavBar = () => {
                     src={cartIcon}
                     alt=""
                   />
-                  <span className={user ? "absolute -top-2 -right-3 indicator-item text-white bg-red-500 dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center" : 'absolute -top-2 right-3 indicator-item text-white bg-red-500 dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center'}>
+                  <span className={user ? "absolute -top-2 -right-3 indicator-item text-white bg-[#f08804] dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center" : 'absolute -top-2 right-3 indicator-item text-white bg-[#f08804] dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center'}>
                     {isLoading ? (
                       <span className={user ? "w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" : 'w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin'}></span>
                     ) : cart.length > 0 ? (
@@ -232,7 +232,7 @@ const NavBar = () => {
                 <div
                   tabIndex={0}
                   role="button"
-                  className="btn btn-ghost btn-circle avatar"
+                  className="btn btn-circle avatar dark:bg-white"
                 >
                   <div>
                     <img
@@ -247,7 +247,7 @@ const NavBar = () => {
                   className="menu menu-md dropdown-content bg-base-100 rounded z-1 mt-3 p-4 shadow-2xl "
                 >
                   <div className="text-center mb-4 bg-gray-300 rounded-lg p-6">
-                    {user.email}
+                    <h1 className="dark:text-black">{user.email}</h1>
                     {user.photoURL ? (
                       <img
                         className="rounded-full w-14 mx-auto mt-4"
@@ -262,12 +262,12 @@ const NavBar = () => {
                       />
                     )}
 
-                    <h1 className="font-bold">{user?.displayName}</h1>
+                    <h1 className="font-bold dark:text-black">{user?.displayName}</h1>
                   </div>
                   <li className="">
                     <Link to="/wishList">
                       <div className="flex gap-2">
-                        <img className="w-4 " src={wishListIcon} alt="" />
+                        <img className="w-4 dark:bg-white" src={wishListIcon} alt="" />
                         <a className="justify-between">Wish List</a>
                       </div>
                     </Link>
@@ -276,7 +276,7 @@ const NavBar = () => {
                     <li>
                       <Link to="/adminDashboard">
                         <div className="flex">
-                          <img className="w-5" src={adminIcon} alt="" />
+                          <img className="w-5 " src={adminIcon} alt="" />
                           <a>Admin Page</a>
                         </div>
                       </Link>

@@ -16,26 +16,26 @@ const Dock = () => {
       <NavLink
         to="/"
         className={({ isActive }) =>
-          isActive ? "bg-gray-200 font-bold" : "text-gray-600"
+          isActive ? "bg-[#d8e6f8] font-bold" : "text-gray-600"
         }
       >
         <button>
-          <img className="w-6" src={homeIcon} alt="" />
+          <img className="w-6 font-bold" src={homeIcon} alt="" />
           
         </button>
       </NavLink>
 
       <NavLink to='/userAllProduct' className={({ isActive }) =>
-          isActive ? "bg-gray-200 font-bold" : "text-gray-600"
+          isActive ? "bg-[#d8e6f8] font-bold" : "text-gray-600"
         }>
         <button className="">
-        <img className="w-6" src={windowsIcon} alt="" />
+        <img className="w-6 font-bold" src={windowsIcon} alt="" />
         
       </button>
       </NavLink>
 
       <NavLink to='/cartDetails' className={({ isActive }) =>
-          isActive ? "bg-gray-200 font-bold" : "text-gray-600"
+          isActive ? "bg-[#d8e6f8] font-bold" : "text-gray-600"
         }>
         <button>
         <img className="w-6" src={shoppingIcon} alt="" />
@@ -43,7 +43,7 @@ const Dock = () => {
       </button>
       </NavLink>
       <NavLink to={user === 'fhlimon360@gmail.com' ? '/adminDashbord' : '/userDashBoard' } className={({ isActive }) =>
-          isActive ? "bg-gray-200 font-bold" : "text-gray-600"
+          isActive ? "bg-[#d8e6f8] font-bold" : "text-gray-600"
         }>
         <button >
         <img className="w-6" src={searchIcon} alt="" />

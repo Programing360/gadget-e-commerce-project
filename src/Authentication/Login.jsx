@@ -7,7 +7,7 @@ import { UseContext } from "../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 const Login = () => {
   const { register, handleSubmit, watch } = useForm();
-  const { signInUser, googleLogin, forgetPassword } = useContext(UseContext);
+  const { signInUser, googleLogin, forgetPassword,UserLogout } = useContext(UseContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -17,7 +17,13 @@ const Login = () => {
   const handleLoginForm = (data) => {
     signInUser(data.email, data.password)
       .then((res) => {
-        if (res.user) {
+        const user = res.user;
+        if (!user.emailVerified) {
+          toast("Please verify your email first");
+          UserLogout();
+          return;
+        }
+        if (user) {
           navigate(from, { replace: true });
           notify();
         }
@@ -99,7 +105,7 @@ const Login = () => {
               <p>or register with social platforms</p>
               <button
                 onClick={handleSocialLogin}
-                className="btn bg-white text-black border-[#e5e5e5] mt-4"
+                className="btn bg-white text-black border-[#e5e5e5] mt-4 active:scale-95"
               >
                 <svg
                   aria-label="Google logo"
@@ -136,7 +142,7 @@ const Login = () => {
             <h1 className="lg:text-3xl text-2xl font-bold">Welcome Back!</h1>
             <p>Don't have an account?</p>
             <Link to="/register">
-              <button className="border px-8 rounded-xl border-blue-500 hover:bg-cyan-800 register-btn">
+              <button className="active:scale-95 border px-8 rounded-xl border-blue-500 hover:bg-cyan-800 btn register-btn">
                 Register
               </button>
               <ToastContainer></ToastContainer>

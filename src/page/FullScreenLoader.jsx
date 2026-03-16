@@ -7,7 +7,7 @@ const FullScreenLoader = () => {
 
   useEffect(() => {
     if (navigation.state === "loading") {
-      setVisible(true);
+     () => setVisible(true);
 
       const timer = setTimeout(() => {
         setVisible(false);
@@ -15,7 +15,7 @@ const FullScreenLoader = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [navigation.state]);
+  }, [navigation.state,setVisible]);
 
   if (!visible) return null;
 

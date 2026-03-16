@@ -65,11 +65,11 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 dark:bg-[#0d0518]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
 
         {/* LEFT SIDE */}
-        <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded shadow">
+        <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded shadow dark:text-white dark:bg-[#140b1e]">
 
           <h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
@@ -110,11 +110,11 @@ const CheckoutForm = () => {
                   onClick={() => setDeliveryArea("pickup")}
                   className={`border rounded-lg p-4 cursor-pointer transition ${
                     deliveryArea === "pickup"
-                      ? "border-blue-500 bg-blue-50"
+                      ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ">
                     <Store size={18} />
                     <p className="font-medium">Office Pickup</p>
                   </div>
@@ -126,11 +126,11 @@ const CheckoutForm = () => {
                   onClick={() => setDeliveryArea("inside")}
                   className={`border rounded-lg p-4 cursor-pointer transition ${
                     deliveryArea === "inside"
-                      ? "border-blue-500 bg-blue-50"
+                      ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ">
                     <MapPin size={18} />
                     <p className="font-medium">Inside Dhaka</p>
                   </div>
@@ -142,11 +142,11 @@ const CheckoutForm = () => {
                   onClick={() => setDeliveryArea("outside")}
                   className={`border rounded-lg p-4 cursor-pointer transition ${
                     deliveryArea === "outside"
-                      ? "border-blue-500 bg-blue-50"
+                      ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ">
                     <Truck size={18} />
                     <p className="font-medium">Outside Dhaka</p>
                   </div>
@@ -182,7 +182,7 @@ const CheckoutForm = () => {
               </div>
 
               {paymentType === "partial" && (
-                <div className="bg-blue-50 p-3 rounded text-sm mb-4">
+                <div className="bg-blue-50 p-3 rounded text-sm mb-4 dark:text-black">
                   <p>Pay Now: ৳{partialAmount}</p>
                   <p>Remaining: ৳{remaining}</p>
                 </div>
@@ -195,7 +195,7 @@ const CheckoutForm = () => {
                   onClick={() => setPaymentMethod("cod")}
                   className={`border rounded-lg p-4 cursor-pointer ${
                     paymentMethod === "cod"
-                      ? "border-blue-500 bg-blue-50"
+                      ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
@@ -209,7 +209,7 @@ const CheckoutForm = () => {
                   onClick={() => setPaymentMethod("bkash")}
                   className={`border rounded-lg p-4 cursor-pointer ${
                     paymentMethod === "bkash"
-                      ? "border-blue-500 bg-blue-50"
+                      ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
@@ -223,7 +223,7 @@ const CheckoutForm = () => {
                   onClick={() => setPaymentMethod("online")}
                   className={`border rounded-lg p-4 cursor-pointer ${
                     paymentMethod === "online"
-                      ? "border-blue-500 bg-blue-50"
+                      ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >

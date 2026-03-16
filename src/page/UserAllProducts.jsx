@@ -24,6 +24,7 @@ const UserAllProducts = () => {
   // const [products, setProducts] = useState([]);
   const { products, setProducts, user } = useContext(UseContext);
   const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState(false);
   const [activeSort, setActiveSort] = useState("");
   const [cart, refetch] = useCart();
   const axiosSecure = useAxiosSecure();
@@ -52,7 +53,13 @@ const UserAllProducts = () => {
     const sorted = [...products].sort((a, b) => b.price - a.price);
     setProducts(sorted);
   };
+  const handleCategoryFilter = (categoryName) => {
+    const filtered = allProduct.filter(
+      (product) => product.category.toLowerCase() === categoryName.toLowerCase(),
+    );
 
+    setProducts(filtered);
+  };
   // add To Cart---------------
 
   const handleCartData = async (id) => {
@@ -105,19 +112,29 @@ const UserAllProducts = () => {
 
         {/* MAIN CONTENT */}
         <main className="md:col-span-9 md:p-4 relative">
-          {/* SORT HEADER */}
-          <div className="flex justify-between items-center mb-4">
-            <h1
-              onClick={() => setOpen(!open)}
-              className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black"
-            >
-              Best Selling <IoIosArrowDown />
-            </h1>
+          <div className="flex justify-between">
+            <div className="flex justify-between items-center mb-4 md:hidden">
+              <h1
+                onClick={() => setCategory(!category)}
+                className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black"
+              >
+                Category <IoIosArrowDown />
+              </h1>
+            </div>
+            {/* SORT HEADER */}
+            <div className="flex justify-between items-center mb-4">
+              <h1
+                onClick={() => setOpen(!open)}
+                className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black"
+              >
+                Best Selling <IoIosArrowDown />
+              </h1>
+            </div>
           </div>
 
           {/* SORT DROPDOWN */}
           {open && (
-            <ul className="menu bg-base-100 rounded-lg shadow-xl w-56 absolute z-20">
+            <ul className="menu bg-base-100 rounded-lg shadow-xl w-56 absolute z-20 right-0 md:left-0 ">
               <li>
                 <button
                   onClick={() => {
@@ -183,6 +200,38 @@ const UserAllProducts = () => {
               </li>
             </ul>
           )}
+          {category && (
+            <ul className="menu bg-base-100 rounded-lg shadow-xl w-56 absolute z-20">
+              <li>
+                <button onClick={() => setProducts(allProduct)}>
+                  All Products
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleCategoryFilter("Electronics")}>
+                  Electronics
+                </button>
+              </li>
+
+              <li>
+                <button onClick={() => handleCategoryFilter("Laptop")}>
+                  Laptop
+                </button>
+              </li>
+
+              <li>
+                <button onClick={() => handleCategoryFilter("Mobile")}>
+                  Mobile
+                </button>
+              </li>
+
+              <li>
+                <button onClick={() => handleCategoryFilter("Shoe")}>
+                  Shoe
+                </button>
+              </li>
+            </ul>
+          )}
 
           {/* PRODUCTS GRID */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black">
@@ -192,7 +241,7 @@ const UserAllProducts = () => {
                 className="bg-white rounded-xl shadow hover:shadow-lg transition hover:border-indigo-600 delay-75 hover:text-blue-500  duration-150"
               >
                 <Link to={`/productDetails/${item._id}`}>
-                  <figure className="w-full h-48 md:h-64 overflow-hidden rounded-t-xl">
+                  <figure className="w-full h-48 md:h-64 object-fill overflow-hidden rounded-t-xl">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -212,9 +261,9 @@ const UserAllProducts = () => {
                     <b>৳{item.discountPrice}</b>
                     <del className="text-gray-500">{item.price}</del>
                   </div>
-                  <p className="text-xs text-gray-500 line-clamp-2">
+                  {/* <p className="text-xs text-gray-500 line-clamp-2">
                     {item.description}
-                  </p>
+                  </p> */}
 
                   <div className="flex justify-end">
                     {/* <span className="badge badge-outline badge-sm">
@@ -235,12 +284,13 @@ const UserAllProducts = () => {
                 </div>
               </div>
             ))}
-            {products.length === 0 && (
-              <h1 className="text-center text-gray-500 mt-4 text-2xl w-full ">
+            
+          </div>
+          {products.length === 0 && (
+              <h1 className="text-center text-gray-500 mt-4 text-2xl max-w-full mx-auto ">
                 No product found
               </h1>
             )}
-          </div>
         </main>
       </div>
     </div>

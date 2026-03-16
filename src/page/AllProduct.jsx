@@ -1,15 +1,32 @@
 import ProductCart from "./ProductCart";
 
 import useAllProduct from "../Hook/useAllProduct";
+import { useAxiosSecure } from "../Hook/useAxiosSecure";
+import { useContext, useEffect } from "react";
+import { UseContext } from "../Context/AuthContext";
 
 const AllProduct = () => {
-  // const {allProducts, setAllProducts} = useContext(UseContext);
+  const {allProducts, setAllProducts} = useContext(UseContext);
   const [allProduct, , isLoading] = useAllProduct();
-  // const axiosAllProduct = useAxiosSecure();
-  // // useEffect(() => {
-  // //   axiosAllProduct.get("/allProducts").then((res) => setAllProducts(res.data));
-  // // }, [axiosAllProduct, setAllProducts]);
-  // console.log(allProduct);
+  const axiosAllProduct = useAxiosSecure();
+
+  useEffect(() => {
+    // fetch('http://localhost:5000' {
+    //   method: GET,
+    //   headers:{
+    //     'content-type': 'application/json'
+    //   },
+    //   body:JSON.stringify('allProducts')
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   console.log(data);
+    // })
+    
+    axiosAllProduct.get("/allProducts").then((res) => console.log(res.data));
+  }, [axiosAllProduct, setAllProducts]);
+  
+  console.log(allProduct);
   return (
     <div className="mt-14 container lg:w-10/12 mx-auto lg:p-10 p-4">
       <h1 className="text-center text-3xl text-[#111827] font-bold bg-gray-100 py-4">

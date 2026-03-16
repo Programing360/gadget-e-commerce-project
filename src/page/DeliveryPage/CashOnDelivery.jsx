@@ -74,7 +74,7 @@ const CashOnDelivery = () => {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-3">
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-3 dark:text-black">
       <div className="bg-white w-full max-w-lg rounded-lg shadow-lg max-h-[95vh] overflow-y-auto relative">
         {/* Close */}
         <button
@@ -89,12 +89,12 @@ const CashOnDelivery = () => {
             ক্যাশ অন ডেলিভারিতে অর্ডার করতে আপনার তথ্য দিন
           </h2>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
             {/* Name */}
             <input
               type="text"
               placeholder="আপনার নাম"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full dark:text-white"
               {...register("name", { required: "নাম লিখুন" })}
             />
             {errors.name && (
@@ -105,7 +105,7 @@ const CashOnDelivery = () => {
             <input
               type="text"
               placeholder="ফোন নাম্বার"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full dark:text-white "
               {...register("mobileNumber", {
                 required: "ফোন নাম্বার দিন",
                 minLength: {
@@ -123,7 +123,7 @@ const CashOnDelivery = () => {
             {/* Address */}
             <textarea
               placeholder="এড্রেস"
-              className="textarea textarea-bordered w-full"
+              className="textarea textarea-bordered w-full dark:text-white"
               {...register("address", { required: "এড্রেস দিন" })}
             />
             {errors.address && (
@@ -131,7 +131,7 @@ const CashOnDelivery = () => {
             )}
 
             {/* Shipping */}
-            <div className="border rounded p-3 space-y-2 text-sm md:text-base">
+            <div className="border rounded p-3 space-y-2 text-sm md:text-base ">
               <label className="flex justify-between items-center">
                 <span>
                   <input
@@ -227,7 +227,7 @@ const CashOnDelivery = () => {
               />
             </div>
 
-            <button type="submit" className="btn bg-cyan-500 w-full">
+            <button type="submit" className="btn bg-cyan-500 w-full active:scale-95">
               অর্ডার কনফার্ম করুন
             </button>
           </form>

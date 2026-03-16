@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link, useLoaderData } from "react-router";
+import React, { useContext, useState } from "react";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import { UseContext } from "../../Context/AuthContext";
@@ -7,6 +7,8 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import CustomerView from "./CustomerView";
+import useAllProduct from "../../Hook/useAllProduct";
 
 /* 🔑 Guest ID helper */
 const getGuestUserId = () => {
@@ -19,21 +21,72 @@ const getGuestUserId = () => {
 };
 
 const ProductDetails = () => {
-  const { _id, name, image, stock, price, discountPrice, description } =
-    useLoaderData();
+  const {
+    _id,
+    name,
+    image,
+    stock,
+    price,
+    discountPrice,
+    description,
+    image1,
+    category,
+  } = useLoaderData();
 
   const { user } = useContext(UseContext);
   const axiosSecure = useAxiosSecure();
   const [cart, refetch] = useCart();
   const { handleCartIncrement, handleCartDecrement } = useCartItemUpdate();
-
+  const [size, setSize] = useState(null);
+  const isShoe = category?.toLowerCase() === "shoe";
   const cartItem = cart.find((item) => item.productId === _id);
+  const navigate = useNavigate();
+
+  
+  
+  const handleBuyNow = async () => {
+  const existing = cart.find((item) => item.productId === _id);
+
+  // 🟢 If already in cart → just navigate
+  if (existing) {
+    navigate("/onlinePayment");
+    return;
+  }
+
+  const userId = user ? user.email : getGuestUserId();
+
+  const cartItem = {
+    productId: _id,
+    name,
+    price: discountPrice,
+    quantity: 1,
+    image,
+    size,
+    userId,
+    email: user?.email || null,
+  };
+
+  const res = await axiosSecure.post("/cartData", cartItem);
+
+  if (res.data?.insertedId) {
+    // toast.success("Product added to cart 🛒");
+    refetch();
+  }
+
+  // 🔥 always navigate
+  navigate("/onlinePayment");
+};
 
   /* 🛒 Add to cart */
   const handleCartData = async (_id) => {
     const existing = cart.find((item) => item.productId === _id);
-
     if (existing) {
+      navigate("/onlinePayment");
+      return;
+    }
+
+
+    if (existing > 0) {
       const newQty = existing.quantity + 1;
       const { data } = await axiosSecure.patch(`/cartData/${existing._id}`, {
         quantity: newQty,
@@ -42,6 +95,7 @@ const ProductDetails = () => {
       if (data.modifiedCount > 0) {
         toast.success("Product also added to cart 🛒");
         refetch();
+        navigate("/onlinePayment");
       }
       return;
     }
@@ -54,6 +108,7 @@ const ProductDetails = () => {
       price: discountPrice,
       quantity: 1,
       image,
+      size,
       userId,
       email: user?.email || null,
     };
@@ -64,6 +119,7 @@ const ProductDetails = () => {
       toast.success("Product added to cart 🛒");
       refetch();
     }
+    
   };
 
   return (
@@ -78,7 +134,7 @@ const ProductDetails = () => {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/products">Products</Link>
+                <Link to="/userAllProduct">Products</Link>
               </li>
               <li>{name}</li>
             </ul>
@@ -105,20 +161,31 @@ const ProductDetails = () => {
                   className="object-contain max-h-100"
                 />
               </div>
-              <div>
-                <img
-                  src={image}
-                  alt={name}
-                  className="object-contain max-h-100"
-                />
-              </div>
+
+              {image1 ? (
+                <div>
+                  <img
+                    src={image1}
+                    alt={name}
+                    className="object-contain max-h-100"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <img
+                    src={image}
+                    alt={name}
+                    className="object-contain max-h-100"
+                  />
+                </div>
+              )}
             </Carousel>
 
             {/* 📦 Info */}
             <div className="space-y-4">
               <p>
-                <span className="font-semibold">Availability:</span>{" "}
-                <span className="text-emerald-600">{stock} in stock</span>
+                <span className="font-semibold">Availability:</span>
+                <span className="text-emerald-600"> {stock} in stock</span>
               </p>
 
               <h2 className="text-2xl md:text-4xl font-bold">{name}</h2>
@@ -128,6 +195,7 @@ const ProductDetails = () => {
                   ৳{discountPrice}
                 </span>
                 <span className="line-through text-gray-400">৳{price}</span>
+                <span className="bg-indigo-200 text-indigo-700 px-2 rounded-full">Save TK {price-discountPrice}</span>
               </div>
 
               {/* Quantity */}
@@ -172,9 +240,33 @@ const ProductDetails = () => {
                   </div>
                 </div>
               )}
-
-              <Link to="/onlinePayment">
-                <button className="btn w-full bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white mb-4 active:scale-95">
+              <div>
+                {isShoe && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">
+                      Category
+                    </label>
+                    <select
+                      className="w-full border rounded-md px-3 py-2"
+                      // value={category}
+                      onChange={(e) => setSize(e.target.value)}
+                    >
+                      <option value="All">Size</option>
+                      <option value="39">39</option>
+                      <option value="40">40</option>
+                      <option value="41">41</option>
+                      <option value="42">42</option>
+                      <option value="43">43</option>
+                      <option value="44">44</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+              <Link>
+                <button
+                  onClick={() => handleBuyNow(_id)}
+                  className="btn w-full bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white mb-4 active:scale-95"
+                >
                   Buy Now
                 </button>
               </Link>
@@ -200,13 +292,14 @@ const ProductDetails = () => {
               </a>
 
               <p className="bg-gray-100 p-4 rounded-xl text-sm text-gray-700">
-                <span className="font-semibold">Description:</span>{" "}
+                <span className="font-semibold">Description:</span>
                 {description}
               </p>
             </div>
           </div>
         </div>
       </div>
+      <CustomerView></CustomerView>
     </div>
   );
 };

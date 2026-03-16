@@ -1,76 +1,90 @@
-import React from "react";
+import React, { useRef } from "react";
+import laptop from "../../assets/assets/Laptop.jpg";
 
 const ItemList = () => {
+
+  const sliderRef = useRef(null);
+
   const products = [
-    { id: 1, title: "Apple", img: "https://picsum.photos/200?1" },
-    { id: 2, title: "Orange", img: "https://picsum.photos/200?2" },
-    { id: 3, title: "Banana", img: "https://picsum.photos/200?3" },
-    { id: 4, title: "Mango", img: "https://picsum.photos/200?4" },
-    { id: 5, title: "Grapes", img: "https://picsum.photos/200?5" },
+    { id: 1, title: "Laptop", img: laptop },
+    { id: 2, title: "Laptop", img: laptop },
+    { id: 3, title: "Laptop", img: laptop },
+    { id: 4, title: "Laptop", img: laptop },
+    { id: 5, title: "Laptop", img: laptop },
+    { id: 6, title: "Laptop", img: laptop },
+    { id: 7, title: "Laptop", img: laptop },
+    { id: 8, title: "Laptop", img: laptop },
   ];
 
+  const slideLeft = () => {
+    sliderRef.current.scrollBy({
+      left: -300,
+      behavior: "smooth",
+    });
+  };
+
+  const slideRight = () => {
+    sliderRef.current.scrollBy({
+      left: 300,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <div className="container mx-auto py-16 bg-gray-50">
-      <h2 className="text-3xl font-bold text-center mb-10 dark:text-black">
+    <div className="container mx-auto py-16 relative">
+
+      <h2 className="text-3xl font-bold text-center mb-10">
         Featured Products
       </h2>
 
-      {/* Mobile Slider */}
-      <div className="md:hidden overflow-x-auto scrollbar-hide">
-        <div className="flex gap-4 px-4 w-max">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="
-                min-w-[160px]
-                p-6 flex-shrink-0
-                flex flex-col items-center justify-center
-                border-4 border-gray-300 rounded-full
-                bg-white
-              "
-            >
-              <img
-                src={product.img}
-                alt={product.title}
-                className="w-20 h-20 rounded-full mb-2"
-              />
-              <h3 className="text-sm font-semibold">
-                {product.title}
-              </h3>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Left Button */}
+      <button
+        onClick={slideLeft}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+      >
+        ‹
+      </button>
 
-      {/* Desktop Grid */}
+      {/* Right Button */}
+      <button
+        onClick={slideRight}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+      >
+        ›
+      </button>
+
+      {/* Slider */}
       <div
-        className="
-          hidden md:grid
-          grid-cols-3 lg:grid-cols-5
-          gap-6 px-6
-        "
+        ref={sliderRef}
+        className="flex gap-6 overflow-hidden px-12"
       >
         {products.map((product) => (
           <div
             key={product.id}
             className="
-              p-6 flex flex-col items-center justify-center
-              border-4 border-gray-300 rounded-full
-              bg-white
-              hover:border-dashed transition
+            min-w-[50%]
+            sm:min-w-[33%]
+            md:min-w-[25%]
+            lg:min-w-[20%]
             "
           >
-            <img
-              src={product.img}
-              alt={product.title}
-              className="w-24 h-24 rounded-full mb-3"
-            />
-            <h3 className="text-lg font-semibold">
-              {product.title}
-            </h3>
+            <div className="p-6 bg-white border border-gray-300 hover:shadow-lg transition">
+
+              <img
+                src={product.img}
+                alt={product.title}
+                className="w-28 h-20 mx-auto mb-4 object-contain"
+              />
+
+              <h3 className="text-center font-semibold">
+                {product.title}
+              </h3>
+
+            </div>
           </div>
         ))}
       </div>
+
     </div>
   );
 };

@@ -256,7 +256,7 @@ const handleFAQ = () => {
             ) : (
               <Link
                 to="/login"
-                state={{ from: location }}
+                state={{ from}}
                 className="text-blue-600 hover:underline"
               >
                 <div className="flex items-center gap-4 bg-gray-100 hover:bg-gray-200 transition p-4 rounded-lg cursor-pointer">
@@ -275,7 +275,7 @@ const handleFAQ = () => {
 
             {/* FAQs */}
             <Link >
-              <div onClick={handleFAQ} className="flex items-center gap-4 bg-gray-100 hover:bg-gray-200 transition p-4 rounded-lg cursor-pointer start-0">
+              <div onClick={handleFAQ} className="flex items-center gap-4 bg-gray-100 mt-4 hover:bg-gray-200 transition p-4 rounded-lg cursor-pointer start-0">
                 <div className="bg-purple-200 text-purple-700 p-3 rounded-lg">
                   <HelpCircle size={18} />
                 </div>
