@@ -27,7 +27,7 @@ const CategoryNav = () => {
   return (
     <motion.div
       layoutId="underline"
-      className={`fixed top-16 left-0 w-full bg-white shadow-md z-20
+      className={`fixed top-15 md:top-16 left-0 w-full bg-white shadow-md z-20
       transition-transform duration-300 ease-in-out
       ${show ? "translate-y-0" : "-translate-y-full"}`}
     >

@@ -4,16 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 
 const useOrderList = () => {
   const axiosSecure = useAxiosSecure();
+
   const {
     isLoading,
     refetch,
     data: orders = [],
   } = useQuery({
-    queryKey: ["orders"],
-    
+   queryKey: ["adminOrders"],
+   
     queryFn: async () => {
-      const res = await axiosSecure.get("/orders");
-      return res.data;
+      const { data } = await axiosSecure.get("/admin/orders");
+      return data;
     },
   });
   const unreadCount = orders.filter(n => !n.isRead).length;

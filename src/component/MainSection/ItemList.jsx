@@ -1,15 +1,17 @@
 import React, { useRef } from "react";
 import laptop from "../../assets/assets/Laptop.jpg";
-
+import electronics from '../../assets/assets/Consumer-Electronics-Appliance_blog.jpeg'
+import phone from '../../assets/assets/phone.jpg'
+import shoe from '../../assets/assets/photo-1560769629-975ec94e6a86.avif'
 const ItemList = () => {
 
   const sliderRef = useRef(null);
 
   const products = [
     { id: 1, title: "Laptop", img: laptop },
-    { id: 2, title: "Laptop", img: laptop },
-    { id: 3, title: "Laptop", img: laptop },
-    { id: 4, title: "Laptop", img: laptop },
+    { id: 2, title: "Electronics", img: electronics },
+    { id: 3, title: "Phone", img: phone },
+    { id: 4, title: "Shoe", img: shoe },
     { id: 5, title: "Laptop", img: laptop },
     { id: 6, title: "Laptop", img: laptop },
     { id: 7, title: "Laptop", img: laptop },
@@ -56,24 +58,24 @@ const ItemList = () => {
       {/* Slider */}
       <div
         ref={sliderRef}
-        className="flex gap-6 overflow-hidden px-12"
+        className="flex gap-6 overflow-auto md:overflow-hidden px-12"
       >
         {products.map((product) => (
           <div
             key={product.id}
             className="
-            min-w-[50%]
-            sm:min-w-[33%]
+            min-w-full
+            sm:min-w-[100%]
             md:min-w-[25%]
             lg:min-w-[20%]
             "
           >
-            <div className="p-6 bg-white border border-gray-300 hover:shadow-lg transition">
+            <div className="p-6 bg-white border border-gray-300 hover:shadow-xl transition overflow-auto rounded-2xl">
 
               <img
                 src={product.img}
                 alt={product.title}
-                className="w-28 h-20 mx-auto mb-4 object-contain"
+                className="w-full md:w-58 h-50 mx-auto mb-4 object-cover"
               />
 
               <h3 className="text-center font-semibold">

@@ -94,7 +94,7 @@ const CashOnDelivery = () => {
             <input
               type="text"
               placeholder="আপনার নাম"
-              className="input input-bordered w-full dark:text-white"
+              className="input input-bordered w-full dark:text-white outline-0 "
               {...register("name", { required: "নাম লিখুন" })}
             />
             {errors.name && (
@@ -105,7 +105,7 @@ const CashOnDelivery = () => {
             <input
               type="text"
               placeholder="ফোন নাম্বার"
-              className="input input-bordered w-full dark:text-white "
+              className="input input-bordered w-full dark:text-white outline-0 "
               {...register("mobileNumber", {
                 required: "ফোন নাম্বার দিন",
                 minLength: {
@@ -123,7 +123,7 @@ const CashOnDelivery = () => {
             {/* Address */}
             <textarea
               placeholder="এড্রেস"
-              className="textarea textarea-bordered w-full dark:text-white"
+              className="textarea textarea-bordered w-full dark:text-white outline-0 "
               {...register("address", { required: "এড্রেস দিন" })}
             />
             {errors.address && (

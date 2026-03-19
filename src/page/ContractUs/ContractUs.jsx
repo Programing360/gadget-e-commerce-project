@@ -33,7 +33,7 @@ const handleFAQ = () => {
 };
 
   return (
-    <div className="bg-gray-100 min-h-screen mt-16 dark:text-black">
+    <div className="bg-gray-100 min-h-screen mt-20 dark:text-black">
       {/* Top Banner */}
       <div className="bg-[#615fff] text-white text-center py-14 px-4">
         <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>

@@ -53,6 +53,13 @@ const ProductList = () => {
       refetch();
     }
   };
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const handleOrderDetails = (_id) => {
+    
+    const MatchIdWithOrder = orders.find(item => item._id === _id)
+    setSelectedOrder(MatchIdWithOrder);
+    document.getElementById("my_modal_4").showModal()
+  }
 
   const handleOrderCancelBtn = (item) => {
     const id = item._id;
@@ -109,6 +116,7 @@ const ProductList = () => {
               <th>Location</th>
               <th>Payment Status</th>
               <th>Order Status</th>
+              <th>Date</th>
               <th>Qty</th>
               <th>Total Amount</th>
               <th>Order Details</th>
@@ -146,6 +154,7 @@ const ProductList = () => {
                 ) : (
                   <td className="text-amber-700">Pending</td>
                 )}
+                <td>{new Date(item.newDate).toLocaleString()}</td>
                 <td>
                   {item.cart.reduce(
                     (total, current) => total + current.quantity,
@@ -157,38 +166,38 @@ const ProductList = () => {
                 <th>
                   <button
                     onClick={() =>
-                      document.getElementById("my_modal_4").showModal()
+                      handleOrderDetails(item._id)
                     }
                     className="hover:bg-blue-500 border px-4 py-2 rounded-lg hover:shadow-2xl"
                   >
                     View
                   </button>
                 </th>
-                <th className="text-center">
+                <td className="text-center flex">
                   <button
                     onClick={() => handleOrderBtn(item._id)}
                     className={
                       orderCount?.some((order) => order._id === item._id)
-                        ? "btn-disabled btn bg-gray-300 mr-2"
-                        : "btn bg-green-400 rounded mr-2"
+                        ? "btn-disabled btn btn-sm bg-gray-300 mr-2"
+                        : "btn btn-sm bg-green-500 rounded mr-2"
                     }
                   >
                     Confirm
                   </button>
                   <button
                     onClick={() => handleOrderCancelBtn(item)}
-                    className="btn bg-white text-black text-lg rounded mt-2 lg:mt-0"
+                    className="btn btn-sm bg-red-500 text-white"
                   >
                     cancel
                   </button>
-                </th>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
        {/* modal open */}
-      <OrderDetails></OrderDetails>
+      <OrderDetails order={selectedOrder}></OrderDetails>
     </div>
   );
 };

@@ -123,7 +123,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="bg-base-100 min-h-screen mt-14">
+    <div className="bg-base-100 min-h-screen mt-28">
       {/* 🔝 Header */}
       <div className="bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white py-6 text-center">
         <h1 className="text-xl md:text-2xl font-semibold">{name}</h1>

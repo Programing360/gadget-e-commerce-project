@@ -1,6 +1,11 @@
 import React from 'react';
+import useAllProduct from '../../Hook/useAllProduct';
 
 const CustomerView = () => {
+
+    const allProduct = useAllProduct()
+
+    
     return (
         <div className='border-t-2 container mx-auto mt-10'>
             <h1 className='text-xl font-bold mt-3'>Customers who viewed this item also viewed</h1>

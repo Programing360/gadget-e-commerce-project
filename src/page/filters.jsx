@@ -49,9 +49,9 @@ const Filters = () => {
       filtered = filtered.filter(
         (product) => product.price <= Number(maxPrice)
       );
+      setProducts(filtered);
     }
 
-    setProducts(filtered);
   }, [query, category, minPrice, maxPrice, brand, allProduct, setProducts]);
 
   // Clear filters

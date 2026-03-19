@@ -1,23 +1,20 @@
 import React, { useContext, useState } from "react";
+import { UseContext } from "../Context/AuthContext";
+import useAllProduct from "../Hook/useAllProduct";
+import useCart from "../Hook/useCart";
 import { Link } from "react-router";
+import cartImg from "../assets/assets/shopping-bag.png";
 
-import cartImg from "../../assets/assets/shopping-bag.png";
-// import loginImg from "../assets/account_circle_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png";
-
-import useAllProduct from "../../Hook/useAllProduct";
-import useCart from "../../Hook/useCart";
-import { UseContext } from "../../Context/AuthContext";
-
-const SearchInput = () => {
+const SearchField = ({ show, setShow }) => {
   const { user } = useContext(UseContext);
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+
   const [allProduct] = useAllProduct();
   const [cart] = useCart();
-  /* ======================
-        SEARCH HANDLER
-    ====================== */
+
+  /* SEARCH HANDLER */
   const handleSearch = (value) => {
     setQuery(value);
 
@@ -27,62 +24,31 @@ const SearchInput = () => {
     }
 
     const filtered = allProduct.filter((product) =>
-      product.name?.toLowerCase().includes(value.toLowerCase())
+      product.name?.toLowerCase().includes(value.toLowerCase()),
     );
+
     setResults(filtered);
   };
+
+  if (!show) return null;
+
   return (
-    <div className="relative ">
-      {/* TOGGLE */}
-      <input id="top-drawer" type="checkbox" className="peer hidden" />
-
-      {/* SEARCH BUTTON */}
-      <label htmlFor="top-drawer" className="cursor-pointer ">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-10 bg-gray-200 dark:text-black p-2 rounded-full"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </label>
-
-      {/* TOP DRAWER */}
-      <div
-        className="
-                fixed top-0 left-0 w-full bg-gray-300 z-50
-                transform -translate-y-full
-                peer-checked:translate-y-0
-                transition-transform duration-300
-            "
-      >
-        {/* CLOSE */}
-        <label
-          htmlFor="top-drawer"
-          className="btn btn-sm absolute right-4 top-4"
+    <div>
+      <div className="fixed top-0 left-0 w-full bg-gray-300 z-50 transition-all duration-300 ease-in-out">
+        {/* CLOSE BUTTON */}
+        <button
+          onClick={() => setShow(false)}
+          className="absolute right-4 top-4 text-lg font-bold bg-red-300 px-1.5  rounded-full"
         >
           ✕
-        </label>
+        </button>
 
-        {/* SEARCH INPUT */}
-        <div className="pt-16 pb-6 px-4 flex justify-center shadow shadow-gray-600 ">
+        {/* SEARCH SECTION */}
+        <div className="pt-16 pb-6 px-4 flex justify-center shadow shadow-gray-600">
           <div className="w-full max-w-xl">
+            {/* INPUT + ICON */}
             <div className="flex justify-between items-center gap-4">
-              <label
-                className="
-                            input input-bordered
-                            shadow shadow-amber-300
-                            border-[#e17100]
-                            rounded-full
-                            flex items-center gap-2 outline-0"
-              >
+              <label className="input input-bordered shadow border-[#e17100] rounded-full flex items-center gap-2 w-full">
                 <svg
                   className="h-5 opacity-50"
                   xmlns="http://www.w3.org/2000/svg"
@@ -106,29 +72,28 @@ const SearchInput = () => {
                 <input
                   type="search"
                   placeholder="Search products..."
-                  className="w-full "
+                  className="w-full outline-none"
                   value={query}
                   onChange={(e) => handleSearch(e.target.value)}
                 />
               </label>
-              <div className="flex">
-                {user ? (
-                  ""
-                ) : (
+
+              {/* RIGHT SIDE */}
+              <div className="flex items-center gap-3">
+                {!user && (
                   <Link to="/login">
-                    <button className="btn btn-ghost btn-circle">
-                      {/* <img src={loginImg} alt="" /> */}
-                    </button>
+                    <button className="btn btn-ghost btn-circle">Login</button>
                   </Link>
                 )}
-                <Link to='/cartDetails'>
+
+                <Link to="/cartDetails">
                   <div className="relative">
                     <img
                       src={cartImg}
                       alt=""
-                      className="hover:bg-[#e2e2e2] rounded-full w-8 text-white"
+                      className="w-15 hover:bg-gray-200 rounded-full"
                     />
-                    <span className="badge badge-sm shadow-2xl shadow-gray-600 bg-[#e17100] text-[#ffffff] indicator-item absolute -top-2 right-4 md:right-6 rounded-full">
+                    <span className="badge badge-sm bg-[#e17100] text-white absolute -top-2 -right-3 rounded-full">
                       {cart.length}
                     </span>
                   </div>
@@ -138,7 +103,7 @@ const SearchInput = () => {
 
             {/* SEARCH RESULT */}
             {results.length > 0 && (
-              <div className="bg-white mt-3 rounded-lg shadow max-h-72 overflow-y-auto dark:text-black">
+              <div className="bg-white mt-3 rounded-lg shadow max-h-72 overflow-y-auto">
                 {results.map((product) => (
                   <Link
                     key={product._id}
@@ -146,7 +111,7 @@ const SearchInput = () => {
                     onClick={() => {
                       setQuery("");
                       setResults([]);
-                      document.getElementById("top-drawer").checked = false;
+                      setShow(false);
                     }}
                     className="flex items-center gap-3 p-3 hover:bg-gray-100"
                   >
@@ -155,6 +120,7 @@ const SearchInput = () => {
                       alt={product.name}
                       className="w-12 h-12 object-cover rounded"
                     />
+
                     <div>
                       <p className="font-medium">{product.name}</p>
                       <p className="text-sm text-gray-500">
@@ -177,4 +143,4 @@ const SearchInput = () => {
   );
 };
 
-export default SearchInput;
+export default SearchField;

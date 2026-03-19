@@ -19,7 +19,9 @@ const Dashboard = () => {
     (sum, item) => sum + item.total,
     0,
   );
-  const totalLoss = totalPriceOfCancel ? (totalPriceOfOrders / totalPriceOfCancel) % 100 : 0;
+  const totalLoss = totalPriceOfCancel
+    ? (totalPriceOfOrders / totalPriceOfCancel) % 100
+    : 0;
   return (
     <main className="p-6">
       <div className="hidden lg:block">
@@ -97,12 +99,23 @@ const Dashboard = () => {
                 </div>
                 <div className="flex justify-around items-center gap-3 pt-4">
                   <p className="text-3xl font-bold">
-                    {orderCancel?.length || 0} (<span>{totalLoss.toFixed(1)}%</span>)
+                    {orderCancel?.length || 0} (
+                    <span>{totalLoss.toFixed(1)}%</span>)
                   </p>
                   <p className="text-3xl font-bold">{totalPriceOfCancel} BDT</p>
                 </div>
               </div>
             </Link>
+            <div className="border p-4 rounded-lg">
+              <div className="flex gap-3">
+                <img className="w-8 pb-2" src={pendingIcon} alt="" />
+                <h1 className="text-xl font-bold">Website Visitor</h1>
+              </div>
+              <div className="flex justify-around items-center gap-3 pt-4">
+                {/* <p className="text-3xl font-bold">{orders.length}</p>
+                <p className="text-3xl font-bold">{totalPriceOfOrders} BDT</p> */}
+              </div>
+            </div>
           </div>
         </div>
         <div className="bg-white rounded-2xl shadow p-6">

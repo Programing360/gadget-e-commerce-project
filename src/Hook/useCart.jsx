@@ -19,7 +19,7 @@ const useCart = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(UseContext);
 
-  const userId = user ? user.email : getGuestUserId();
+  const userId =  getGuestUserId();
 
   const {
     isLoading,
@@ -27,9 +27,10 @@ const useCart = () => {
     data: cart = [],
   } = useQuery({
     queryKey: ["cartData", userId],
+    enabled: !!userId,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/cartData?userId=${userId}`);
-      return res.data;
+      const { data } = await axiosSecure.get(`/cartData?userId=${userId}`);
+      return data;
     },
   });
 

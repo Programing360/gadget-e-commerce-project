@@ -45,7 +45,7 @@ const Banner = () => {
   const seconds = Math.floor((timeLeft / 1000) % 60);
 
   return (
-    <div className="container mx-auto px-4 mt-22 mb-10">
+    <div className="container mx-auto px-4 mt-32 mb-10">
       <div className="flex flex-col lg:flex-row gap-6 items-start">
 
         {/* Carousel */}

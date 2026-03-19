@@ -63,10 +63,10 @@ const NavBar = () => {
   // navber animition scroll---------------
 
   return (
-    <div className="sticky top-0 z-50 bg-[#131921] ">
+    <div className="fixed w-full top-0 z-50 bg-[#131921] ">
       <div className="navbar bg-[#131921] md:px-10 w-full mx-auto relative">
         <div className="flex-1">
-          <div className="flex items-center gap-0">
+          <div className="flex justify-center pl-20  items-center gap-0">
             <Link className="flex items-center gap-2" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
               <h1 className="text-xl md:text-2xl font-bold text-[#FF6D1F]">
@@ -76,7 +76,7 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className=" md:mr-6 mr-3">
+        <div className=" md:mr-6 mr-3 hidden md:block">
           <SearchInput></SearchInput>
         </div>
         {adminUser && (
@@ -136,7 +136,7 @@ const NavBar = () => {
                 type="checkbox"
                 className="drawer-toggle"
               />
-              <div className="mr-3 md:mr-2">
+              <div className="mr-3 md:mr-2 hidden md:block">
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer-5"
@@ -145,13 +145,13 @@ const NavBar = () => {
                   <img
                     className={
                       user
-                        ? "w-10 md:mr-1 bg-gray-200 rounded-full p-2"
+                        ? "w-10 bg-gray-200 rounded-full p-2"
                         : "w-10 bg-gray-200 rounded-full p-2"
                     }
                     src={cartIcon}
                     alt=""
                   />
-                  <span className={user ? "absolute -top-2 -right-3 indicator-item text-white bg-[#f08804] dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center" : 'absolute -top-2 right-3 indicator-item text-white bg-[#f08804] dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center'}>
+                  <span className={user ? "absolute -top-2 right-2 indicator-item text-white bg-[#f08804] dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center" : 'absolute -top-2 right-3 indicator-item text-white bg-[#f08804] dark:bg-black rounded-full px-2 min-w-[22px] h-[22px] flex items-center justify-center'}>
                     {isLoading ? (
                       <span className={user ? "w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" : 'w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin'}></span>
                     ) : cart.length > 0 ? (
@@ -232,12 +232,12 @@ const NavBar = () => {
                 <div
                   tabIndex={0}
                   role="button"
-                  className="btn btn-circle avatar dark:bg-white"
+                  className=" avatar dark:bg-white"
                 >
                   <div>
                     <img
-                      className="md:w-10 rounded-full"
-                      src={userloginIcon}
+                      className="md:w-15 rounded-full"
+                      src={user?.photoURL}
                       alt="User"
                     />
                   </div>
@@ -266,9 +266,9 @@ const NavBar = () => {
                   </div>
                   <li className="">
                     <Link to="/wishList">
-                      <div className="flex gap-2">
+                      <div className="flex gap-1">
                         <img className="w-4 dark:bg-white" src={wishListIcon} alt="" />
-                        <a className="justify-between">Wish List</a>
+                        <a className="justify-between font-bold">Wish List</a>
                       </div>
                     </Link>
                   </li>
@@ -277,7 +277,7 @@ const NavBar = () => {
                       <Link to="/adminDashboard">
                         <div className="flex">
                           <img className="w-5 " src={adminIcon} alt="" />
-                          <a>Admin Page</a>
+                          <a className="font-bold">Admin Page</a>
                         </div>
                       </Link>
                     </li>
@@ -285,14 +285,14 @@ const NavBar = () => {
                     <li>
                       <Link to="/userDashBoard">
                         <img className="w-5" src={userloginIcon} alt="" />
-                        <a>Your Page</a>
+                        <a className="font-bold">Your Page</a>
                       </Link>
                     </li>
                   )}
                   <li onClick={handleUserLogOut}>
                     <div className="flex">
                       <img className="w-4" src={loginOutIcon} alt="" />
-                      <a>Logout</a>
+                      <a className="font-bold">Logout</a>
                     </div>
                   </li>
                 </ul>
@@ -300,7 +300,7 @@ const NavBar = () => {
             ) : (
               <Link to="/login">
                 <div className="tooltip tooltip-bottom" data-tip="Account">
-                  <img className="w-14 mt-2" src={loginIcon} alt="" />
+                  <img className="w-17 mt-2" src={loginIcon} alt="" />
                 </div>
               </Link>
             )}

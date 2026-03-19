@@ -75,7 +75,7 @@ const CartDetails = () => {
 
   // 🟢 CART WITH PRODUCTS
   return (
-    <div className="dark:bg-white dark:text-black my-16">
+    <div className="dark:bg-white dark:text-black my-22">
       <div className="bg-cyan-800 py-10 text-white">
         <h1 className="text-4xl text-center font-bold">Cart</h1>
         <p className="text-center pt-4">
@@ -155,18 +155,7 @@ const CartDetails = () => {
                         />
                       )}
                     </button>
-                    {/* <img
-                      onClick={() => handleCartDelete(item._id)}
-                      
-                      src={
-                        loading === item._id ? (
-                          <span className="loading loading-spinner loading-sm"></span>
-                        ) : (
-                          
-                        )
-                      }
-                      alt="delete"
-                    /> */}
+                    
                   </div>
                 </td>
               </tr>
@@ -174,9 +163,9 @@ const CartDetails = () => {
           </tbody>
         </table>
 
-        <div className="flex justify-end gap-6 bg-gray-200 py-4 px-10 border-t">
+        <div className="flex justify-end items-center w-full gap-6 bg-gray-200 py-4 px-10 border-t">
           <h2 className="text-2xl font-bold">Grand Total:</h2>
-          <p className="text-xl font-semibold">{totalPrice} TK</p>
+          <p className="text-xl font-semibold">{totalPrice} BDT</p>
         </div>
       </div>
 
