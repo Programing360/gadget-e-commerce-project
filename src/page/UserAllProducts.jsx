@@ -103,11 +103,11 @@ const UserAllProducts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-35 container w-11/12 mx-auto mb-10">
+    <div className="min-h-screen bg-gray-50 mt-35 lg:container lg:w-11/12 mx-auto mb-10 p-4 md:p-0">
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* SIDEBAR */}
         <aside className="hidden md:block md:col-span-3 bg-white md:p-4 h-screen">
-          <h1 className="font-semibold text-lg dark:text-black">Filders</h1>
+          <h1 className="font-semibold text-lg dark:text-black">Filters</h1>
           <Filters></Filters>
         </aside>
 
@@ -240,14 +240,14 @@ const UserAllProducts = () => {
           )}
 
           {/* PRODUCTS GRID */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black ">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2">
             {products?.map((item) => (
               <div
                 key={item._id}
-                className="bg-white rounded shadow hover:shadow-lg transition hover:border-indigo-600 delay-75 hover:text-blue-500  duration-150 w-full"
+                className="bg-white rounded shadow hover:shadow-lg transition hover:border-indigo-600 delay-75 hover:text-blue-500 duration-150 w-full flex flex-col"
               >
                 <Link to={`/productDetails/${item._id}`}>
-                  <figure className="w-full h-48 md:h-64 overflow-hidden rounded-t-xl ">
+                  <figure className="w-full h-48 md:h-64 overflow-hidden rounded-t-xl">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -256,37 +256,34 @@ const UserAllProducts = () => {
                   </figure>
                 </Link>
 
-                <div className="p-4 space-y-2 ">
+                {/* গুরুত্বপূর্ণ change এখানে */}
+                <div className="p-4 space-y-2 flex flex-col flex-grow">
                   <div className="flex justify-between items-start">
                     <h2 className="font-semibold text-sm line-clamp-2">
                       {item.name}
                     </h2>
                     <span className="badge badge-secondary badge-sm">NEW</span>
                   </div>
+
                   <div className="flex gap-4">
                     <b>৳{item.discountPrice}</b>
                     <del className="text-gray-500">{item.price}</del>
                   </div>
-                  {/* <p className="text-xs text-gray-500 line-clamp-2">
-                    {item.description}
-                  </p> */}
 
-                  <div className="flex justify-end">
-                    {/* <span className="badge badge-outline badge-sm">
-                      Product
-                    </span> */}
+                  {/* এই div push করবে button নিচে */}
+                  <div className="mt-auto">
+                    <button
+                      disabled={item.stock === 0}
+                      onClick={() => handleCartData(item._id)}
+                      className={`btn w-full rounded-none active:scale-95 ${
+                        item.stock === 0
+                          ? "btn-disabled bg-gray-300"
+                          : "bg-[#467bec] text-white"
+                      }`}
+                    >
+                      {item.stock === 0 ? "Out of Stock" : "Quick Add"}
+                    </button>
                   </div>
-                  <button
-                    disabled={item.stock === 0}
-                    onClick={() => handleCartData(item._id)}
-                    className={`btn w-full rounded-none active:scale-95 ${
-                      item.stock === 0
-                        ? "btn-disabled bg-gray-300"
-                        : "bg-[#111827] text-white"
-                    }`}
-                  >
-                    {item.stock === 0 ? "Out of Stock" : "Quick Add"}
-                  </button>
                 </div>
               </div>
             ))}
