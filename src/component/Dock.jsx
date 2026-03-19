@@ -54,7 +54,7 @@ const Dock = () => {
           <button>
             <img className="w-6" src={shoppingIcon} alt="" />
           </button>
-          <span className="absolute bg-black text-white px-2 rounded-full -top-0 right-4">{cart.length}</span>
+          <span className="absolute bg-red-500 text-white px-2 rounded-full -top-0 right-4">{cart.length}</span>
         </NavLink>
 
         {/* Search Button */}

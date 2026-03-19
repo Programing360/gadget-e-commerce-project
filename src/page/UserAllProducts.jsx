@@ -55,7 +55,8 @@ const UserAllProducts = () => {
   };
   const handleCategoryFilter = (categoryName) => {
     const filtered = allProduct.filter(
-      (product) => product.category.toLowerCase() === categoryName.toLowerCase(),
+      (product) =>
+        product.category.toLowerCase() === categoryName.toLowerCase(),
     );
 
     setProducts(filtered);
@@ -102,7 +103,7 @@ const UserAllProducts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-18 container w-11/12 mx-auto mb-10">
+    <div className="min-h-screen bg-gray-50 mt-35 container w-11/12 mx-auto mb-10">
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* SIDEBAR */}
         <aside className="hidden md:block md:col-span-3 bg-white md:p-4 h-screen">
@@ -113,19 +114,19 @@ const UserAllProducts = () => {
         {/* MAIN CONTENT */}
         <main className="md:col-span-9 md:p-4 relative">
           <div className="flex justify-between">
-            <div className="flex justify-between items-center mb-4 md:hidden">
+            <div className="flex justify-between items-center mb-2 md:hidden">
               <h1
                 onClick={() => setCategory(!category)}
-                className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black"
+                className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black border p-2 border-gray-400 rounded"
               >
                 Category <IoIosArrowDown />
               </h1>
             </div>
             {/* SORT HEADER */}
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-2">
               <h1
                 onClick={() => setOpen(!open)}
-                className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black"
+                className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black border p-2 border-gray-400 rounded"
               >
                 Best Selling <IoIosArrowDown />
               </h1>
@@ -230,22 +231,27 @@ const UserAllProducts = () => {
                   Shoe
                 </button>
               </li>
+              <li>
+                <button onClick={() => handleCategoryFilter("Bravery")}>
+                  Bravery
+                </button>
+              </li>
             </ul>
           )}
 
           {/* PRODUCTS GRID */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black ">
             {products?.map((item) => (
               <div
                 key={item._id}
-                className="bg-white rounded-xl shadow hover:shadow-lg transition hover:border-indigo-600 delay-75 hover:text-blue-500  duration-150"
+                className="bg-white rounded shadow hover:shadow-lg transition hover:border-indigo-600 delay-75 hover:text-blue-500  duration-150 w-full"
               >
                 <Link to={`/productDetails/${item._id}`}>
-                  <figure className="w-full h-48 md:h-64 object-fill overflow-hidden rounded-t-xl">
+                  <figure className="w-full h-48 md:h-64 overflow-hidden rounded-t-xl ">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover"
                     />
                   </figure>
                 </Link>
@@ -284,13 +290,12 @@ const UserAllProducts = () => {
                 </div>
               </div>
             ))}
-            
           </div>
           {products.length === 0 && (
-              <h1 className="text-center text-gray-500 mt-4 text-2xl max-w-full mx-auto ">
-                No product found
-              </h1>
-            )}
+            <h1 className="text-center text-gray-500 mt-4 text-2xl max-w-full mx-auto ">
+              No product found
+            </h1>
+          )}
         </main>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import laptop from "../../assets/assets/Laptop.jpg";
 import electronics from '../../assets/assets/Consumer-Electronics-Appliance_blog.jpeg'
 import phone from '../../assets/assets/phone.jpg'
+import bravery from '../../assets/assets/bravery.jpg'
 import shoe from '../../assets/assets/photo-1560769629-975ec94e6a86.avif'
 const ItemList = () => {
 
@@ -12,7 +13,7 @@ const ItemList = () => {
     { id: 2, title: "Electronics", img: electronics },
     { id: 3, title: "Phone", img: phone },
     { id: 4, title: "Shoe", img: shoe },
-    { id: 5, title: "Laptop", img: laptop },
+    { id: 5, title: "Bravery", img: bravery },
     { id: 6, title: "Laptop", img: laptop },
     { id: 7, title: "Laptop", img: laptop },
     { id: 8, title: "Laptop", img: laptop },

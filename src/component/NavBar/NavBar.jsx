@@ -3,8 +3,8 @@ import logo from "../../assets/logo.jpg";
 import { Link, useNavigate } from "react-router";
 import { UseContext } from "../../Context/AuthContext";
 import loginIcon from "../../assets/Icon.png";
-import loginOutIcon from "../../assets/assets/log-out.png";
-import wishListIcon from "../../assets/assets/wishlist.png";
+import loginOutIcon from "../../assets/assets/log-out (2).png";
+import wishListIcon from "../../assets/assets/heart.png";
 import adminIcon from "../../assets/assets/dashboard-admin.png";
 import cartIcon from "../../assets/assets/shopping-bag.png";
 import notificationIcon from "../../assets/assets/notification.png";
@@ -66,8 +66,8 @@ const NavBar = () => {
     <div className="fixed w-full top-0 z-50 bg-[#131921] ">
       <div className="navbar bg-[#131921] md:px-10 w-full mx-auto relative">
         <div className="flex-1">
-          <div className="flex justify-center pl-20  items-center gap-0">
-            <Link className="flex items-center gap-2" to="/">
+          <div className="flex justify-center md:justify-start pl-20  items-center  gap-0">
+            <Link className="flex items-center  gap-2" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
               <h1 className="text-xl md:text-2xl font-bold text-[#FF6D1F]">
                 Zeroo<span className="text-[#fdb529]">m</span>
@@ -108,7 +108,7 @@ const NavBar = () => {
                 notificationsCount?.map((n) => (
                   <li
                     key={n._id}
-                    className="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-xl"
+                    className="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-xl dark:hover:text-black"
                   >
                     <img src={bellIcon} className="w-5 mt-1" />
                     <div>
@@ -129,7 +129,7 @@ const NavBar = () => {
         )}
 
         <div className="flex-none ">
-          <div className="flex items-center">
+          <div className="w-10 md:w-full md:flex items-center">
             <div className="drawer drawer-end">
               <input
                 id="my-drawer-5"
@@ -232,11 +232,11 @@ const NavBar = () => {
                 <div
                   tabIndex={0}
                   role="button"
-                  className=" avatar dark:bg-white"
+                  className=" avatar"
                 >
                   <div>
                     <img
-                      className="md:w-15 rounded-full"
+                      className="md:w-15 w-15 rounded-full"
                       src={user?.photoURL}
                       alt="User"
                     />
@@ -266,8 +266,8 @@ const NavBar = () => {
                   </div>
                   <li className="">
                     <Link to="/wishList">
-                      <div className="flex gap-1">
-                        <img className="w-4 dark:bg-white" src={wishListIcon} alt="" />
+                      <div className="flex items-center gap-1">
+                        <img className="w-4" src={wishListIcon} alt="" />
                         <a className="justify-between font-bold">Wish List</a>
                       </div>
                     </Link>
@@ -275,8 +275,8 @@ const NavBar = () => {
                   {adminUser ? (
                     <li>
                       <Link to="/adminDashboard">
-                        <div className="flex">
-                          <img className="w-5 " src={adminIcon} alt="" />
+                        <div className="flex items-center gap-1">
+                          <img className="w-5" src={adminIcon} alt="" />
                           <a className="font-bold">Admin Page</a>
                         </div>
                       </Link>
@@ -290,8 +290,8 @@ const NavBar = () => {
                     </li>
                   )}
                   <li onClick={handleUserLogOut}>
-                    <div className="flex">
-                      <img className="w-4" src={loginOutIcon} alt="" />
+                    <div className="flex items-center border justify-center mt-6">
+                      <img className="w-4 dark:brightness-0 dark:invert" src={loginOutIcon} alt="" />
                       <a className="font-bold">Logout</a>
                     </div>
                   </li>

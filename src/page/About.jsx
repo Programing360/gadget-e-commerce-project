@@ -66,7 +66,7 @@ const About = () => {
   ];
   return (
     <div className="mb-10">
-      <div className="bg-indigo-500 pt-30 text-center">
+      <div className="bg-indigo-500 pt-35 text-center">
         <h1 className=" md:text-5xl text-2xl text-white font-bold pb-4">
           ABOUT Zeroo<span className="text-[#ff4e5c]">m</span>
           <span className="text-[#fdb529]">iro</span>

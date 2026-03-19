@@ -1,9 +1,10 @@
 import React from "react";
 import logoIcon from "../../assets/logo.jpg";
-import productIcon from "../../assets/assets/list-text.png";
+import productIcon from "../../assets/assets/crossIcon.png";
 import product from "../../assets/assets/allProductIcon.png";
 import dashboardIcon from "../../assets/assets/dashboardIcon.png";
 import menuList from "../../assets/assets/menulist.png";
+import orderListIcon from "../../assets/assets/listOrder.png";
 import { NavLink, Outlet } from "react-router";
 import useOrderCancelList from "../../Hook/useOrderCancelList";
 import useOrderList from "../../Hook/useOrderList";
@@ -119,9 +120,9 @@ const AdminPage = () => {
             >
               <li>
                 <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center">
-                  <img className="w-5 m-0" src={orderList} alt="" />
+                  <img className="w-5 m-0" src={orderListIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                    Order List - {orderList[0]?.length}
+                    Order List - ({orderList[0]?.length})
                   </span>
                 </button>
               </li>
@@ -136,7 +137,7 @@ const AdminPage = () => {
                 <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center">
                   <img className="w-5 m-0" src={productIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
-                    Order Cancel - {orderCancel[0]?.length || 0}
+                    Order Cancel - ({orderCancel[0]?.length || 0})
                   </span>
                 </button>
               </li>

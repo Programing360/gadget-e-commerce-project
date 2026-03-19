@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
-import homeIcon from "../../assets/assets/home (2).png";
+import Bravery from "../../assets/assets/bravery.jpg";
 import { motion } from "motion/react";
 
 const CategoryNav = () => {

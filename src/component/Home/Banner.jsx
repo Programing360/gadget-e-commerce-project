@@ -4,6 +4,7 @@ import bannerImg3 from "../../assets/assets/bannerImage3.jpg";
 import bannerImg4 from "../../assets/assets/bannerImg4.webp";
 import bannerImg5 from "../../assets/assets/bannerImg5.jpg";
 import logoIcon from "../../assets/assets/logo.jpg";
+import Bravery from "../../assets/assets/bravery.jpg";
 import { useEffect, useState } from "react";
 
 const Banner = () => {
@@ -51,7 +52,7 @@ const Banner = () => {
         {/* Carousel */}
         <div className="w-full lg:w-8/12 bg-[#e7e7e7] rounded-xl overflow-hidden">
           <Carousel showThumbs={false} showStatus={false} infiniteLoop autoPlay>
-            {[bannerImg2, bannerImg3, bannerImg4, bannerImg5].map((img, idx) => (
+            {[bannerImg2, bannerImg3, bannerImg4, bannerImg5, Bravery].map((img, idx) => (
               <div key={idx}>
                 <img
                   src={img}
