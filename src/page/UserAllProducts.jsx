@@ -65,7 +65,7 @@ const UserAllProducts = () => {
 
   const handleCartData = async (id) => {
     const allData = allProduct?.find((product) => product._id === id);
-    const userId = user ? user?.email : getGuestUserId();
+    const userId = getGuestUserId();
 
     const existing = cart?.find(
       (item) => item.productId === id && item.userId === userId,
@@ -119,7 +119,7 @@ const UserAllProducts = () => {
                 onClick={() => setCategory(!category)}
                 className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black border p-2 border-gray-400 rounded"
               >
-                Category <IoIosArrowDown />
+                Default Sorting <IoIosArrowDown />
               </h1>
             </div>
             {/* SORT HEADER */}
@@ -221,7 +221,7 @@ const UserAllProducts = () => {
               </li>
 
               <li>
-                <button onClick={() => handleCategoryFilter("Mobile")}>
+                <button onClick={() => handleCategoryFilter("smartphone")}>
                   Mobile
                 </button>
               </li>

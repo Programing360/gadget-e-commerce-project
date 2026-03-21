@@ -18,10 +18,15 @@ const AuthProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [orderCount, setOrderCount] = useState([]);
-   const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [deliveryArea, setDeliveryArea] = useState("outside");
-   const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [latestOrderId, setLatestOrderId] = useState(null);
 
+
+
+  
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -31,11 +36,10 @@ const AuthProvider = ({ children }) => {
   };
 
   const forgetPassword = (email) => {
-  return sendPasswordResetEmail(auth, email);
-};
+    return sendPasswordResetEmail(auth, email);
+  };
 
-
-// email verification
+  // email verification
 
   const googleProvider = new GoogleAuthProvider();
 
@@ -53,21 +57,24 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-        if (currentUser) {
-          axiosSecure.post("/jwt", { email: currentUser?.email }).then((res) => {
-            console.log(res.data)
-            if (res.data?.token) {
-              localStorage.setItem("access-token", res.data.token);
-            } else {
-              localStorage.removeItem("access-token");
-            }
-          });
-        }
+      if (currentUser) {
+        axiosSecure.post("/jwt", { email: currentUser?.email }).then((res) => {
+          console.log(res.data);
+          if (res.data?.token) {
+            localStorage.setItem("access-token", res.data.token);
+          } else {
+            localStorage.removeItem("access-token");
+          }
+        });
+      }
       setLoading(false);
     });
     return () => unsub();
   }, []);
 
+
+
+  
   const userInfo = {
     createUser,
     signInUser,
@@ -85,8 +92,11 @@ const AuthProvider = ({ children }) => {
     setProducts,
     products,
     deliveryArea,
-    setDeliveryArea
-    
+    setDeliveryArea,
+    setShowSuccessModal,
+    showSuccessModal,
+    setLatestOrderId,
+    latestOrderId,
   };
 
   return <UseContext value={userInfo}>{children}</UseContext>;

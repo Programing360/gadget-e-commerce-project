@@ -9,20 +9,20 @@ import { UseContext } from "../Context/AuthContext";
 import SearchField from "./SearchField";
 import SearchInput from "../page/SearchInput/SearchInput";
 import useCart from "../Hook/useCart";
+import CartDrawer from "./CartDrawer";
 
 const Dock = () => {
-  const { user } = useContext(UseContext);
+  const { user} = useContext(UseContext);
   const [showSearch, setShowSearch] = useState(false);
-  const [cart, , isLoading] = useCart();
+  const [cart] = useCart();
+
   return (
     <>
       {/* Search Overlay */}
       <SearchField show={showSearch} setShow={setShowSearch}></SearchField>
-    
 
       {/* Dock */}
       <div className="dock bg-gray-100 md:hidden z-10">
-
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -44,18 +44,15 @@ const Dock = () => {
             <img className="w-6" src={windowsIcon} alt="" />
           </button>
         </NavLink>
-
-        <NavLink
-          to="/cartDetails"
-          className={({ isActive }) =>
-            isActive ? "bg-[#d8e6f8] font-bold" : "text-gray-600"
-          }
-        >
-          <button>
+        <div className="drawer-content">
+          {/* Page content here */}
+          <label htmlFor="my-drawer-5" className="drawer-button">
             <img className="w-6" src={shoppingIcon} alt="" />
-          </button>
-          <span className="absolute bg-red-500 text-white px-2 rounded-full -top-0 right-4">{cart.length}</span>
-        </NavLink>
+            <span className="absolute bg-red-500 text-white px-2 rounded-full -top-0 right-4">
+              {cart.length}
+            </span>
+          </label>
+        </div>
 
         {/* Search Button */}
         <button onClick={() => setShowSearch(true)}>
@@ -72,11 +69,10 @@ const Dock = () => {
             isActive ? "bg-[#d8e6f8] font-bold" : "text-gray-600"
           }
         >
-          <button >
+          <button>
             <img className="w-6" src={dashboardIcon} alt="" />
           </button>
         </NavLink>
-
       </div>
     </>
   );

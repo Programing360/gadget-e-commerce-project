@@ -41,7 +41,7 @@ const  ProductCard = ({ product }) => {
 
   /* ================= ADD TO CART ================= */
   const handleCartData = async (id) => {
-    const userId = user ? user?.email : getGuestUserId();
+    const userId = getGuestUserId();
 
     const existing = cart?.find(
       (item) => item.productId === id && item.userId === userId,
@@ -87,7 +87,7 @@ const  ProductCard = ({ product }) => {
 
 
   const handleWishlist = async (id) => {
-    const userId = user ? user.email : getGuestUserId();
+    const userId = getGuestUserId();
     const existing = wishlist.find(
       (item) => item.productId === id && item.userId === userId,
     );
@@ -124,7 +124,7 @@ const  ProductCard = ({ product }) => {
   return (
     <div>
       {/* ================= CARD ================= */}
-      <div className="relative group overflow-hidden shadow-sm hover:shadow-xl transition bg-white hover:text-blue-600 dark:text-black">
+      <div className="relative group overflow-hidden shadow-lg hover:shadow-xl transition bg-white hover:text-blue-600 dark:text-black">
         {/* Discount Badge */}
         {discountPercentage > 0 && (
           <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">

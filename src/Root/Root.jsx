@@ -5,13 +5,14 @@ import Footer from "../component/Footer/Footer";
 import CategoryNav from "../component/NavBar/CetagoryNav";
 import ScrollToTop from "../page/ScrollToTop";
 import Dock from "../component/Dock";
+import Clock from "../component/Clock/Clock";
 
 const Root = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-   () => setLoading(true);
+    () => setLoading(true);
 
     const timer = setTimeout(() => {
       setLoading(false);
@@ -21,6 +22,9 @@ const Root = () => {
   }, [location.pathname]);
   return (
     <div>
+      <div className="fixed top-40 right-0 shadow-2xl p-3 z-100">
+        <Clock></Clock>
+      </div>
       <ScrollToTop></ScrollToTop>
       <NavBar></NavBar>
       <CategoryNav></CategoryNav>

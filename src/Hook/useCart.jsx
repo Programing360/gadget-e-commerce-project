@@ -1,7 +1,5 @@
-import { useContext } from "react";
 import { useAxiosSecure } from "./useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { UseContext } from "../Context/AuthContext";
 
 /* ================= GUEST ID HELPER ================= */
 const getGuestUserId = () => {
@@ -17,10 +15,9 @@ const getGuestUserId = () => {
 
 const useCart = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useContext(UseContext);
+  // const { user } = useContext(UseContext);
 
-  const userId =  getGuestUserId();
-
+  const userId = getGuestUserId();
   const {
     isLoading,
     refetch,
@@ -29,8 +26,8 @@ const useCart = () => {
     queryKey: ["cartData", userId],
     enabled: !!userId,
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/cartData?userId=${userId}`);
-      return data;
+      const res = await axiosSecure.get(`/cartData?userId=${userId}`);
+      return res.data;
     },
   });
 

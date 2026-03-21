@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import useCart from "../../Hook/useCart";
 import OrderSummary from "./OrderSummary";
 import { UseContext } from "../../Context/AuthContext";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState, useEffect } from "react";
 import {
   Truck,
   MapPin,
@@ -15,20 +15,31 @@ import {
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useNavigate } from "react-router";
 
+const transactionId = "TXN-" + Date.now();
 const CheckoutForm = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const axiosSecure = useAxiosSecure();
   const { deliveryArea, setDeliveryArea, user } = useContext(UseContext);
   const [cart] = useCart();
+  const navigate = useNavigate();
+  // 🔥 Auto Fill user data
+  useEffect(() => {
+    if (user) {
+      setValue("fullName", user.displayName || "");
+      setValue("mobile", user.phoneNumber || "");
+      setValue("email", user.email || "");
+    }
+  }, [user, setValue]);
 
+  // 🔥 Price calculation
   const subtotal = useMemo(() => {
     return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }, [cart]);
 
   const deliveryCharge =
-    deliveryArea === "inside" ? 50 :
-    deliveryArea === "outside" ? 100 : 0;
+    deliveryArea === "inside" ? 50 : deliveryArea === "outside" ? 100 : 0;
 
   const total = subtotal + deliveryCharge;
 
@@ -39,7 +50,7 @@ const CheckoutForm = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
   const newDate = moment().format();
-
+  // 🔥 Submit
   const onSubmit = (data) => {
     const orderData = {
       ...data,
@@ -49,16 +60,20 @@ const CheckoutForm = () => {
       paymentMethod,
       paymentType,
       subtotal,
-      deliveryCharge,
+      shippingCost: deliveryCharge,
       total,
       mobileNumber: data.mobile,
       newDate,
+      transactionId,
       email: user?.email,
       payNow: paymentType === "partial" ? partialAmount : total,
     };
 
     axiosSecure.post("/orders", orderData).then((res) => {
       if (res.data) {
+        navigate("/invoicePage", {
+          state: { order: orderData },
+        });
         toast.success("Order Confirmed ✅");
       }
     });
@@ -66,32 +81,40 @@ const CheckoutForm = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 dark:bg-[#0d0518]">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
-
-        {/* LEFT SIDE */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* LEFT */}
         <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded shadow dark:text-white dark:bg-[#140b1e]">
-
           <h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
             {/* Customer Info */}
             <div>
               <h3 className="font-semibold mb-3">Customer Information</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Name */}
                 <input
                   {...register("fullName", { required: true })}
                   placeholder="Full Name"
                   className="border p-2 rounded w-full"
                 />
+
+                {/* Mobile */}
                 <input
                   {...register("mobile", { required: true })}
                   placeholder="Mobile Number"
                   className="border p-2 rounded w-full"
                 />
+
+                {/* Email (auto + readonly) */}
+                <input
+                  {...register("email")}
+                  readOnly
+                  className="border p-2 rounded w-full bg-gray-100 dark:bg-black cursor-not-allowed"
+                />
               </div>
 
+              {/* Address */}
               <textarea
                 {...register("address", { required: true })}
                 placeholder="Delivery Address"
@@ -101,58 +124,55 @@ const CheckoutForm = () => {
 
             {/* Delivery Area */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">Select Delivery Area</h3>
+              <h3 className="text-lg font-semibold mb-4">
+                Select Delivery Area
+              </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-                {/* Pickup */}
                 <div
                   onClick={() => setDeliveryArea("pickup")}
-                  className={`border rounded-lg p-4 cursor-pointer transition ${
+                  className={`border rounded-lg p-4 cursor-pointer ${
                     deliveryArea === "pickup"
                       ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2 ">
+                  <div className="flex items-center gap-2">
                     <Store size={18} />
                     <p className="font-medium">Office Pickup</p>
                   </div>
                   <p className="text-sm text-gray-500">Free</p>
                 </div>
 
-                {/* Inside */}
                 <div
                   onClick={() => setDeliveryArea("inside")}
-                  className={`border rounded-lg p-4 cursor-pointer transition ${
+                  className={`border rounded-lg p-4 cursor-pointer ${
                     deliveryArea === "inside"
                       ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2 ">
+                  <div className="flex items-center gap-2">
                     <MapPin size={18} />
                     <p className="font-medium">Inside Dhaka</p>
                   </div>
                   <p className="text-sm text-gray-500">৳50</p>
                 </div>
 
-                {/* Outside */}
                 <div
                   onClick={() => setDeliveryArea("outside")}
-                  className={`border rounded-lg p-4 cursor-pointer transition ${
+                  className={`border rounded-lg p-4 cursor-pointer ${
                     deliveryArea === "outside"
                       ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2 ">
+                  <div className="flex items-center gap-2">
                     <Truck size={18} />
                     <p className="font-medium">Outside Dhaka</p>
                   </div>
                   <p className="text-sm text-gray-500">৳100</p>
                 </div>
-
               </div>
             </div>
 
@@ -190,7 +210,6 @@ const CheckoutForm = () => {
 
               {/* Payment Options */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
                 <div
                   onClick={() => setPaymentMethod("cod")}
                   className={`border rounded-lg p-4 cursor-pointer ${
@@ -201,7 +220,7 @@ const CheckoutForm = () => {
                 >
                   <div className="flex items-center gap-2">
                     <Clock size={18} />
-                    <p className="font-medium">Pay in 30 min</p>
+                    <p className="font-medium">Cash On Delivery</p>
                   </div>
                 </div>
 
@@ -232,23 +251,20 @@ const CheckoutForm = () => {
                     <p className="font-medium">Pay Online</p>
                   </div>
                 </div>
-
               </div>
 
               <button className="mt-8 w-full py-3 text-sm sm:text-base rounded-lg bg-gradient-to-r from-slate-800 to-blue-900 text-white font-semibold flex items-center justify-center gap-2 hover:shadow-xl transition">
                 <CreditCard size={18} />
                 Place Order
               </button>
-
             </div>
           </form>
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="lg:sticky lg:top-6 h-fit">
+        {/* RIGHT */}
+        <div>
           <OrderSummary />
         </div>
-
       </div>
     </div>
   );

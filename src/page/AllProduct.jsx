@@ -1,12 +1,13 @@
 import ProductCart from "./ProductCart";
 import useAllProduct from "../Hook/useAllProduct";
 import { Link } from "react-router";
+import Clock from "../component/Clock/Clock";
 
 const AllProduct = () => {
   const [allProduct, , isLoading] = useAllProduct();
 
   return (
-    <div className="mt-14 container lg:w-10/12 mx-auto lg:p-10 p-4">
+    <div className="mt-14 container lg:w-10/12 mx-auto lg:p-10 p-2">
       <h1 className="text-center text-3xl text-[#111827] font-bold bg-gray-100 py-4">
         Our Products
       </h1>
@@ -44,9 +45,9 @@ const AllProduct = () => {
           </Link>
         </div>
       )}
-
+    
       {/* Product Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-4 mt-14">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-2 mt-14">
         {allProduct?.map((product) => (
           <ProductCart key={product._id} product={product} />
         ))}

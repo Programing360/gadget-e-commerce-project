@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useOrderList from "../../Hook/useOrderList";
 import { toast } from "react-toastify";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 
 import useOrderCount from "../../Hook/useOrderCount";
 import { Link } from "react-router";
-import { set } from "react-hook-form";
 import OrderDetails from "./OrderDetails";
+import AdminOrders from "./AdminOrders";
 
 const ProductList = () => {
-  const [orders, refetch] = useOrderList();
+  const [filter, setFilter] = useState("all");
+  const [orders, refetch] = useOrderList(filter);
   const axiosSecure = useAxiosSecure();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [orderCount, refetchOrderCount] = useOrderCount();
-  // const [confirmOrder, setConfirmOrder] = useState(false);
   const notify = () => toast("Order Confirm");
-
-  // useEffect(() => {
-  //   const matchOrderId = orders?.find((item) =>
-  //     orderCount.some((id) => id._id === item._id),
-  //   );
-  //   setConfirmOrder(!!matchOrderId);
-  // }, [orders, orderCount]);
 
   const handleOrderBtn = async (id) => {
     // 🔍 order আগে থেকেই confirm কিনা চেক
@@ -43,8 +38,9 @@ const ProductList = () => {
         refetchOrderCount();
       }
     } catch (error) {
-      console.error(error);
-      toast("Something went wrong!");
+      if (error) {
+        toast("Something went wrong!");
+      }
     }
     const res = await axiosSecure.patch(`/updateOrderStatus/${id}`, {
       status: "confirmed",
@@ -53,54 +49,62 @@ const ProductList = () => {
       refetch();
     }
   };
+
   const [selectedOrder, setSelectedOrder] = useState(null);
   const handleOrderDetails = (_id) => {
-    
-    const MatchIdWithOrder = orders.find(item => item._id === _id)
+    const MatchIdWithOrder = orders.find((item) => item._id === _id);
     setSelectedOrder(MatchIdWithOrder);
-    document.getElementById("my_modal_4").showModal()
-  }
+    document.getElementById("my_modal_4").showModal();
+  };
 
   const handleOrderCancelBtn = (item) => {
     const id = item._id;
+
     axiosSecure.delete(`/orderDelete/${id}`).then((res) => {
       if (res.data.deletedCount > 0) {
-        // const orderInfo = {
-        //   name: item.name,
-        //   email: item.email,
-        //   phoneNumber: item.phone,
-        //   address: item.address,
-        // };
         axiosSecure.post("/orderCancel", item);
         refetch();
         toast("Order Cancel");
       }
     });
   };
-  if (orders.length === 0) {
-    return (
-      <div className="min-h-[70vh] flex flex-col justify-center items-center text-center">
-        {/* <img src={emptyCartImg} alt="Empty Cart" className="w-64 mb-6" /> */}
-        <h2 className="text-3xl font-bold mb-2">Your Order is Empty</h2>
-        <p className="text-gray-500 mb-6">
-          Looks like you haven’t added anything to your order yet
-        </p>
-        <Link to="/">
-          <button className="bg-[#f56e06] text-white px-6 py-3 rounded hover:bg-[#2f333a]">
-            Go to Shop
-          </button>
-        </Link>
-      </div>
-    );
-  }
+
   return (
     <div>
-      {/* <nav className="">
-        <div className="navbar bg-neutral-600 text-neutral-content">
-          <button className="btn btn-ghost text-xl">daisyUI</button>
-        </div>
-      </nav> */}
       <div className="overflow-x-auto">
+        <div className="flex flex-wrap gap-2 mb-4 items-center">
+
+  {/* Filter Buttons */}
+  <button onClick={() => setFilter("all")} className={`btn ${filter==="all" && "bg-black text-white"}`}>All</button>
+  <button onClick={() => setFilter("today")} className={`btn ${filter==="today" && "bg-black text-white"}`}>Today</button>
+  <button onClick={() => setFilter("yesterday")} className={`btn ${filter==="yesterday" && "bg-black text-white"}`}>Yesterday</button>
+  <button onClick={() => setFilter("thisMonth")} className={`btn ${filter==="thisMonth" && "bg-black text-white"}`}>This Month</button>
+
+  {/* 🔥 Custom Date Range */}
+  <input
+    type="date"
+    value={startDate}
+    onChange={(e) => setStartDate(e.target.value)}
+    className="border p-2 rounded"
+  />
+
+  <span>to</span>
+
+  <input
+    type="date"
+    value={endDate}
+    onChange={(e) => setEndDate(e.target.value)}
+    className="border p-2 rounded"
+  />
+
+  <button
+    onClick={() => setFilter("custom")}
+    className="btn bg-blue-500 text-white"
+  >
+    Apply
+  </button>
+
+</div>
         <table className="table">
           {/* head */}
           <thead className="text-white bg-amber-400 w-full">
@@ -123,80 +127,97 @@ const ProductList = () => {
               <th className="text-center">Action</th>
             </tr>
           </thead>
+
           <tbody className="mt-20">
-            {/* row 1 */}
-            {orders.map((item, index) => (
-              <tr key={index}>
-                <th>
-                  <label>{index + 1}</label>
-                </th>
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div>
-                      <div className="font-bold capitalize">{item.name}</div>
-                      {/* <div className="text-sm opacity-50">{(item.address) + (item.shipping)}</div> */}
-                    </div>
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan="12">
+                  <div className="flex flex-col justify-center items-center py-10">
+                    <h2 className="text-2xl font-bold mb-2">No Orders Found</h2>
+                    <p className="text-gray-500">
+                      No orders available for this filter
+                    </p>
+                    <Link to="/">
+                      <button className="bg-[#f56e06] text-white px-6 py-3 rounded hover:bg-[#2f333a] mt-3">
+                        Go to Shop
+                      </button>
+                    </Link>
                   </div>
                 </td>
-                <td>{item.email}</td>
-                <td>{item.mobileNumber}</td>
-                <td className="capitalize">
-                  {item.address},{item.shipping}
-                </td>
-
-                <th>
-                  <button className="bg-white text-black p-1 rounded">
-                    {item.paymentMethod}
-                  </button>
-                </th>
-                {orderCount?.some((order) => order._id === item._id) ? (
-                  <td className="text-green-400">Order Confirm</td>
-                ) : (
-                  <td className="text-amber-700">Pending</td>
-                )}
-                <td>{new Date(item.newDate).toLocaleString()}</td>
-                <td>
-                  {item.cart.reduce(
-                    (total, current) => total + current.quantity,
-                    0,
-                  )}
-                </td>
-
-                <td>{item.total} TK</td>
-                <th>
-                  <button
-                    onClick={() =>
-                      handleOrderDetails(item._id)
-                    }
-                    className="hover:bg-blue-500 border px-4 py-2 rounded-lg hover:shadow-2xl"
-                  >
-                    View
-                  </button>
-                </th>
-                <td className="text-center flex">
-                  <button
-                    onClick={() => handleOrderBtn(item._id)}
-                    className={
-                      orderCount?.some((order) => order._id === item._id)
-                        ? "btn-disabled btn btn-sm bg-gray-300 mr-2"
-                        : "btn btn-sm bg-green-500 rounded mr-2"
-                    }
-                  >
-                    Confirm
-                  </button>
-                  <button
-                    onClick={() => handleOrderCancelBtn(item)}
-                    className="btn btn-sm bg-red-500 text-white"
-                  >
-                    cancel
-                  </button>
-                </td>
               </tr>
-            ))}
+            ) : (
+              orders.map((item, index) => (
+                <tr key={index}>
+                  <th>
+                    <label>{index + 1}</label>
+                  </th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <div className="font-bold capitalize">{item.name}</div>
+                        {/* <div className="text-sm opacity-50">{(item.address) + (item.shipping)}</div> */}
+                      </div>
+                    </div>
+                  </td>
+                  <td>{item.email}</td>
+                  <td>{item.mobileNumber}</td>
+                  <td className="capitalize">
+                    {item.address},{item.shipping}
+                  </td>
+
+                  <th>
+                    <button className="bg-white text-black p-1 rounded">
+                      {item.paymentMethod}
+                    </button>
+                  </th>
+                  {orderCount?.some((order) => order._id === item._id) ? (
+                    <td className="text-green-400">Order Confirm</td>
+                  ) : (
+                    <td className="text-amber-700">Pending</td>
+                  )}
+                  <td>{new Date(item.newDate).toLocaleString()}</td>
+                  <td>
+                    {item.cart.reduce(
+                      (total, current) => total + current.quantity,
+                      0,
+                    )}
+                  </td>
+
+                  <td>{item.total} TK</td>
+                  <th>
+                    <button
+                      onClick={() => handleOrderDetails(item._id)}
+                      className="hover:bg-blue-500 border px-4 py-2 rounded-lg hover:shadow-2xl"
+                    >
+                      View
+                    </button>
+                  </th>
+                  <td className="text-center flex">
+                    <button
+                      onClick={() => handleOrderBtn(item._id)}
+                      className={
+                        orderCount?.some((order) => order._id === item._id)
+                          ? "btn-disabled btn btn-sm bg-gray-300 mr-2"
+                          : "btn btn-sm bg-green-500 rounded mr-2"
+                      }
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      onClick={() => handleOrderCancelBtn(item)}
+                      className="btn btn-sm bg-red-500 text-white"
+                    >
+                      cancel
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+            {/* row 1 */}
           </tbody>
         </table>
       </div>
-       {/* modal open */}
+      {/* modal open */}
       <OrderDetails order={selectedOrder}></OrderDetails>
     </div>
   );

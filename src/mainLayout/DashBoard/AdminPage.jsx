@@ -1,6 +1,7 @@
 import React from "react";
 import logoIcon from "../../assets/logo.jpg";
 import productIcon from "../../assets/assets/crossIcon.png";
+import messageIcon from "../../assets/assets/comments.png";
 import product from "../../assets/assets/allProductIcon.png";
 import dashboardIcon from "../../assets/assets/dashboardIcon.png";
 import menuList from "../../assets/assets/menulist.png";
@@ -156,7 +157,7 @@ const AdminPage = () => {
                     viewBox="0 0 24 24"
                     strokeLinejoin="round"
                     strokeLinecap="round"
-                    strokeWidth="2"
+                    strokeWidth="2" 
                     fill="none"
                     stroke="currentColor"
                     className="my-1.5 inline-block size-4"
@@ -180,7 +181,7 @@ const AdminPage = () => {
             >
               <li>
                 <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center">
-                  <img className="w-5 m-0" src={productIcon} alt="" />
+                  <img className="w-5 m-0" src={messageIcon} alt="" />
                   <span className="is-drawer-close:hidden lg:is-drawer-close:block">
                     Inbox
                   </span>

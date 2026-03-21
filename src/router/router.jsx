@@ -25,6 +25,7 @@ import PageNotFound from "../page/PageNotFound";
 import ContactUs from "../page/ContractUs/ContractUs";
 import FAQSection from "../page/FAQSection";
 import SearchInput from "../page/SearchInput/SearchInput";
+import OrderInvoicePage from "../page/OrderInvoicePage/OrderInvoicePage";
 
 export const router = createBrowserRouter([
   {
@@ -81,11 +82,19 @@ export const router = createBrowserRouter([
         path: "/searchInput",
         Component: SearchInput,
       },
+      {
+        path: "invoicePage",
+        Component: OrderInvoicePage,
+      },
     ],
   },
   {
     path: "/onlinePayment",
     Component: CheckoutPage,
+  },
+  {
+    path: "invoicePage",
+    Component: OrderInvoicePage,
   },
   {
     path: "/adminDashboard",

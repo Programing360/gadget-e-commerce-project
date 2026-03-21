@@ -6,14 +6,15 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import moment from "moment";
 import useOrderList from "../../Hook/useOrderList";
-import PaymentPopUp from "./PaymentPopUp";
-
+import { useNavigate } from "react-router";
 const CashOnDelivery = () => {
-  const { open, setOpen, user } = useContext(UseContext);
+  const { open, setOpen, user, setShowSuccessModal, setLatestOrderId } =
+    useContext(UseContext);
   const [cart] = useCart();
   const [, refetch] = useOrderList();
   const axiosSecure = useAxiosSecure();
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const navigate = useNavigate();
+  
   const {
     register,
     handleSubmit,
@@ -47,7 +48,6 @@ const CashOnDelivery = () => {
   const onSubmit = async (data) => {
     try {
       const newDate = moment().format();
-
       const orderData = {
         ...data,
         cart,
@@ -56,6 +56,7 @@ const CashOnDelivery = () => {
         total,
         newDate,
         paymentMethod: "COD",
+        transactionId:"TXN-" + Date.now(),
         email: user?.email,
       };
 
@@ -63,13 +64,16 @@ const CashOnDelivery = () => {
 
       if (res.data) {
         // toast("Order Confirmed ✅");
-        setShowSuccessModal(true);
+        setOpen(false);
+        // setShowSuccessModal(true);
+        // setLatestOrderId(orderData);
+        // ✅ navigate with data
+        navigate("/invoicePage", {
+          state: { order: orderData },
+        });
+
         reset();
         refetch();
-        if (setShowSuccessModal === false) {
-          setOpen(false);
-        }
-        // 🔥 success modal open
       }
     } catch (error) {
       toast.error("Something went wrong ❌");
@@ -243,26 +247,6 @@ const CashOnDelivery = () => {
           </div>
         </div>
       </div>
-      {/* 🔥 Success Modal */}
-      {showSuccessModal && (
-        <dialog open className="modal">
-          <div className="modal-box text-center">
-            <h3 className="font-bold text-lg text-green-600">
-              🎉 Order Confirmed!
-            </h3>
-            <p className="py-4">আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে</p>
-
-            <div className="modal-action justify-center">
-              <button
-                onClick={() => setShowSuccessModal(false)}
-                className="btn bg-green-500 text-white"
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        </dialog>
-      )}
     </>
   );
 };

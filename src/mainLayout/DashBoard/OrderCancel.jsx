@@ -36,7 +36,7 @@ const OrderCancel = () => {
           {/* row 1 */}
 
           {orderCancel?.map((order) => (
-            <tr className="">
+            <tr key={order._id} className="">
               <th>{order._id}</th>
               <td className="capitalize">{order.name}</td>
               <td>{order.email}</td>

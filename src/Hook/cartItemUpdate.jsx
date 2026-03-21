@@ -1,63 +1,121 @@
-import React from 'react';
-import { useAxiosSecure } from './useAxiosSecure';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import useCart from './useCart';
-import { toast } from 'react-toastify';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAxiosSecure } from "./useAxiosSecure";
+import useCart from "./useCart";
+import { toast } from "react-toastify";
 
 const useCartItemUpdate = () => {
-    const [cart] = useCart();
-    const axiosSecure = useAxiosSecure();
-    const queryClient = useQueryClient();
+  const [cart] = useCart();
+  const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
 
-    const cartUpdateIncrement = useMutation({
-        mutationFn: async ({productId, quantity}) => {
-            const response = await axiosSecure.patch(`/cart/DataIncrement/${productId}`, {quantity});
-            toast.success('Cart Data Increment')
-            return response.data
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries('cart')
-        }
-    })
-    const cartUpdateDecrement = useMutation({
-        mutationFn: async ({productId, quantity}) => {
-            const response = await axiosSecure.patch(`/cart/DataDecrement/${productId}`, {quantity});
-            toast.success('Cart Data Decrement')
-            return response.data
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries('cart')
-        }
-    })
+  // 🔥 Increment
+  const cartUpdateIncrement = useMutation({
+    mutationFn: async ({ productId, quantity }) => {
+      const res = await axiosSecure.patch(`/cart/dataIncrement/${productId}`, {
+        quantity,
+      });
+      return res.data;
+    },
 
-    const handleCartIncrement = (id) => {
+    // 🔥 Optimistic Update
+    onMutate: async ({ productId, quantity }) => {
+      await queryClient.cancelQueries(["cart"]);
 
-        const existing = cart.find(item => item.productId === id);
-        if(!existing)return;
-        if(existing){
-            cartUpdateIncrement.mutate({
-                productId: existing._id,
-                quantity: existing.quantity + 1 
-            })
+      const previousCart = queryClient.getQueryData(["cart"]);
 
-        }
-    }
-    const handleCartDecrement = (id) => {
-        const existing = cart.find(item => item.productId === id);
-        if(!existing)return;
-        if(existing){
-            cartUpdateDecrement.mutate({
-                productId: existing._id,
-                quantity: existing.quantity - 1 
-            })
+      queryClient.setQueryData(["cart"], (old = []) => {
+        return old.map((item) =>
+          item._id === productId ? { ...item, quantity: quantity } : item,
+        );
+      });
 
-        }
-    }
+      return { previousCart };
+    },
 
-    return {
-        handleCartIncrement,
-        handleCartDecrement
-    }
+    // ❌ Error হলে rollback
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(["cart"], context.previousCart);
+      toast.error("Update failed");
+    },
+
+    // ✅ Success
+    // onSuccess: () => {
+    //   toast.success("Cart Updated");
+    // },
+
+    // 🔄 Sync with backend
+    onSettled: () => {
+      queryClient.invalidateQueries(["cart"]);
+    },
+  });
+
+  // 🔥 Decrement
+  const cartUpdateDecrement = useMutation({
+    mutationFn: async ({ productId, quantity }) => {
+      const res = await axiosSecure.patch(`/cart/dataDecrement/${productId}`, {
+        quantity,
+      });
+      return res.data;
+    },
+
+    onMutate: async ({ productId, quantity }) => {
+      await queryClient.cancelQueries(["cart"]);
+
+      const previousCart = queryClient.getQueryData(["cart"]);
+
+      queryClient.setQueryData(["cart"], (old = []) => {
+        return old.map((item) =>
+          item._id === productId ? { ...item, quantity: quantity } : item,
+        );
+      });
+
+      return { previousCart };
+    },
+
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(["cart"], context.previousCart);
+      toast.error("Update failed");
+    },
+
+    // onSuccess: () => {
+    //   toast.success("Cart Updated");
+    // },
+
+    onSettled: () => {
+      queryClient.invalidateQueries(["cart"]);
+    },
+  });
+
+  // 🔥 Handle Increment
+  const handleCartIncrement = (id) => {
+    const existing = cart.find((item) => item.productId === id);
+    if (!existing) return;
+
+    cartUpdateIncrement.mutate({
+      productId: existing._id,
+      quantity: existing.quantity + 1,
+    });
+  };
+
+  // 🔥 Handle Decrement
+  const handleCartDecrement = (id) => {
+    const existing = cart.find((item) => item.productId === id);
+    if (!existing) return;
+
+    // ❗ quantity 1 এর নিচে নামবে না
+    if (existing.quantity <= 1) return;
+
+    cartUpdateDecrement.mutate({
+      productId: existing._id,
+      quantity: existing.quantity - 1,
+    });
+  };
+
+  return {
+    handleCartIncrement,
+    handleCartDecrement,
+    isLoading: cartUpdateIncrement.isPending || cartUpdateDecrement.isPending,
+  };
 };
 
 export default useCartItemUpdate;

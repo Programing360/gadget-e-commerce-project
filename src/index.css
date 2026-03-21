@@ -39,7 +39,40 @@
   transform: scale(1.05);
 }
 
-/* #root{
-  background: white;
-  color: black;
-} */
+/* Buy Now button style */
+.buy-now-btn {
+  background: linear-gradient(270deg, #c127d2, #632463, #5a3d99);
+  background-size: 600% 600%;
+  color: white;
+  padding: 12px;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s;
+  
+  /* animations */
+  animation: gradientAnimation 3s ease infinite, shake 2s ease-in-out infinite 2s;
+}
+
+/* Button click effect */
+.buy-now-btn:active {
+  transform: scale(0.95);
+}
+
+/* Gradient background animation */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Shake animation */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
+}

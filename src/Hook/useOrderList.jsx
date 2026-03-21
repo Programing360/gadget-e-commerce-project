@@ -2,18 +2,17 @@ import React from "react";
 import { useAxiosSecure } from "./useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
-const useOrderList = () => {
+const useOrderList = (filter) => {
   const axiosSecure = useAxiosSecure();
-
   const {
     isLoading,
     refetch,
     data: orders = [],
   } = useQuery({
-   queryKey: ["adminOrders"],
+   queryKey: ["adminOrders", filter],
    
     queryFn: async () => {
-      const { data } = await axiosSecure.get("/admin/orders");
+      const {data} = await axiosSecure.get(`/admin/orders?filter=${filter}`);
       return data;
     },
   });

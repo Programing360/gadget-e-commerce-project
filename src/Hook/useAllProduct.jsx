@@ -16,6 +16,7 @@ const useAllProduct = () => {
       const res = await axiosSecure.get("/allProducts");
       return res.data;
     },
+    
 
     // ✅ retry system (very important)
     retry: 3,
