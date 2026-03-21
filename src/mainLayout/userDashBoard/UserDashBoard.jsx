@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router";
 import { UseContext } from "../../Context/AuthContext";
 import { MdEdit } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import SEO from "../../component/SEO/SEO";
 const UserDashBoard = () => {
   const { user, UserLogout } = useContext(UseContext);
   const navigate = useNavigate();
@@ -18,6 +19,10 @@ const UserDashBoard = () => {
   };
   return (
     <div className="flex items-center md:block gap-[2.5rem] mx-4 mt-4">
+      <SEO
+        title="Your Personal Page - Zeroomiro"
+        description="Your personal page and details"
+      />
       <div className="drawer w-10">
         <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">

@@ -4,6 +4,7 @@ import { Link } from "react-router";
 const DiscoverProducts = () => {
   return (
     <section className="max-w-6xl mx-auto px-4 py-16">
+      
       <div className="bg-slate-50 border rounded-2xl shadow-2xl px-6 md:px-16 py-14 text-center border-gray-300">
         {/* Icon */}
         <div className="w-14 h-14 mx-auto mb-6 flex items-center justify-center rounded-full bg-blue-600 text-white shadow-md">

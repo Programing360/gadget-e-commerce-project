@@ -16,6 +16,7 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useNavigate } from "react-router";
+import SEO from "../../component/SEO/SEO";
 
 const transactionId = "TXN-" + Date.now();
 const CheckoutForm = () => {
@@ -81,6 +82,10 @@ const CheckoutForm = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 dark:bg-[#0d0518]">
+      <SEO
+        title="Checkout Page - Zeroomiro"
+        description="Review your cart items and checkout"
+      />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT */}
         <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded shadow dark:text-white dark:bg-[#140b1e]">

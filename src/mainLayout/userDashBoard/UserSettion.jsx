@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { MdLockOutline } from "react-icons/md";
 import { UseContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router";
+import SEO from "../../component/SEO/SEO";
 const UserSettion = () => {
     const {UserLogout} = useContext(UseContext)
 
@@ -14,6 +15,10 @@ const UserSettion = () => {
 
   return (
     <div className="container md:w-8/12 mx-auto mt-10 p-4">
+      <SEO
+        title="Your Setting - Zeroomiro"
+        description="Sign out everyWhere"
+      />
       <h1 className="text-2xl font-bold">Settings</h1>
       <div className="flex flex-col md:flex-row gap-4 items-center mt-10">
         <div className="max-w-100">

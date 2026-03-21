@@ -1,6 +1,6 @@
-import { Helmet } from "react-helmet";
 import { useLocation } from "react-router";
 import { Link } from "react-router";
+import SEO from "../component/SEO/SEO";
 
 const PageNotFound = () => {
   const location = useLocation();
@@ -8,7 +8,7 @@ const PageNotFound = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center">
-      <Helmet>
+      <SEO>
         <title>Not Found | Zeromiroo</title>
 
         <meta
@@ -17,7 +17,7 @@ const PageNotFound = () => {
         />
 
         {/* <link rel="canonical" href="https://my-coffee-9129e.web.app/checkout" /> */}
-      </Helmet>
+      </SEO>
 
       <h1 className="text-6xl font-bold text-red-500">404</h1>
       <p className="text-xl mt-4">Oops! Page not found</p>

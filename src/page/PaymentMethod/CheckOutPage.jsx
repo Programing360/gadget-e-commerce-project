@@ -3,7 +3,7 @@ import PageLogo from "../PageLogo/PageLogo";
 import CheckoutForm from "./CheckOutForm";
 import OrderSummary from "./OrderSummary";
 
-const CheckoutPage = ({ cart }) => {
+const CheckoutPage = () => {
   return (
     <div>
       <div className="border-b border-gray-300 sticky top-0 z-50 shadow-md bg-gray-100">

@@ -7,6 +7,7 @@ import { UseContext } from "../Context/AuthContext";
 import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import useCart from "../Hook/useCart";
+import SEO from "../component/SEO/SEO";
 
 const getGuestUserId = () => {
   let guestId = localStorage.getItem("guestCart");
@@ -54,11 +55,11 @@ const UserAllProducts = () => {
     setProducts(sorted);
   };
   const handleCategoryFilter = (categoryName) => {
+    console.log(categoryName);
     const filtered = allProduct.filter(
       (product) =>
         product.category.toLowerCase() === categoryName.toLowerCase(),
     );
-
     setProducts(filtered);
   };
   // add To Cart---------------
@@ -104,6 +105,10 @@ const UserAllProducts = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 mt-35 lg:container lg:w-11/12 mx-auto mb-10 p-4 md:p-0">
+      <SEO
+        title="Product Details - Zeroomiro"
+        description="Review your cart items and checkout"
+      />
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* SIDEBAR */}
         <aside className="hidden md:block md:col-span-3 bg-white md:p-4 h-screen">

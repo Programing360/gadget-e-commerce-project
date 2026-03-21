@@ -7,12 +7,14 @@ import emptyCartImg from "../../assets/assets/7612.jpg"; // 👉 add an image
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import SEO from "../../component/SEO/SEO";
 
 const CartDetails = () => {
   const [cart, refetch] = useCart();
   const { handleCartIncrement, handleCartDecrement } = useCartItemUpdate();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(null);
+  const [spinningId, setSpinningId] = useState(null);
   const handleCartDelete = async (id) => {
     try {
       setLoading(id);
@@ -41,20 +43,33 @@ const CartDetails = () => {
     });
   };
 
+  const handleIncrement = async (id) => {
+    setSpinningId(id);
+
+    await handleCartIncrement(id); // wait backend
+
+    refetch(); // 🔥 important
+
+    setSpinningId(id || null);
+    setTimeout(setSpinningId, 700);
+  };
+  const handleDecrement = async (id) => {
+    const item = cart.find((i) => i.productId === id);
+    if (!item || item.quantity <= 1) return;
+
+    setSpinningId(id);
+
+    await handleCartDecrement(id);
+
+    refetch();
+
+    setSpinningId(id || null);
+    setTimeout(setSpinningId, 700);
+  };
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
-  //   const navigate = useNavigate();
-
-  //   // ⏳ Auto redirect after 5 seconds
-  //   useEffect(() => {
-  //     const timer = setTimeout(() => {
-  //       navigate("/");
-  //     }, 5000);
-
-  //     return () => clearTimeout(timer);
-  //   }, [navigate]);
   // 🔴 EMPTY CART UI
   if (cart.length === 0) {
     return (
@@ -76,6 +91,10 @@ const CartDetails = () => {
   // 🟢 CART WITH PRODUCTS
   return (
     <div className="dark:bg-white dark:text-black my-22">
+      <SEO
+        title="Cart Details - Zeroomiro"
+        description="Review your cart items and checkout"
+      />
       <div className="bg-cyan-800 py-10 text-white">
         <h1 className="text-4xl text-center font-bold">Cart</h1>
         <p className="text-center pt-4">
@@ -109,27 +128,41 @@ const CartDetails = () => {
 
                 <td className="font-bold">{item.name}</td>
 
-                <td>{item.price} TK</td>
+                <td className="font-bold">{item.price} TK</td>
 
                 <td>
-                  <div className="flex justify-center items-center gap-4 bg-gray-100 py-1 p-2">
+                  <div className="flex justify-center items-center gap-3 bg-gray-100 px-3 py-2 rounded-xl w-full shadow-sm">
+                    {/* Decrement */}
                     <button
-                      className="text-2xl"
-                      onClick={() => handleCartDecrement(item.productId)}
+                      onClick={() => handleDecrement(item.productId)}
+                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-gray-300 text-xl font-semibold 
+               hover:bg-red-50 hover:text-red-500 active:scale-90 transition"
                     >
-                      -
+                      −
                     </button>
-                    <p className="mt-1">{item.quantity}</p>
+
+                    {/* Quantity */}
+                    <p className="min-w-[30px] text-center font-semibold text-gray-800">
+                      {item.quantity}
+                    </p>
+
+                    {/* Increment */}
                     <button
-                      className="text-2xl"
-                      onClick={() => handleCartIncrement(item.productId)}
+                      onClick={() => handleIncrement(item.productId)}
+                      className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-gray-300 text-xl font-semibold 
+               hover:bg-green-50 hover:text-green-600 active:scale-90 transition"
                     >
                       +
                     </button>
                   </div>
+                  {spinningId === item.productId && (
+                    <div className="absolute inset-0 bg-white/50 flex items-center justify-center rounded-lg">
+                      <span className="loading loading-spinner loading-md"></span>
+                    </div>
+                  )}
                 </td>
 
-                <td>{item.price * item.quantity} TK</td>
+                <td className="font-bold">{item.price * item.quantity} TK</td>
 
                 <td>
                   <div className="flex justify-center gap-4">
@@ -155,7 +188,6 @@ const CartDetails = () => {
                         />
                       )}
                     </button>
-                    
                   </div>
                 </td>
               </tr>

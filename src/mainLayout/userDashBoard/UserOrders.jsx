@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import { toast } from "react-toastify";
 import TimeAgo from "../../component/SetTimeOut";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+import SEO from "../../component/SEO/SEO";
 
 const UserOrders = () => {
   const [orders, refetch, isloading] = useOrderList();
@@ -67,6 +68,10 @@ const UserOrders = () => {
   }
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 ">
+      <SEO
+        title="Order_Details - Zeroomiro"
+        description="Review your cart items and checkout"
+      />
       <h2 className="text-2xl font-bold mb-6">My Orders</h2>
 
       <div className="space-y-4">

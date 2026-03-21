@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router";
 import { UseContext } from "../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { sendEmailVerification } from "firebase/auth";
+import SEO from "../component/SEO/SEO";
 
 const SignIn = () => {
   const {
@@ -49,6 +50,10 @@ const SignIn = () => {
 
   return (
     <div className="hero bg-base-200 min-h-screen md:py-30 p-3">
+      <SEO
+        title="Sign_In - Zeroomiro"
+        description="no account found gmail"
+      />
       <div className="card bg-base-100 w-full lg:max-w-3xl md:max-w-xl shadow-2xl">
         <div className="flex flex-col-reverse md:flex-row-reverse">
           {/* FORM SECTION */}

@@ -90,6 +90,10 @@ const OrderPage = () => {
 
   return (
     <div>
+        <SEO
+        title="Order now - Zeroomiro"
+        description="Order confirm page"
+      />
       <dialog open className="modal">
         <div className="modal-box max-w-lg text-center">
           {/* ✅ Success Icon */}

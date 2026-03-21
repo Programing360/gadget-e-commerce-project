@@ -5,6 +5,7 @@ import phone from '../../assets/assets/phone.jpg'
 import bravery from '../../assets/assets/bravery.jpg'
 import arrow from '../../assets/assets/arrow.png'
 import shoe from '../../assets/assets/photo-1560769629-975ec94e6a86.avif'
+import watch from '../../assets/assets/watch.jpg'
 const ItemList = () => {
 
   const sliderRef = useRef(null);
@@ -18,6 +19,7 @@ const ItemList = () => {
     { id: 6, title: "Laptop", img: laptop },
     { id: 7, title: "Laptop", img: laptop },
     { id: 8, title: "Laptop", img: laptop },
+    { id: 9, title: "watch", img: watch },
   ];
 
   const slideLeft = () => {

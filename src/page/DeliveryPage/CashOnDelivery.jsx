@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import useOrderList from "../../Hook/useOrderList";
 import { useNavigate } from "react-router";
+import SEO from "../../component/SEO/SEO";
 const CashOnDelivery = () => {
   const { open, setOpen, user, setShowSuccessModal, setLatestOrderId } =
     useContext(UseContext);
@@ -14,7 +15,7 @@ const CashOnDelivery = () => {
   const [, refetch] = useOrderList();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  
+
   const {
     register,
     handleSubmit,
@@ -84,6 +85,10 @@ const CashOnDelivery = () => {
 
   return (
     <>
+    <SEO
+        title="Cash On Delivery - Zeroomiro"
+        description="Product buy and checkout"
+      />
       <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-3 dark:text-black">
         <div className="bg-white w-full max-w-lg rounded-lg shadow-lg max-h-[95vh] overflow-y-auto relative">
           {/* Close */}

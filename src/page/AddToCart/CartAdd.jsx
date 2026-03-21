@@ -3,6 +3,7 @@ import useCartItemUpdate from "../../Hook/cartItemUpdate";
 import { useState } from "react";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
+import SEO from "../../component/SEO/SEO";
 
 const CartAdd = () => {
   const [cart, refetch] = useCart();
@@ -23,41 +24,44 @@ const CartAdd = () => {
     } catch {
       toast.error("Failed to remove item");
     } finally {
-      setRemoving(null);
+      setRemoving(id || null);
+      setTimeout(setRemoving, 700);
     }
   };
 
   // Increment with UI spinner
-  const handleIncrement = (id) => {
-    const item = cart.find((i) => i.productId === id);
-    if (!item) return;
-
-    // 1️⃣ Update UI instantly
-    item.quantity += 1;
-
-    // 2️⃣ Show spinner
+  const handleIncrement = async (id) => {
     setSpinningId(id);
 
-    // 3️⃣ Call backend (does not block UI)
-    handleCartIncrement(id);
+    await handleCartIncrement(id); // wait backend
 
-    // 4️⃣ Hide spinner after small delay
-    setTimeout(() => setSpinningId(null), 500);
+    refetch(); // 🔥 important
+
+    setSpinningId(id || null);
+    setTimeout(setSpinningId, 700);
   };
 
   // Decrement with UI spinner
-  const handleDecrement = (id) => {
+  const handleDecrement = async (id) => {
     const item = cart.find((i) => i.productId === id);
     if (!item || item.quantity <= 1) return;
 
-    item.quantity -= 1;
     setSpinningId(id);
-    handleCartDecrement(id);
-    setTimeout(() => setSpinningId(null), 500);
+
+    await handleCartDecrement(id);
+
+    refetch();
+
+    setSpinningId(id || null);
+    setTimeout(setSpinningId, 700);
   };
 
   return (
     <div>
+      <SEO
+        title="Your Cart - Zeroomiro"
+        description="Review your cart items and checkout"
+      />
       {cart.map((item) => (
         <div
           key={item._id}

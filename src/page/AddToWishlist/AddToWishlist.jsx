@@ -6,6 +6,7 @@ import emptyCartImg from "../../assets/assets/7612.jpg"; // 👉 add an image
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import useWishList from "../../Hook/useWishList";
+import SEO from "../../component/SEO/SEO";
 
 const AddToWishlist = () => {
   const [ ,refetch] = useCart();
@@ -52,6 +53,10 @@ const handleAddToCart = (item) => {
   // 🟢 CART WITH PRODUCTS
   return (
     <div className="dark:bg-white dark:text-black my-10 ">
+      <SEO
+        title="Your Wishlist - Zeroomiro"
+        description="Review your wishlist items and Add to cart"
+      />
       <div className="bg-linear-to-l from-cyan-600 to-cyan-800 py-10 text-white">
         <h1 className="text-4xl text-center font-bold">WISHLIST</h1>
         <p className="text-center pt-4">

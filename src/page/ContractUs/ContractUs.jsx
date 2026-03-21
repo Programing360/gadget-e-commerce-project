@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { UseContext } from "../../Context/AuthContext";
 import { Link, useLocation } from "react-router";
+import SEO from "../../component/SEO/SEO";
 const ContactUs = () => {
   const { user } = useContext(UseContext);
   const location = useLocation();
@@ -34,6 +35,10 @@ const handleFAQ = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen mt-20 dark:text-black">
+      <SEO
+        title="Contact Page - Zeroomiro"
+        description="Your opinion and other information shere with us"
+      />
       {/* Top Banner */}
       <div className="bg-[#615fff] text-white text-center py-14 px-4">
         <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>

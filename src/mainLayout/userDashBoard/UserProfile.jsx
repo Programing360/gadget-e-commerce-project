@@ -1,11 +1,16 @@
 import React, { useContext } from "react";
 import editIcon from "../../assets/assets/edit.png";
 import { UseContext } from "../../Context/AuthContext";
+import SEO from "../../component/SEO/SEO";
 const UserProfile = () => {
   const { user } = useContext(UseContext);
 
   return (
     <div className="container md:w-8/12 mx-auto mt-10 p-4">
+      <SEO
+        title="Your Profile - Zeroomiro"
+        description="Your profile page"
+      />
       <h1 className="text-2xl font-bold antialiased">Profile</h1>
       <div className="border border-gray-200 rounded-2xl mt-7 p-6">
         <div className="flex items-center gap-3 pb-4">

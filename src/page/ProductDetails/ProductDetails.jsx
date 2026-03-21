@@ -10,6 +10,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import CustomerView from "./CustomerView";
 import useAllProduct from "../../Hook/useAllProduct";
 import SimilarProductsGrid from "./SimilarProductsGrid";
+import SEO from "../../component/SEO/SEO";
 
 /* 🔑 Guest ID helper */
 const getGuestUserId = () => {
@@ -49,8 +50,6 @@ const ProductDetails = () => {
     (item) => item.category === category && item._id !== _id && item.stock > 0,
   );
 
-  console.log(sameCategoryProducts);
-
   const handleBuyNow = async () => {
     const existing = cart.find((item) => item.productId === _id);
 
@@ -60,7 +59,7 @@ const ProductDetails = () => {
       return;
     }
 
-    const userId = user ? user.email : getGuestUserId();
+    const userId = getGuestUserId();
 
     const cartItem = {
       productId: _id,
@@ -88,7 +87,6 @@ const ProductDetails = () => {
   const handleCartData = async (_id) => {
     const existing = cart.find((item) => item.productId === _id);
     if (existing) {
-      navigate("/onlinePayment");
       return;
     }
 
@@ -101,12 +99,11 @@ const ProductDetails = () => {
       if (data.modifiedCount > 0) {
         toast.success("Product also added to cart 🛒");
         refetch();
-        navigate("/onlinePayment");
       }
       return;
     }
 
-    const userId = user ? user.email : getGuestUserId();
+    const userId = getGuestUserId();
 
     const cartItem = {
       productId: _id,
@@ -122,6 +119,7 @@ const ProductDetails = () => {
     const res = await axiosSecure.post("/cartData", cartItem);
 
     if (res.data?.insertedId) {
+      console.log(res.data);
       toast.success("Product added to cart 🛒");
       refetch();
     }
@@ -129,6 +127,11 @@ const ProductDetails = () => {
 
   return (
     <div className="bg-base-100 min-h-screen mt-28">
+      <SEO
+        title={`${name} - Buy Now at Best Price`}
+        description={description}
+        image={image}
+      />
       {/* 🔝 Header */}
       <div className="bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white py-6 text-center">
         <h1 className="text-xl md:text-2xl font-semibold">{name}</h1>
@@ -231,7 +234,7 @@ const ProductDetails = () => {
                   <div className="flex items-center gap-2 bg-blue-200">
                     <button
                       onClick={() => handleCartDecrement(_id)}
-                      className="btn btn-ghost active:scale-95"
+                      className="btn btn-ghost hover:bg-red-100 active:scale-95"
                     >
                       −
                     </button>
@@ -311,11 +314,10 @@ const ProductDetails = () => {
         </div>
       </div>
 
-
       {/* 🔄 Similar Products */}
       <div className="mt-10 max-w-6xl mx-auto mb-10 px-2">
         <h2 className="text-xl font-bold mb-4">Related Products</h2>
-        <hr className="mb-3 text-gray-300"/>
+        <hr className="mb-3 text-gray-300" />
         {sameCategoryProducts.length === 0 ? (
           <p>No similar products found.</p>
         ) : (

@@ -4,18 +4,16 @@ import useAllProduct from "../Hook/useAllProduct";
 
 const Filters = () => {
   const [allProduct] = useAllProduct();
-  const { setProducts } = useContext(UseContext);
-
+  const {setProducts } = useContext(UseContext);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [brand, setBrand] = useState("All");
-
   // 🔥 Main Filter Logic
   useEffect(() => {
     let filtered = [...allProduct];
-
+    
     // Search filter
     if (query.trim() !== "") {
       filtered = filtered.filter((product) =>
@@ -29,6 +27,7 @@ const Filters = () => {
         (product) =>
           product.category?.toLowerCase() === category.toLowerCase()
       );
+      setProducts(filtered)
     }
 
     // Brand filter
@@ -36,6 +35,7 @@ const Filters = () => {
       filtered = filtered.filter(
         (product) => product.brand?.toLowerCase() === brand.toLowerCase()
       );
+      setProducts(filtered)
     }
 
     // Price filter
@@ -43,6 +43,7 @@ const Filters = () => {
       filtered = filtered.filter(
         (product) => product.price >= Number(minPrice)
       );
+      setProducts(filtered)
     }
 
     if (maxPrice !== "") {

@@ -9,6 +9,7 @@ import orderListIcon from "../../assets/assets/listOrder.png";
 import { NavLink, Outlet } from "react-router";
 import useOrderCancelList from "../../Hook/useOrderCancelList";
 import useOrderList from "../../Hook/useOrderList";
+import SEO from "../../component/SEO/SEO";
 
 const AdminPage = () => {
   const orderCancel = useOrderCancelList();
@@ -17,6 +18,10 @@ const AdminPage = () => {
 
   return (
     <div className="drawer lg:drawer-open bg-[#010313] text-white">
+      <SEO
+        title="Admin page - Zeroomiro"
+        description="User personal page"
+      />
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
       <div className="drawer-content">

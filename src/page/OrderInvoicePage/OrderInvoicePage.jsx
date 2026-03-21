@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "react-router";
 import jsPDF from "jspdf";
 import logo from "../../assets/assets/logo.jpg";
+import SEO from "../../component/SEO/SEO";
 const OrderInvoicePage = () => {
   const location = useLocation();
   const order = location.state?.order;
@@ -66,6 +67,10 @@ const OrderInvoicePage = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg my-46">
+        <SEO
+        title="Your Invoice - Zeroomiro"
+        description="Order details show and received download or print"
+      />
       <div className="flex justify-between items-center border-b pb-4">
         <div>
           <img src={logo} className="w-32 mb-2" />

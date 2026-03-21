@@ -22,7 +22,7 @@ const Root = () => {
   }, [location.pathname]);
   return (
     <div>
-      <div className="fixed top-40 right-0 shadow-2xl p-3 z-100">
+      <div className="fixed top-40 left-0 shadow-2xl p-3 z-100 hidden md:block">
         <Clock></Clock>
       </div>
       <ScrollToTop></ScrollToTop>

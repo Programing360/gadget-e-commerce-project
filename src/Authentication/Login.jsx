@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { UseContext } from "../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useAxiosSecure } from "../Hook/useAxiosSecure";
+import SEO from "../component/SEO/SEO";
 const Login = () => {
   const { register, handleSubmit, watch } = useForm();
   const { signInUser, googleLogin, forgetPassword,UserLogout } = useContext(UseContext);
@@ -84,6 +85,10 @@ const Login = () => {
 
   return (
     <div className="hero bg-base-200 min-h-screen md:py-30 px-3">
+      <SEO
+        title="Login Page - Zeroomiro"
+        description="Already have an account found gmail"
+      />
       <div className="card bg-base-100 w-full lg:max-w-3xl md:max-w-xl shrink-0 shadow-2xl">
         <div className="flex items-center flex-col-reverse md:flex-row ">
           <div className="card-body w-full">

@@ -7,7 +7,7 @@ const AdminOrders = () => {
     console.log(orders);
   useEffect(() => {
     axios
-      .get(`https://zeromiroo-api.vercel.app/admin/orders?filter=${filter}`)
+      .get(`http://localhost:5000/admin/orders?filter=${filter}`)
       .then((res) => setOrders(res.data))
       .catch((err) => console.error(err));
   }, [filter]);

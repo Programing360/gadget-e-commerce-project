@@ -47,7 +47,7 @@ const AuthProvider = ({ children }) => {
   const googleLogin = () => {
     return signInWithPopup(auth, googleProvider);
   };
-
+  
   // Logout
   const UserLogout = () => {
     return signOut(auth);
@@ -59,7 +59,6 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       if (currentUser) {
         axiosSecure.post("/jwt", { email: currentUser?.email }).then((res) => {
-          console.log(res.data);
           if (res.data?.token) {
             localStorage.setItem("access-token", res.data.token);
           } else {
@@ -74,7 +73,7 @@ const AuthProvider = ({ children }) => {
 
 
 
-  
+
   const userInfo = {
     createUser,
     signInUser,

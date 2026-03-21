@@ -18,6 +18,7 @@ const AllProductList = () => {
   return (
     <div>
       <div className="bg-[#8d50f7] py-5 text-center w-full">
+        
         <h1 className="text-2xl font-bold bg-linear-to-tl to-white from-gray-400 bg-clip-text text-transparent shadow-fuchsia-900 shadow p-4">
           ALL PRODUCTS{" "}
         </h1>
