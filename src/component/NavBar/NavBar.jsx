@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../assets/logo.jpg";
 import { Link, useNavigate } from "react-router";
 import { UseContext } from "../../Context/AuthContext";
@@ -7,9 +7,8 @@ import loginOutIcon from "../../assets/assets/log-out (2).png";
 import wishListIcon from "../../assets/assets/heart.png";
 import adminIcon from "../../assets/assets/dashboard-admin.png";
 import notificationIcon from "../../assets/assets/notification.png";
-import userloginIcon from "../../assets/assets/user.png";
+import userloginIcon from "../../assets/assets/user (1).png";
 import useCart from "../../Hook/useCart";
-import CartAdd from "../../page/AddToCart/CartAdd";
 import bellIcon from "../../assets/assets/bell.png";
 import CashOnDelivery from "../../page/DeliveryPage/CashOnDelivery";
 import SearchInput from "../../page/SearchInput/SearchInput";
@@ -18,7 +17,8 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import OrderPage from "../../page/DeliveryPage/OrderPage";
 import CartDrawer from "../CartDrawer";
-import cartIcon from "../../assets/assets/shopping-bag.png";
+import MobileDrawer from "./MobileDrawer";
+
 const NavBar = () => {
   const { user, UserLogout, setOpen, open, showSuccessModal } =
     useContext(UseContext);
@@ -53,20 +53,26 @@ const NavBar = () => {
     0,
   );
   const formatted = quantity.toLocaleString();
-  const adminUser = user?.email === "fhlimon360@gmail.com";
+  const adminUser =
+    user?.email === "fhlimon360@gmail.com" ||
+    user?.email === "zeroomiro@gmail.com";
 
   const handleUserLogOut = () => {
     UserLogout().then(() => {
       navigate("/login");
     });
   };
-
+  const [activeCategory, setActiveCategory] = useState("");
   // navber animition scroll---------------
 
   return (
     <div className="fixed w-full top-0 z-50 bg-[#131921] ">
       <div className="navbar bg-[#f7f7f7] md:px-10 w-full mx-auto relative">
-        <div className="flex-1">
+        <div className="flex-1 flex items-center">
+          <MobileDrawer
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+          ></MobileDrawer>
           <div className="flex justify-center md:justify-start pl-20  items-center  gap-0">
             <Link className="flex items-center  gap-2" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
@@ -131,13 +137,15 @@ const NavBar = () => {
 
         <div className="flex-none ">
           <div className="w-10 md:w-full md:flex items-center">
-            <CartDrawer
-              cart={cart}
-              isLoading={isLoading}
-              user={user}
-              setOpen={setOpen}
-              formatted={formatted}
-            ></CartDrawer>
+            {!open && (
+              <CartDrawer
+                cart={cart}
+                isLoading={isLoading}
+                user={user}
+                setOpen={setOpen}
+                formatted={formatted}
+              ></CartDrawer>
+            )}
             {open && <CashOnDelivery></CashOnDelivery>}
             {/* 🔥 Success Modal */}
             {showSuccessModal && <OrderPage></OrderPage>}
@@ -145,11 +153,19 @@ const NavBar = () => {
               <div className="dropdown dropdown-end ">
                 <div tabIndex={0} role="button" className=" avatar">
                   <div>
-                    <img
-                      className="md:w-15 w-15 rounded-full"
-                      src={user?.photoURL}
-                      alt="User"
-                    />
+                    {user?.photoURL ? (
+                      <img
+                        className="rounded-full w-11 mx-auto cursor-pointer"
+                        src={user?.photoURL}
+                        alt=""
+                      />
+                    ) : (
+                      <img
+                        className="rounded-full w-14 mx-auto cursor-pointer"
+                        src={userloginIcon}
+                        alt=""
+                      />
+                    )}
                   </div>
                 </div>
                 <ul
@@ -157,8 +173,8 @@ const NavBar = () => {
                   className="menu menu-md dropdown-content bg-base-100 rounded z-1 mt-3 p-4 shadow-2xl "
                 >
                   <div className="text-center mb-4 bg-gray-300 rounded-lg p-6">
-                    <h1 className="dark:text-black">{user.email}</h1>
-                    {user.photoURL ? (
+                    <h1 className="dark:text-black">{user?.email}</h1>
+                    {user?.photoURL ? (
                       <img
                         className="rounded-full w-14 mx-auto mt-4"
                         src={user?.photoURL}
@@ -202,13 +218,15 @@ const NavBar = () => {
                     </li>
                   )}
                   <li onClick={handleUserLogOut}>
-                    <div className="flex items-center border justify-center mt-6">
+                    <div className="flex items-center border border-[#512da8] justify-center mt-6">
                       <img
                         className="w-4 dark:brightness-0 dark:invert"
                         src={loginOutIcon}
                         alt=""
                       />
-                      <a className="font-bold">Logout</a>
+                      <a className="font-bold text-[#512da8]dark:text-white">
+                        Logout
+                      </a>
                     </div>
                   </li>
                 </ul>

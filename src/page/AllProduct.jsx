@@ -2,16 +2,21 @@ import ProductCart from "./ProductCart";
 import useAllProduct from "../Hook/useAllProduct";
 import { Link } from "react-router";
 import SEO from "../component/SEO/SEO";
+import SkeletonCard from "../component/SkeletonCard/SkeletonCard";
+
 
 const AllProduct = () => {
   const [allProduct, , isLoading] = useAllProduct();
+
   return (
     <div className="mt-14 container lg:w-10/12 mx-auto lg:p-10 p-2">
+      
       <SEO
         title="Zeroomiro - Trusted Place"
         description="Buy online products with trust"
         image="/banner.jpg"
       />
+
       <h1 className="text-center text-3xl text-[#111827] font-bold bg-gray-100 py-4">
         Our Products
       </h1>
@@ -20,15 +25,16 @@ const AllProduct = () => {
         Welcome to our premium product collection where quality meets value.
       </p>
 
-      {/* Loading */}
-      <div className="flex justify-center">
-        {isLoading && (
-          <span className="loading w-2/7 loading-bars loading-xl"></span>
-        )}
-      </div>
-
-      {/* No Product Found */}
-      {!isLoading && allProduct.length === 0 && (
+      {/* 🔥 Main Condition */}
+      {isLoading ? (
+        // 🔄 Skeleton Loader
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-2 mt-14">
+          {[...Array(10)].map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
+      ) : allProduct?.length === 0 ? (
+        // ❌ No Product
         <div className="flex flex-col items-center justify-center mt-20 text-center">
           <img
             src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
@@ -48,14 +54,14 @@ const AllProduct = () => {
             </button>
           </Link>
         </div>
+      ) : (
+        // ✅ Product Grid
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-2 mt-14">
+          {allProduct.map((product) => (
+            <ProductCart key={product._id} product={product} />
+          ))}
+        </div>
       )}
-
-      {/* Product Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-2 mt-14">
-        {allProduct?.map((product) => (
-          <ProductCart key={product._id} product={product} />
-        ))}
-      </div>
     </div>
   );
 };

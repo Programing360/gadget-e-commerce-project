@@ -1,8 +1,11 @@
 import React from "react";
 import { useLocation } from "react-router";
 import jsPDF from "jspdf";
+import { QRCodeCanvas } from "qrcode.react";
 import logo from "../../assets/assets/logo.jpg";
 import SEO from "../../component/SEO/SEO";
+
+
 const OrderInvoicePage = () => {
   const location = useLocation();
   const order = location.state?.order;
@@ -18,15 +21,16 @@ const OrderInvoicePage = () => {
     email,
     mobileNumber,
     address,
-    shipping,
     cart,
     subtotal,
     shippingCost,
     total,
     newDate,
     paymentMethod,
-    transactionId, // 🔥 added
+    transactionId,
+    orderId
   } = order;
+
 
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
@@ -34,126 +38,146 @@ const OrderInvoicePage = () => {
     doc.setFontSize(18);
     doc.text("INVOICE", 90, 20);
 
-    doc.setFontSize(11);
-    doc.text(`Invoice No: ${invoiceNumber}`, 20, 40);
+    doc.setFontSize(10);
+    doc.text(`Invoice: ${invoiceNumber}`, 20, 40);
     doc.text(`Date: ${new Date(newDate).toLocaleDateString()}`, 20, 48);
-    doc.text(`Transaction ID: ${transactionId || "N/A"}`, 20, 56); // 🔥 show transaction id
+    doc.text(`Transaction: ${transactionId || "N/A"}`, 20, 56);
 
-    doc.text(`Name: ${name}`, 20, 68);
-    doc.text(`Phone: ${mobileNumber}`, 20, 76);
-    doc.text(`Address: ${address}`, 20, 84);
+    doc.text(`Customer: ${name}`, 20, 70);
 
-    let y = 100;
+    let y = 90;
 
-    cart.forEach((item, index) => {
+    cart.forEach((item, i) => {
       doc.text(
-        `${index + 1}. ${item.name} - ${item.quantity} x ${item.price}`,
+        `${i + 1}. ${item.name} (${item.quantity} x ${item.price})`,
         20,
-        y,
+        y
       );
       y += 8;
     });
 
     y += 10;
-
-    doc.text(`Subtotal: ৳${subtotal}`, 20, y);
-    doc.text(`Shipping: ৳${shippingCost}`, 20, y + 8);
-    doc.text(`Total: ৳${total}`, 20, y + 16);
-
-    doc.text("Thank you for your purchase ❤️", 60, y + 40);
+    doc.text(`Total: ৳${total}`, 20, y);
 
     doc.save("invoice.pdf");
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg my-46">
-        <SEO
-        title="Your Invoice - Zeroomiro"
-        description="Order details show and received download or print"
+    <div className="max-w-5xl mx-auto my-20 shadow-lg border bg-white mt-40">
+      <SEO
+        title="Invoice - Zeroomiro"
+        description="Professional invoice with QR code"
       />
-      <div className="flex justify-between items-center border-b pb-4">
-        <div>
-          <img src={logo} className="w-32 mb-2" />
-          <h1 className="text-xl md:text-2xl font-bold text-[#FF6D1F]">
-            Zeroo<span className="text-[#fdb529]">m</span>
-            <span className="text-[#FF6D1F]">iro</span>
-          </h1>
+
+      {/* 🔥 HEADER */}
+      <div className="flex justify-between items-center bg-green-600 text-white p-6">
+        <div className="flex items-center gap-3">
+          <img src={logo} className="w-12 h-12 rounded" />
+          <h1 className="text-2xl font-bold">Zeroomiro</h1>
         </div>
-        <div className="text-right">
-          <h2 className="text-2xl font-bold">INVOICE</h2>
-          <p>{invoiceNumber}</p>
-          <p>{new Date(newDate).toLocaleString()}</p>
-          <p>Transaction ID: {transactionId || "N/A"}</p>{" "}
-          {/* 🔥 show on page */}
-        </div>
+        <h2 className="text-3xl font-bold">INVOICE</h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-6">
+      {/* 🔥 TOP INFO */}
+      <div className="grid grid-cols-2 p-6 bg-gray-50">
         <div>
-          <h3 className="font-semibold">Customer:</h3>
+          <h3 className="font-bold text-sm mb-2">INVOICE TO:</h3>
           <p>{name}</p>
           <p>{email}</p>
           <p>{mobileNumber}</p>
           <p>{address}</p>
         </div>
+
         <div className="text-right">
-          <p>Shipping: {shipping}</p>
-          <p>Payment: {paymentMethod}</p>
-          <p>Transaction ID: {transactionId || "N/A"}</p>{" "}
-          {/* 🔥 show on page */}
+          <p><b>Invoice:</b> {invoiceNumber}</p>
+          <p><b>Date:</b> {new Date(newDate).toLocaleDateString()}</p>
+          <p><b>Payment:</b> {paymentMethod}</p>
+          <p><b>Order ID:</b> {orderId || "N/A"}</p>
+
+          {/* 🔥 QR CODE */}
+          <div className="mt-3 flex justify-end">
+            <QRCodeCanvas
+              value={`https://zeroomiro26.web.app/userDashBoard`}
+              size={80}
+            />
+          </div>
         </div>
       </div>
 
-      <table className="w-full mt-6 border">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="border p-2">#</th>
-            <th className="border p-2">Product</th>
-            <th className="border p-2">Price</th>
-            <th className="border p-2">Qty</th>
-            <th className="border p-2">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cart.map((item, index) => (
-            <tr key={index}>
-              <td className="border p-2">{index + 1}</td>
-              <td className="border p-2">{item.name}</td>
-              <td className="border p-2">৳{item.price}</td>
-              <td className="border p-2">{item.quantity}</td>
-              <td className="border p-2">৳{item.price * item.quantity}</td>
+      {/* 🔥 TABLE */}
+      <div className="p-6">
+        <table className="w-full border">
+          <thead className="bg-green-600 text-white">
+            <tr>
+              <th className="p-2 text-left">Product</th>
+              <th className="p-2">Color</th>
+              <th className="p-2">Price</th>
+              <th className="p-2">Qty</th>
+              <th className="p-2">Total</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      <div className="flex justify-end mt-6">
-        <div className="w-72">
-          <div className="flex justify-between">
-            <span>Subtotal:</span>
-            <span>৳{subtotal}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Shipping:</span>
-            <span>৳{shippingCost}</span>
-          </div>
-          <div className="flex justify-between font-bold text-lg border-t mt-2 pt-2">
-            <span>Total:</span>
-            <span>৳{total}</span>
+          <tbody>
+            {cart.map((item, index) => (
+              <tr key={index} className="border-b">
+                <td className="p-2 flex items-center gap-2">
+                  <img
+                    src={item.image}
+                    className="w-10 h-10 rounded"
+                  />
+                  {
+                    item?.size ? <td>{item.name} ({item.size})</td> : (item?.name)
+                  }
+                </td>
+                <td className="text-center">{item.color}</td>
+                <td className="text-center">৳{item.price}</td>
+                <td className="text-center">{item.quantity}</td>
+                <td className="text-center">
+                  ৳{item.price * item.quantity}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* 🔥 TOTAL SECTION */}
+        <div className="flex justify-end mt-6">
+          <div className="w-72 space-y-2">
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>৳{subtotal}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Shipping</span>
+              <span>৳{shippingCost}</span>
+            </div>
+
+            <div className="flex justify-between font-bold text-lg border-t pt-2 bg-green-100 p-2 rounded">
+              <span>Total</span>
+              <span>৳{total}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="text-center mt-8">
+      {/* 🔥 FOOTER */}
+      <div className="p-6 border-t text-center text-sm text-gray-500">
+        Thank you for your business ❤️
+      </div>
+
+      {/* 🔥 BUTTONS */}
+      <div className="text-center pb-6">
         <button
           onClick={handleDownloadPDF}
-          className="px-6 py-2 bg-blue-600 text-white rounded mr-3 cursor-pointer"
+          className="px-6 py-2 bg-green-600 text-white rounded mr-3"
         >
           Download PDF
         </button>
+
         <button
           onClick={() => window.print()}
-          className="px-6 py-2 bg-black text-white rounded cursor-pointer"
+          className="px-6 py-2 bg-black text-white rounded"
         >
           Print
         </button>

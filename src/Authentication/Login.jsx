@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext} from "react";
 import { useForm } from "react-hook-form";
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -7,66 +7,75 @@ import { UseContext } from "../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import SEO from "../component/SEO/SEO";
+
+
+
+
+
 const Login = () => {
   const { register, handleSubmit, watch } = useForm();
-  const { signInUser, googleLogin, forgetPassword,UserLogout } = useContext(UseContext);
+  const { signInUser, googleLogin, forgetPassword, UserLogout } =
+    useContext(UseContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const email = watch("email");
   const notify = () => toast("Wow so easy!");
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   // MergeCart
 
   const mergeCart = async (userEmail) => {
-  const guestId = localStorage.getItem("guestCart");
+    const guestId = localStorage.getItem("guestCart");
 
-  if (!guestId) return;
+    if (!guestId) return;
 
-  await axiosSecure.post("/merge-cart", {
-    guestId,
-    userEmail,
-  });
+    await axiosSecure.post("/merge-cart", {
+      guestId,
+      userEmail,
+    });
 
-  localStorage.removeItem("guestCart");
-};
-
+    localStorage.removeItem("guestCart");
+  };
 
   const handleLoginForm = async (data) => {
-  try {
-    const res = await signInUser(data.email, data.password);
-    const user = res?.user;
+    try {
+      const res = await signInUser(data.email, data.password);
+      const user = res?.user;
 
-    if (!user.emailVerified) {
-      toast("Please verify your email first");
-      UserLogout();
-      return;
+      if (!user.emailVerified) {
+        toast("Please verify your email first");
+        UserLogout();
+        return;
+      }
+
+      if (user) {
+        navigate(from, { replace: true });
+        await mergeCart(user?.email);
+        notify();
+      }
+    } catch (err) {
+      if (err) {
+        toast("User invalid");
+      }
     }
+  };
 
-    if (user) {
-      navigate(from, { replace: true });
-      await mergeCart(user?.email);
-      notify();
-    }
-  } catch (err) {
-    toast("User invalid");
-  }
-};
-
-// handleSocialLogin
+  // handleSocialLogin
   const handleSocialLogin = async () => {
-  try {
-    const res = await googleLogin();
-    const user = res?.user;
+    try {
+      const res = await googleLogin();
+      const user = res?.user;
 
-    if (user) {
-      navigate(from, { replace: true });
-      await mergeCart(user?.email);
+      if (user) {
+        navigate(from, { replace: true });
+        await mergeCart(user?.email);
+      }
+    } catch (err) {
+      if (err) {
+        toast.error("Google login failed");
+      }
     }
-  } catch (err) {
-    toast.error("Google login failed");
-  }
-};
+  };
 
   const handleForgetPassword = () => {
     if (!email) {

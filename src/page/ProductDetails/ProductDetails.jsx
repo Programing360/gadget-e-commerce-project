@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
@@ -7,7 +7,6 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import CustomerView from "./CustomerView";
 import useAllProduct from "../../Hook/useAllProduct";
 import SimilarProductsGrid from "./SimilarProductsGrid";
 import SEO from "../../component/SEO/SEO";
@@ -26,305 +25,286 @@ const ProductDetails = () => {
   const {
     _id,
     name,
-    image,
+    images = [],
     stock,
     price,
     discountPrice,
     description,
-    image1,
     category,
+    colors = [],
+    variants = [], // [{size:'M', color:'Red', stock:5}, ...]
   } = useLoaderData();
 
   const { user } = useContext(UseContext);
   const axiosSecure = useAxiosSecure();
   const [cart, refetch] = useCart();
   const { handleCartIncrement, handleCartDecrement } = useCartItemUpdate();
+
   const [size, setSize] = useState(null);
-  const isShoe = category?.toLowerCase() === "shoe";
-  const cartItem = cart.find((item) => item.productId === _id);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [currentStock, setCurrentStock] = useState(stock);
+
   const navigate = useNavigate();
 
-  /* 🔥 All products for same category */
+  const isShoe = category?.toLowerCase() === "shoe";
+  const isShirt = category?.toLowerCase() === "shirt";
+
+  /* 🔥 auto select color */
+  useEffect(() => {
+    if (colors.length > 0) {
+      () => setSelectedColor(colors[0]);
+    }
+  }, [colors]);
+
+  /* 🔥 Update stock according to selected variant */
+  useEffect(() => {
+    if (size && selectedColor && variants.length > 0) {
+      const variant = variants.find(
+        (v) => v.size === size && v.color === selectedColor,
+      );
+      () => setCurrentStock(variant ? variant.stock : 0);
+    } else {
+      () => setCurrentStock(stock);
+    }
+  }, [size, selectedColor, variants, stock]);
+
+  /* 🔥 current cart item (variant wise) */
+  const cartItem = cart.find(
+    (item) =>
+      item.productId === _id &&
+      item.size === size &&
+      item.color === selectedColor,
+  );
+
+  /* 🔥 Similar products */
   const [allProduct] = useAllProduct();
   const sameCategoryProducts = allProduct.filter(
     (item) => item.category === category && item._id !== _id && item.stock > 0,
   );
 
+  /* 🛒 Buy Now */
   const handleBuyNow = async () => {
-    const existing = cart.find((item) => item.productId === _id);
+    if ((isShirt || isShoe) && !size) {
+      toast.error("Please select size 👕");
+      return;
+    }
+    if (currentStock === 0) {
+      toast.error("Selected variant is out of stock ❌");
+      return;
+    }
 
-    // 🟢 If already in cart → just navigate
+    const userId = getGuestUserId();
+
+    const existing = cart.find(
+      (item) =>
+        item.productId === _id &&
+        item.size === size &&
+        item.color === selectedColor,
+    );
+
     if (existing) {
       navigate("/onlinePayment");
       return;
     }
 
-    const userId = getGuestUserId();
-
-    const cartItem = {
+    const cartData = {
       productId: _id,
       name,
       price: discountPrice,
       quantity: 1,
-      image,
+      image: images[0],
       size,
+      color: selectedColor,
       userId,
       email: user?.email || null,
     };
 
-    const res = await axiosSecure.post("/cartData", cartItem);
+    const res = await axiosSecure.post("/cartData", cartData);
 
-    if (res.data?.insertedId) {
-      // toast.success("Product added to cart 🛒");
-      refetch();
-    }
+    if (res.data?.insertedId) refetch();
 
-    // 🔥 always navigate
     navigate("/onlinePayment");
   };
 
   /* 🛒 Add to cart */
-  const handleCartData = async (_id) => {
-    const existing = cart.find((item) => item.productId === _id);
-    if (existing) {
+  const handleCartData = async () => {
+    if ((isShirt || isShoe) && !size) {
+      toast.error("Please select size 👕");
+      return;
+    }
+    if (currentStock === 0) {
+      toast.error("Selected variant is out of stock ❌");
       return;
     }
 
-    if (existing > 0) {
+    const userId = getGuestUserId();
+
+    const existing = cart.find(
+      (item) =>
+        item.productId === _id &&
+        item.size === size &&
+        item.color === selectedColor,
+    );
+
+    /* 🔥 If exists → increase quantity */
+    if (existing) {
       const newQty = existing.quantity + 1;
+
       const { data } = await axiosSecure.patch(`/cartData/${existing._id}`, {
         quantity: newQty,
       });
 
       if (data.modifiedCount > 0) {
-        toast.success("Product also added to cart 🛒");
+        toast.success("Quantity updated 🛒");
         refetch();
       }
       return;
     }
 
-    const userId = getGuestUserId();
-
-    const cartItem = {
+    const cartData = {
       productId: _id,
       name,
       price: discountPrice,
       quantity: 1,
-      image,
+      image: images[0],
       size,
+      color: selectedColor,
       userId,
       email: user?.email || null,
     };
 
-    const res = await axiosSecure.post("/cartData", cartItem);
+    const res = await axiosSecure.post("/cartData", cartData);
 
     if (res.data?.insertedId) {
-      console.log(res.data);
       toast.success("Product added to cart 🛒");
       refetch();
     }
   };
 
   return (
-    <div className="bg-base-100 min-h-screen mt-28">
-      <SEO
-        title={`${name} - Buy Now at Best Price`}
-        description={description}
-        image={image}
-      />
-      {/* 🔝 Header */}
-      <div className="bg-gradient-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white py-6 text-center">
-        <h1 className="text-xl md:text-2xl font-semibold">{name}</h1>
-        <div className="flex justify-center text-sm">
-          <div className="breadcrumbs">
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/userAllProduct">Products</Link>
-              </li>
-              <li>{name}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen mt-28">
+      <SEO title={name} description={description} image={images[0]} />
 
-      {/* 🧱 Content */}
-      <div className="md:px-10">
-        <div className="max-w-6xl mx-auto px-4 py-10 shadow-lg">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-            {/* 🖼 Image */}
-            <Carousel
-              showThumbs={true}
-              showStatus={false}
-              infiniteLoop
-              autoPlay
-              className="rounded-xl overflow-hidden"
-            >
-              <div>
-                <img
-                  src={image}
-                  alt={name}
-                  className="object-contain max-h-100"
-                />
-              </div>
-
-              {image1 ? (
-                <div>
-                  <img
-                    src={image1}
-                    alt={name}
-                    className="object-contain max-h-100"
-                  />
-                </div>
-              ) : (
-                <div>
-                  <img
-                    src={image}
-                    alt={name}
-                    className="object-contain max-h-100"
-                  />
-                </div>
-              )}
-            </Carousel>
-
-            {/* 📦 Info */}
-            <div className="space-y-4">
-              <p>
-                <span className="font-semibold">Availability:</span>
-                <span className="text-emerald-600"> {stock} in stock</span>
-              </p>
-
-              <h2 className="text-2xl md:text-4xl font-bold">{name}</h2>
-
-              <div className="flex items-center gap-3">
-                <span className="text-xl font-bold text-primary">
-                  ৳{discountPrice}
-                </span>
-                <span className="line-through text-gray-400">৳{price}</span>
-                <span className="bg-indigo-200 text-indigo-700 px-2 rounded-full">
-                  Save TK {price - discountPrice}
-                </span>
-              </div>
-
-              {/* Quantity */}
-              {cartItem && (
-                <div className="flex items-center gap-3 border p-4 border-indigo-600 justify-between bg-indigo-100">
-                  <div className="flex items-center gap-4 ">
-                    <input
-                      type="radio"
-                      name="quantity"
-                      id="quantity1"
-                      defaultChecked
-                      className=""
-                    />
-                    <div>
-                      <h2 className=" font-bold">{name}</h2>
-                      <div className="flex items-center gap-3">
-                        <span className=" font-bold text-primary">
-                          ৳{discountPrice}
-                        </span>
-                        <span className="line-through text-gray-400">
-                          ৳{price}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 bg-blue-200">
-                    <button
-                      onClick={() => handleCartDecrement(_id)}
-                      className="btn btn-ghost hover:bg-red-100 active:scale-95"
-                    >
-                      −
-                    </button>
-                    <span className="min-w-6 text-center font-normal">
-                      {cartItem.quantity}
-                    </span>
-                    <button
-                      onClick={() => handleCartIncrement(_id)}
-                      className="btn btn-ghost hover:bg-blue-400 active:scale-95"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              )}
-              <div className="">
-                <div>
-                  {isShoe && (
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium mb-1">
-                        Category
-                      </label>
-                      <select
-                        className="w-full border rounded-md px-3 py-2"
-                        // value={category}
-                        onChange={(e) => setSize(e.target.value)}
-                      >
-                        <option value="All">Size</option>
-                        <option value="39">39</option>
-                        <option value="40">40</option>
-                        <option value="41">41</option>
-                        <option value="42">42</option>
-                        <option value="43">43</option>
-                        <option value="44">44</option>
-                      </select>
-                    </div>
-                  )}
-                </div>
-                <Link>
-                  <button
-                    onClick={() => handleBuyNow(_id)}
-                    className="btn w-full buy-now-btn bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] text-white mb-4 active:scale-95"
-                  >
-                    Buy Now
-                  </button>
-                </Link>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    disabled={stock === 0}
-                    onClick={() => handleCartData(_id)}
-                    className={`btn w-full rounded-none ${
-                      stock === 0
-                        ? "btn-disabled bg-gray-300 dark:text-black"
-                        : "btn w-full border-fuchsia-700 hover:bg-linear-to-r from-[#c127d2] via-[#632463] to-[#5a3d99] hover:text-white text-purple-600 active:scale-95"
-                    }`}
-                  >
-                    {stock === 0 ? "Out of Stock" : "Quick Add"}
-                  </button>
-                  <a
-                    href="https://www.facebook.com/messages/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <button className="btn w-full bg-linear-to-r from-[#8c0fd4] via-[#301830] to-[#221b31] text-white mb-4 active:scale-95">
-                      Chat with Messenger
-                    </button>
-                  </a>
-                </div>
-              </div>
-
-              <p className="bg-gray-100 p-4 rounded-xl text-sm text-gray-700">
-                <span className="font-semibold">Description:</span>
-                {description}
-              </p>
+      <div className="max-w-6xl mx-auto px-2 md:px-4 py-10 grid lg:grid-cols-2 gap-10">
+        {/* Images */}
+        <Carousel className="overflow-x-auto" showThumbs showStatus={false} infiniteLoop autoPlay>
+          {images?.map((img, i) => (
+            <div key={i}>
+              <img src={img} alt="" className="" />
             </div>
+          ))}
+        </Carousel>
+
+        {/* Info */}
+        <div className="space-y-4">
+          <h2 className="text-3xl font-bold">{name}</h2>
+
+          <div className="flex gap-3">
+            <span className="text-xl font-bold">৳{discountPrice}</span>
+            <span className="line-through text-gray-400">৳{price}</span>
           </div>
+
+          {/* 👕 Shirt Size */}
+          {isShirt && (
+            <div>
+              <h3>Select Size:</h3>
+              <div className="flex gap-2">
+                {["M", "L", "XL", "XXL"].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={
+                      size === s ? "bg-black text-white px-3" : "border px-3"
+                    }
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 👟 Shoe Size */}
+          {isShoe && (
+            <div>
+              <h3>Select Size:</h3>
+              <div className="flex gap-2">
+                {["39", "40", "41", "42", "43", "44"].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={
+                      size === s ? "bg-black text-white px-3" : "border px-3"
+                    }
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 🎨 Color */}
+          {colors.length > 0 && (
+            <div>
+              <h3>Select Color:</h3>
+              <div className="flex gap-2 ">
+                {colors.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setSelectedColor(c)}
+                    className={ 
+                      selectedColor === c
+                        ? "bg-black text-white px-3 "
+                        : "border px-3"
+                    }
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 🔥 Stock */}
+          <p className="text-green-600 font-semibold">
+            Stock Available: {currentStock}
+          </p>
+
+          {/* 🔥 Quantity Control */}
+          {cartItem && (
+            <div className="flex items-center gap-3 border p-3 bg-gray-100">
+              <button onClick={() => handleCartDecrement(_id)}>−</button>
+              <span>{cartItem.quantity}</span>
+              <button onClick={() => handleCartIncrement(_id)}>+</button>
+            </div>
+          )}
+
+          {/* Buttons */}
+          <button
+            onClick={handleBuyNow}
+            className="btn w-full bg-purple-600 text-white"
+          >
+            Buy Now
+          </button>
+
+          <button onClick={handleCartData} className="btn w-full border">
+            Add to Cart
+          </button>
+
+          {description && (
+            <div className="bg-gray-100 p-4 whitespace-pre-line">
+              Description
+              {description}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* 🔄 Similar Products */}
-      <div className="mt-10 max-w-6xl mx-auto mb-10 px-2">
-        <h2 className="text-xl font-bold mb-4">Related Products</h2>
-        <hr className="mb-3 text-gray-300" />
-        {sameCategoryProducts.length === 0 ? (
-          <p>No similar products found.</p>
-        ) : (
-          <SimilarProductsGrid products={sameCategoryProducts} />
-        )}
+      {/* Similar */}
+      <div className="max-w-6xl mx-auto mt-10">
+        <SimilarProductsGrid products={sameCategoryProducts} />
       </div>
-      <hr />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import useOrderList from "../../Hook/useOrderList";
 import useOrderCancelList from "../../Hook/useOrderCancelList";
 import useAllProduct from "../../Hook/useAllProduct";
 import { Link } from "react-router";
+import OrderStats from "./OrderStats";
 const Dashboard = () => {
   const [orders] = useOrderList();
   const [orderCancel] = useOrderCancelList();
@@ -124,6 +125,9 @@ const Dashboard = () => {
             <ChartComponent></ChartComponent>
           </div>
         </div>
+        
+          <OrderStats></OrderStats>
+        
       </div>
     </main>
   );

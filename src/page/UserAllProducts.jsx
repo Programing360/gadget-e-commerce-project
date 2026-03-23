@@ -23,7 +23,7 @@ const getGuestUserId = () => {
 const UserAllProducts = () => {
   const [allProduct] = useAllProduct();
   // const [products, setProducts] = useState([]);
-  const { products, setProducts, user } = useContext(UseContext);
+  const { products, setProducts } = useContext(UseContext);
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(false);
   const [activeSort, setActiveSort] = useState("");
@@ -55,7 +55,6 @@ const UserAllProducts = () => {
     setProducts(sorted);
   };
   const handleCategoryFilter = (categoryName) => {
-    console.log(categoryName);
     const filtered = allProduct.filter(
       (product) =>
         product.category.toLowerCase() === categoryName.toLowerCase(),
@@ -237,15 +236,52 @@ const UserAllProducts = () => {
                 </button>
               </li>
               <li>
-                <button onClick={() => handleCategoryFilter("Bravery")}>
-                  Bravery
+                <button onClick={() => handleCategoryFilter("Beverage")}>
+                  Beverage
                 </button>
+              </li>
+              <li>
+                <button onClick={() => handleCategoryFilter("Watch")}>
+                  Watch
+                </button>
+              </li>
+              <li className="relative group">
+                <button className="px-4 py-2 bg-gray-200 rounded">
+                  Clothing
+                </button>
+                {/* Dropdown menu */}
+                <ul className="absolute left-0 mt-2 w-40 bg-white border rounded shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300">
+                  <li>
+                    <button
+                      onClick={() => handleCategoryFilter("Shirt")}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Shirt
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => handleCategoryFilter("Pants")}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Pants
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => handleCategoryFilter("Jacket")}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Jacket
+                    </button>
+                  </li>
+                </ul>
               </li>
             </ul>
           )}
 
           {/* PRODUCTS GRID */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black">
             {products?.map((item) => (
               <div
                 key={item._id}
@@ -254,7 +290,7 @@ const UserAllProducts = () => {
                 <Link to={`/productDetails/${item._id}`}>
                   <figure className="w-full h-48 md:h-64 overflow-hidden rounded-t-xl">
                     <img
-                      src={item.image}
+                      src={item.images[0]}
                       alt={item.name}
                       className="w-full h-full object-cover"
                     />
@@ -280,7 +316,7 @@ const UserAllProducts = () => {
                     <button
                       disabled={item.stock === 0}
                       onClick={() => handleCartData(item._id)}
-                      className={`btn w-full rounded-none active:scale-95 ${
+                      className={`btn w-full rounded-none shadow-xl hover:shadow-blue-300 active:scale-95 ${
                         item.stock === 0
                           ? "btn-disabled bg-gray-300"
                           : "bg-[#467bec] text-white"

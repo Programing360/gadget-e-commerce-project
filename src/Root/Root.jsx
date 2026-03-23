@@ -6,6 +6,7 @@ import CategoryNav from "../component/NavBar/CetagoryNav";
 import ScrollToTop from "../page/ScrollToTop";
 import Dock from "../component/Dock";
 import Clock from "../component/Clock/Clock";
+import AutoReloadOnRouteChange from "../page/AutoReloadOnRouteChange/AutoReloadOnRouteChange";
 
 const Root = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const Root = () => {
       <div className="fixed top-40 left-0 shadow-2xl p-3 z-100 hidden md:block">
         <Clock></Clock>
       </div>
+      <AutoReloadOnRouteChange></AutoReloadOnRouteChange>
       <ScrollToTop></ScrollToTop>
       <NavBar></NavBar>
       <CategoryNav></CategoryNav>

@@ -1,9 +1,12 @@
 import React from 'react';
+import CreateCampaign from './CreateCampaign';
+import CampaignList from './CampaignList';
 
 const Inbox = () => {
     return (
         <div>
-            <h1>inbox</h1>
+            <CreateCampaign></CreateCampaign>
+            <CampaignList></CampaignList>
         </div>
     );
 };

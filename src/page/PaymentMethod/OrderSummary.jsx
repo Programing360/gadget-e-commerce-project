@@ -12,7 +12,7 @@ const OrderSummary = () => {
     0,
   );
   const shipping =
-    deliveryArea === "inside" ? 50 : deliveryArea === "outside" ? 100 : 0;
+    deliveryArea === "inside" ? 50 : deliveryArea === "outside" ? 17 : 0;
   const total = subtotal + shipping;
   const isCartEmpty = cart.length === 0;
   return (

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { UseContext } from "../../Context/AuthContext";
 import useCart from "../../Hook/useCart";
@@ -9,24 +9,33 @@ import useOrderList from "../../Hook/useOrderList";
 import { useNavigate } from "react-router";
 import SEO from "../../component/SEO/SEO";
 const CashOnDelivery = () => {
-  const { open, setOpen, user, setShowSuccessModal, setLatestOrderId } =
-    useContext(UseContext);
+  const { open, setOpen, user } = useContext(UseContext);
   const [cart] = useCart();
   const [, refetch] = useOrderList();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-
+  let guestId = localStorage.getItem("guestCart");
+  const orderId = Date.now().toString().slice(-6);
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
     reset,
+    setValue,
   } = useForm({
     defaultValues: {
       shipping: "dhaka",
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      setValue("fullName", user.displayName || "");
+      setValue("mobile", user.phoneNumber || "");
+      setValue("email", user.email || "");
+    }
+  }, [user, setValue]);
 
   const shipping = watch("shipping");
 
@@ -57,8 +66,10 @@ const CashOnDelivery = () => {
         total,
         newDate,
         paymentMethod: "COD",
-        transactionId:"TXN-" + Date.now(),
-        email: user?.email,
+        transactionId: "TXN-" + Date.now(),
+        email: user?.email || null,
+        guestId,
+        orderId
       };
 
       const res = await axiosSecure.post("/orders", orderData);
@@ -66,8 +77,7 @@ const CashOnDelivery = () => {
       if (res.data) {
         // toast("Order Confirmed ✅");
         setOpen(false);
-        // setShowSuccessModal(true);
-        // setLatestOrderId(orderData);
+        
         // ✅ navigate with data
         navigate("/invoicePage", {
           state: { order: orderData },
@@ -77,7 +87,9 @@ const CashOnDelivery = () => {
         refetch();
       }
     } catch (error) {
-      toast.error("Something went wrong ❌");
+      if (error) {
+        toast.error("Something went wrong ❌");
+      }
     }
   };
 
@@ -85,7 +97,7 @@ const CashOnDelivery = () => {
 
   return (
     <>
-    <SEO
+      <SEO
         title="Cash On Delivery - Zeroomiro"
         description="Product buy and checkout"
       />

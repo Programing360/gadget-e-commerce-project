@@ -25,6 +25,7 @@ createRoot(document.getElementById("root")).render(
                   <span className="loading loading-bars loading-xl"></span>
                 }
               />
+              
             </div>
           </AuthProvider>
         </QueryClientProvider>

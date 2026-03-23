@@ -17,7 +17,7 @@ const SimilarProductsGrid = ({ products }) => {
             className="border border-gray-300 shadow-2xl rounded-lg p-2 hover:shadow-lg transition "
           >
             <img
-              src={product.image}
+              src={product.images[0]}
               alt={product.name}
               className="object-contain h-40 w-full mb-2"
             />

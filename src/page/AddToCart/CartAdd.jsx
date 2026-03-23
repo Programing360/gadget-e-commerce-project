@@ -78,7 +78,18 @@ const CartAdd = () => {
           <div className="flex flex-col w-full">
             <h1 className="text-[1rem] font-bold text-cyan-700">{item.name}</h1>
             <p className="text-pink-700">TK {item.price}</p>
-
+            <div className="flex gap-3 mt-1 text-sm">
+              {item.size && (
+                <p>
+                  <span className="font-semibold">Size:</span> {item.size}
+                </p>
+              )}
+              {item.color && (
+                <p>
+                  <span className="font-semibold">Color:</span> {item.color}
+                </p>
+              )}
+            </div>
             <div className="flex items-center justify-between mt-3 gap-4">
               {/* Quantity */}
               <div className="bg-gray-200 w-25 text-center text-xl py-1 flex items-center justify-around">

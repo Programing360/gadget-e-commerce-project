@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { Heart, X, Minus, Plus } from "lucide-react";
+import { useContext } from "react";
+import { Heart } from "lucide-react";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
 import { UseContext } from "../Context/AuthContext";
@@ -20,19 +20,18 @@ const getGuestUserId = () => {
   return guestId;
 };
 
-const  ProductCard = ({ product }) => {
+const ProductCard = ({ product }) => {
   const {
     _id,
     name,
     price,
     discountPercentage,
-    image,
+    images = [],
     discountPrice,
     stock,
   } = product;
 
-  // const [open, setOpen] = useState(false);
-  // const [qty, setQty] = useState(1);
+  const mainImage = images[0] || "https://via.placeholder.com/300"; // 🔥 fallback
 
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(UseContext);
@@ -44,10 +43,9 @@ const  ProductCard = ({ product }) => {
     const userId = getGuestUserId();
 
     const existing = cart?.find(
-      (item) => item.productId === id && item.userId === userId,
+      (item) => item.productId === id && item.userId === userId
     );
 
-    // 🟢 If product already in cart → increase quantity
     if (existing) {
       const newQty = existing.quantity + 1;
 
@@ -62,13 +60,12 @@ const  ProductCard = ({ product }) => {
       return;
     }
 
-    // 🟢 New cart item
     const cartItem = {
       productId: _id,
       name,
       price: discountPrice,
       quantity: 1,
-      image,
+      image: mainImage, // 🔥 only single image
       userId,
       email: user?.email || null,
     };
@@ -82,21 +79,19 @@ const  ProductCard = ({ product }) => {
   };
 
   /* ================= WISHLIST ================= */
-
   const isInWishlist = wishlist?.find((item) => item.productId === _id);
-
 
   const handleWishlist = async (id) => {
     const userId = getGuestUserId();
-    const existing = wishlist.find(
-      (item) => item.productId === id && item.userId === userId,
-    );
-    // console.log(isInWishlist,wishlist, existing,id)
 
     if (!user) {
       toast.error("Please login first");
       return;
     }
+
+    const existing = wishlist.find(
+      (item) => item.productId === id && item.userId === userId
+    );
 
     if (existing) {
       toast.info("Already in wishlist ❤️");
@@ -108,13 +103,13 @@ const  ProductCard = ({ product }) => {
       name,
       price: discountPrice,
       quantity: 1,
-      image,
+      image: mainImage, // 🔥 fix
       email: user?.email,
       userId,
     };
 
     const res = await axiosSecure.post("/addWishList", wishItem);
-    // if(isInWishlist)
+
     if (res.data.insertedId) {
       toast.success("Added to wishlist ❤️");
       reload();
@@ -123,11 +118,11 @@ const  ProductCard = ({ product }) => {
 
   return (
     <div>
-      {/* ================= CARD ================= */}
       <div className="relative group overflow-hidden shadow-lg hover:shadow-xl transition bg-white hover:text-blue-600 dark:text-black">
-        {/* Discount Badge */}
+
+        {/* Discount */}
         {discountPercentage > 0 && (
-          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full z-10">
+          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">
             -{discountPercentage}%
           </span>
         )}
@@ -135,20 +130,20 @@ const  ProductCard = ({ product }) => {
         {/* Wishlist */}
         <button
           onClick={() => handleWishlist(_id)}
-          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10 cursor-pointer"
+          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10"
         >
           {isInWishlist ? (
-            <img className="w-4 " src={hearIcon} alt="wishlist" />
+            <img className="w-4" src={hearIcon} alt="wishlist" />
           ) : (
             <Heart size={16} />
           )}
         </button>
 
-        {/* Image */}
+        {/* 🔥 Image */}
         <div className="w-full h-48 md:h-64 overflow-hidden">
           <Link to={`/productDetails/${_id}`}>
             <img
-              src={image}
+              src={mainImage}
               alt={name}
               loading="lazy"
               className="w-full h-full object-cover rounded-xl p-3 transition-transform duration-300 group-hover:scale-105"
@@ -163,87 +158,32 @@ const  ProductCard = ({ product }) => {
               Stock Out
             </span>
           )}
-          <div className="flex justify-between items-center gap-2">
-            <h3 className="font-semibold text-sm">{name}</h3>
-          </div>
+
+          <h3 className="font-semibold text-sm">{name}</h3>
 
           <div className="flex items-center gap-2 mt-1">
             <span className="text-lg font-bold text-primary">
               ৳{discountPrice}
             </span>
-            <span className="text-sm line-through text-gray-400">৳{price}</span>
+            <span className="text-sm line-through text-gray-400">
+              ৳{price}
+            </span>
           </div>
         </div>
 
-        {/* Add to Cart */}
+        {/* Button */}
         <button
           disabled={stock === 0}
           onClick={() => handleCartData(_id)}
           className={`btn w-full rounded-none ${
-            stock === 0 ? "btn-disabled bg-gray-300 dark:text-black" : "bg-[#111827] text-white hover:bg-[#2363d1] active:scale-95"
+            stock === 0
+              ? "btn-disabled bg-gray-300"
+              : "bg-[#111827] text-white hover:bg-[#2363d1]"
           }`}
         >
           {stock === 0 ? "Out of Stock" : "Quick Add"}
         </button>
       </div>
-
-      {/* ================= MODAL ================= */}
-      {/* {open && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-4xl rounded-2xl p-6 relative">
-            <button
-              onClick={() => setOpen(false)}
-              className="absolute top-4 right-4 text-gray-500"
-            >
-              <X />
-            </button>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <img
-                src={image}
-                alt={name}
-                className="w-full max-h-[450px] object-contain rounded-xl"
-              />
-
-              <div>
-                <h2 className="text-2xl font-bold mb-2">{name}</h2>
-
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl font-bold text-primary">
-                    ৳{discountPrice}
-                  </span>
-                  <span className="line-through text-gray-400">৳{price}</span>
-                </div>
-
-                <div className="flex items-center gap-3 mb-4">
-                  <button
-                    onClick={() => setQty(Math.max(1, qty - 1))}
-                    className="p-2 border rounded-lg"
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <span className="px-4 font-semibold">{qty}</span>
-                  <button
-                    onClick={() => setQty(qty + 1)}
-                    className="p-2 border rounded-lg"
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
-
-                <button
-                  onClick={() => handleCartData(_id)}
-                  className="bg-cyan-600 w-full text-white px-6 py-3 rounded-xl mb-4"
-                >
-                  Add to Cart
-                </button>
-
-                <p className="text-sm text-gray-600">{description}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 };

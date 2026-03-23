@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
-import Bravery from "../../assets/assets/bravery.jpg";
 import { motion } from "motion/react";
 
 const CategoryNav = () => {
@@ -61,46 +60,6 @@ const CategoryNav = () => {
             >
               All Products
             </NavLink>
-
-            {/* {openDropdown && (
-              <ul className="absolute top-6 left-0 bg-white shadow-lg rounded-md w-48 py-2">
-                <li>
-                  <NavLink
-                    to="/category/honey"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Honey
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    to="/category/olive-oil"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Olive Oil
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    to="/category/black-seed"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Black Seed Oil
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    to="/category/dates"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Dates
-                  </NavLink>
-                </li>
-              </ul>
-            )} */}
           </li>
 
           {/* About */}

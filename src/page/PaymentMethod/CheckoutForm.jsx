@@ -17,6 +17,9 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useNavigate } from "react-router";
 import SEO from "../../component/SEO/SEO";
+import cashIcon from "../../assets/assets/cash-on-delivery.png";
+import OnlineIcon from "../../assets/assets/card.png";
+import bkash from "../../assets/assets/bkash.png";
 
 const transactionId = "TXN-" + Date.now();
 const CheckoutForm = () => {
@@ -25,6 +28,9 @@ const CheckoutForm = () => {
   const { deliveryArea, setDeliveryArea, user } = useContext(UseContext);
   const [cart] = useCart();
   const navigate = useNavigate();
+  let guestId = localStorage.getItem("guestCart");
+  const orderId = Date.now().toString().slice(-6);
+
   // 🔥 Auto Fill user data
   useEffect(() => {
     if (user) {
@@ -40,7 +46,7 @@ const CheckoutForm = () => {
   }, [cart]);
 
   const deliveryCharge =
-    deliveryArea === "inside" ? 50 : deliveryArea === "outside" ? 100 : 0;
+    deliveryArea === "inside" ? 50 : deliveryArea === "outside" ? 17 : 0;
 
   const total = subtotal + deliveryCharge;
 
@@ -66,7 +72,9 @@ const CheckoutForm = () => {
       mobileNumber: data.mobile,
       newDate,
       transactionId,
-      email: user?.email,
+      email: user?.email || null,
+      guestId,
+      orderId,
       payNow: paymentType === "partial" ? partialAmount : total,
     };
 
@@ -86,6 +94,22 @@ const CheckoutForm = () => {
         title="Checkout Page - Zeroomiro"
         description="Review your cart items and checkout"
       />
+
+
+      {!user && (
+        <div className="flex justify-between items-center p-2 mb-4 border-gray-400 shadow-2xl">
+          <h1>Have any account? please login or register</h1>
+          <div>
+            <button className="border px-6 py-1 rounded-md cursor-pointer border-purple-400 hover:bg-purple-300 hover:text-white transition mr-4">
+              Login
+            </button>
+            <button className="border px-6 py-1 rounded-md cursor-pointer border-purple-400 bg-purple-300 text-white transition">
+              Register
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT */}
         <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded shadow dark:text-white dark:bg-[#140b1e]">
@@ -136,13 +160,13 @@ const CheckoutForm = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div
                   onClick={() => setDeliveryArea("pickup")}
-                  className={`border rounded-lg p-4 cursor-pointer ${
+                  className={`border rounded-lg p-4 cursor-pointer tab-disabled ${
                     deliveryArea === "pickup"
                       ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ">
                     <Store size={18} />
                     <p className="font-medium">Office Pickup</p>
                   </div>
@@ -174,9 +198,9 @@ const CheckoutForm = () => {
                 >
                   <div className="flex items-center gap-2">
                     <Truck size={18} />
-                    <p className="font-medium">Outside Dhaka</p>
+                    <p className="font-medium">Delivery Charge</p>
                   </div>
-                  <p className="text-sm text-gray-500">৳100</p>
+                  <p className="text-lg font-bold text-gray-500 ">৳17</p>
                 </div>
               </div>
             </div>
@@ -224,35 +248,35 @@ const CheckoutForm = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <Clock size={18} />
+                    <img className="w-8" src={cashIcon} alt="" />
                     <p className="font-medium">Cash On Delivery</p>
                   </div>
                 </div>
 
                 <div
                   onClick={() => setPaymentMethod("bkash")}
-                  className={`border rounded-lg p-4 cursor-pointer ${
+                  className={`border rounded-lg p-4 cursor-pointer btn-disabled ${
                     paymentMethod === "bkash"
                       ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <Smartphone size={18} />
+                    <img className="w-8" src={bkash} alt="" />
                     <p className="font-medium">bKash</p>
                   </div>
                 </div>
 
                 <div
                   onClick={() => setPaymentMethod("online")}
-                  className={`border rounded-lg p-4 cursor-pointer ${
+                  className={`border rounded-lg p-4 cursor-pointer btn-disabled ${
                     paymentMethod === "online"
                       ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <ShieldCheck size={18} />
+                    <img className="w-8" src={OnlineIcon} alt="" />
                     <p className="font-medium">Pay Online</p>
                   </div>
                 </div>

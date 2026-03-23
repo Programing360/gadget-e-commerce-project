@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const ProductAdd = () => {
   const {
@@ -9,13 +10,41 @@ const ProductAdd = () => {
     reset,
     formState: { errors },
   } = useForm();
+
   const axiosSecure = useAxiosSecure();
+
+  // 🔥 Multiple Image State
+  const [images, setImages] = useState([""]);
+
+  // 🔥 Handle Image Change
+  const handleImageChange = (index, value) => {
+    const updated = [...images];
+    updated[index] = value;
+    setImages(updated);
+  };
+
+  // 🔥 Add New Image Field
+  const addImageField = () => {
+    setImages([...images, ""]);
+  };
+
+  // 🔥 Remove Image Field
+  const removeImageField = (index) => {
+    const updated = images.filter((_, i) => i !== index);
+    setImages(updated);
+  };
+
+  // 🔥 Submit
   const onSubmit = (data) => {
-    // 👉 Here you can send data to backend
+    console.log(data);
+    data.images = images; // multiple images add
+
     axiosSecure.post("/productAdd", data).then((res) => {
+      console.log(res.data);
       if (res.data) {
-        toast("Publish Your Product");
+        toast("Publish Your Product ✅");
         reset();
+        setImages([""]); // reset images
       }
     });
   };
@@ -23,7 +52,7 @@ const ProductAdd = () => {
   return (
     <div className="max-w-4xl mx-auto p-1 rounded-xl text-white bg-linear-0 from-indigo-500 to-pink-400 mt-[5%]">
       <div className="card bg-[#100828] shadow-xl">
-        <div className="card-body ">
+        <div className="card-body">
           <h2 className="text-2xl font-bold text-center text-cyan-600">
             Add New Product
           </h2>
@@ -37,13 +66,11 @@ const ProductAdd = () => {
               <input
                 type="text"
                 placeholder="Product name"
-                className="input input-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
                 {...register("name", { required: "Product name is required" })}
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.name.message}
-                </p>
+                <p className="text-red-500 text-sm">{errors.name.message}</p>
               )}
             </div>
 
@@ -55,145 +82,121 @@ const ProductAdd = () => {
               <input
                 type="number"
                 placeholder="Product price"
-                className="input input-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
                 {...register("price", {
                   required: "Price is required",
                   min: { value: 1, message: "Price must be greater than 0" },
                 })}
               />
-              {errors.price && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.price.message}
-                </p>
-              )}
             </div>
-            <div className="flex justify-between gap-3 w-full">
-              {/*Discount Price */}
-              <div>
-                <label className="label">
-                  <span className="label-text">Discount Price</span>
-                </label>
-                <input
-                  type="number"
-                  placeholder="discount price"
-                  className="input input-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
-                  {...register("discountPrice", {
-                    required: "Price is required",
-                    min: { value: 1, message: "Price must be greater than 0" },
-                  })}
-                />
-                {errors.price && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.price.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className="label">
-                  <span className="label-text">Percentage</span>
-                </label>
-                <input
-                  type="number"
-                  placeholder="Percentage"
-                  className="input input-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
-                  {...register("discountPercentage", {
-                    required: "Price is required",
-                    min: { value: 1, message: "Price must be greater than 0" },
-                  })}
-                />
-                {errors.price && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.price.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className="label">
-                  <span className="label-text">Stock Count</span>
-                </label>
-                <input
-                  type="number"
-                  placeholder="Stoke Count"
-                  className="input input-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
-                  {...register("stock", {
-                    required: "Price is required",
-                    min: { value: 1, message: "Price must be greater than 0" },
-                  })}
-                />
-                {errors.price && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.price.message}
-                  </p>
-                )}
-              </div>
+
+            {/* Discount + Stock */}
+            <div className="flex gap-3">
+              <input
+                type="number"
+                placeholder="Discount Price"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                {...register("discountPrice")}
+              />
+              <input
+                type="number"
+                placeholder="Discount %"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                {...register("discountPercentage")}
+              />
+              <input
+                type="number"
+                placeholder="Stock"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                {...register("stock")}
+              />
             </div>
 
             {/* Category */}
             <div>
-              <label className="label">
-                <span className="label-text">Category</span>
-              </label>
               <select
-                className="select select-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
+                className="select select-bordered w-full border-cyan-600 bg-[#362949]"
                 {...register("category", { required: true })}
               >
                 <option value="">Select category</option>
                 <option value="electronics">Electronics</option>
-                <option value="fashion">Fashion</option>
-                <option value="food">Food</option>
-                <option value="home">Home Appliance</option>
+                <option value="fashion">Watch</option>
+                <option value="food">Shirt</option>
+                <option value="home">Laptop</option>
               </select>
             </div>
 
-            {/* Image URL */}
+            {/* 🔥 Multiple Images */}
             <div>
               <label className="label">
-                <span className="label-text">Image URL</span>
+                <span className="label-text">Product Images</span>
               </label>
-              <input
-                type="text"
-                placeholder="https://image-url.com"
-                className="input input-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
-                {...register("image", { required: true })}
-              />
+
+              {images.map((img, index) => (
+                <div key={index} className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    value={img}
+                    onChange={(e) => handleImageChange(index, e.target.value)}
+                    placeholder="https://image-url.com"
+                    className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                  />
+
+                  {images.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeImageField(index)}
+                      className="btn btn-error"
+                    >
+                      X
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={addImageField}
+                className="btn btn-sm mt-2"
+              >
+                + Add Image
+              </button>
             </div>
 
             {/* Description */}
-            <div>
-              <label className="label">
-                <span className="label-text">Description</span>
-              </label>
-              <textarea
-                className="textarea textarea-bordered w-full border-cyan-600 outline-0 bg-[#362949]"
-                placeholder="Product description"
-                rows={4}
-                {...register("description", {
-                  required: "Description is required",
-                })}
-              ></textarea>
-            </div>
+            <textarea
+              className="textarea textarea-bordered w-full border-cyan-600 bg-[#362949]"
+              placeholder="Write product description..."
+              rows={4}
+              {...register("description", {
+                required: "Description is required",
+                minLength: {
+                  value: 20,
+                  message: "Minimum 20 characters",
+                },
+                maxLength: {
+                  value: 300,
+                  message: "Maximum 300 characters",
+                },
+              })}
+            />
+
+            {errors.description && (
+              <p className="text-red-500 text-sm">
+                {errors.description.message}
+              </p>
+            )}
 
             {/* Status */}
-            <div className="flex items-center gap-4">
-              <label className="label cursor-pointer">
-                <span className="label-text mr-2">Available</span>
-                <input
-                  type="checkbox"
-                  className="toggle toggle-success border-cyan-600 outline-0 bg-[#362949]"
-                  {...register("status")}
-                />
-              </label>
-            </div>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" {...register("status")} />
+              Available
+            </label>
 
-            {/* Submit Button */}
-            <div className="card-actions justify-end">
-              <button
-                type="submit"
-                className="btn bg-linear-0 from-[#7d63e4] to-[#9c85fb] border-cyan-600 text-white animate-btn outline-0"
-              >
-                Add Product
-              </button>
-            </div>
+            {/* Submit */}
+            <button className="btn bg-indigo-500 text-white w-full">
+              Add Product
+            </button>
           </form>
         </div>
       </div>
