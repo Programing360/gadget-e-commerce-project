@@ -1,4 +1,4 @@
-import React, { useContext} from "react";
+import React, { useContext, useState} from "react";
 import { useForm } from "react-hook-form";
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -23,7 +23,7 @@ const Login = () => {
   const notify = () => toast("Wow so easy!");
   const axiosSecure = useAxiosSecure();
   // MergeCart
-
+  const [loading, setLoading] = useState(false);
   const mergeCart = async (userEmail) => {
     const guestId = localStorage.getItem("guestCart");
 
@@ -38,6 +38,7 @@ const Login = () => {
   };
 
   const handleLoginForm = async (data) => {
+    setLoading(true)
     try {
       const res = await signInUser(data.email, data.password);
       const user = res?.user;
@@ -57,11 +58,14 @@ const Login = () => {
       if (err) {
         toast("User invalid");
       }
+    }finally {
+      setLoading(false);
     }
   };
 
-  // handleSocialLogin
+  // Social login handler
   const handleSocialLogin = async () => {
+    setLoading(true);
     try {
       const res = await googleLogin();
       const user = res?.user;
@@ -72,11 +76,15 @@ const Login = () => {
       }
     } catch (err) {
       if (err) {
-        toast.error("Google login failed");
+        toast.error(err.message || "Google login failed");
       }
+    }finally {
+      setLoading(false);
     }
   };
 
+
+// Forget password handler
   const handleForgetPassword = () => {
     if (!email) {
       toast.error("Please enter your email first");
@@ -98,6 +106,11 @@ const Login = () => {
         title="Login Page - Zeroomiro"
         description="Already have an account found gmail"
       />
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-50">
+          <div className="w-16 h-16 border-4 border-cyan-700 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
       <div className="card bg-base-100 w-full lg:max-w-3xl md:max-w-xl shrink-0 shadow-2xl">
         <div className="flex items-center flex-col-reverse md:flex-row ">
           <div className="card-body w-full">
@@ -108,6 +121,7 @@ const Login = () => {
                   <label className="label">Email</label>
                   <input
                     type="email"
+                    
                     // onChange={(e) => setEmail(e.target.value)}
                     {...register("email", { required: true })}
                     className="input w-full outline-0 border-cyan-700"

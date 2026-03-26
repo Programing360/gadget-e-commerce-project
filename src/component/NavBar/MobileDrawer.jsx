@@ -1,32 +1,58 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
-import menuIcon from "../../assets/assets/burger-bar.png"; // menu icon path
+import React, { useContext, useState } from "react";
+import { useNavigate, useLocation } from "react-router";
+import menuIcon from "../../assets/assets/burger-bar.png";
+import { motion } from "framer-motion";
+import { UseContext } from "../../Context/AuthContext";
+import useAllData from "../../Hook/useAllData";
 
-const categories = [
-  { name: "Shirt", sub: ["T-Shirt", "Formal Shirt", "Casual Shirt", 'Polo Shirt'] },
-  { name: "Pants" },
-  { name: "Shoes" },
-  { name: "Accessories" },
-];
-
-const MobileDrawer = ({ setActiveCategory, activeCategory }) => {
+const MobileDrawer = () => {
+  const navigate = useNavigate();
+  const location = useLocation(); // 🔹 get current route
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [subDrawer, setSubDrawer] = useState({ open: false, subItems: [] });
-    
-  const handleCategoryClick = (category) => {
-    setActiveCategory(category.name);
-    if (category.sub) {
-      setSubDrawer({ open: true, subItems: category.sub });
+  const [allData] = useAllData()
+  const { setProducts } = useContext(UseContext);
+  const dynamicCategories = [...new Set(allData?.map((p) => p.category))];
+
+
+
+  const handleCategoryClick = (categoryName) => {
+
+   const filtered = allData.filter(
+      (product) =>
+        product.category.toLowerCase() === categoryName.toLowerCase(),
+    );
+    setProducts(filtered);
+
+    if (categoryName === "Home Appliance") {
+      setSubDrawer({
+        open: true,
+        subItems: ["T-Shirt", "Formal Shirt", "Casual Shirt", "Polo Shirt"],
+      });
     } else {
-      setSubDrawer({ open: false, subItems: [] });
-      setIsDrawerOpen(false); // close drawer if no sub-category
+      setIsDrawerOpen(false);
+      navigate(`/userAllProduct?category=${categoryName}`);
     }
   };
 
   const handleSubClick = (subItem) => {
-    setActiveCategory(subItem);
     setSubDrawer({ open: false, subItems: [] });
     setIsDrawerOpen(false);
+    navigate(`/userAllProduct?category=${subItem}`);
+  };
+
+  const listVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      x: 0,
+      transition: { delay: i * 0.08, duration: 0.25 },
+    }),
+  };
+
+  // 🔹 helper to check active
+  const isActive = (category) => {
+    return location.search.includes(`category=${category}`);
   };
 
   return (
@@ -35,59 +61,88 @@ const MobileDrawer = ({ setActiveCategory, activeCategory }) => {
       <div className="md:hidden flex items-center mr-4">
         <img
           src={menuIcon}
-          alt="Menu"
           className="w-8 cursor-pointer"
           onClick={() => setIsDrawerOpen(true)}
         />
       </div>
 
-      {/* Main Drawer */}
+      {/* Backdrop */}
       {isDrawerOpen && (
-        <div className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transition-transform duration-300">
-          <div className="flex justify-between items-center p-4 border-b">
-            <h2 className="font-bold text-lg">Categories</h2>
-            <button onClick={() => setIsDrawerOpen(false)}>✕</button>
-          </div>
-          <ul className="p-4 space-y-2">
-            {categories.map((cat) => (
-              <li
-                key={cat.name}
-                className={`p-2 rounded cursor-pointer ${
-                  activeCategory === cat.name ? "bg-[#FF6D1F] text-white" : ""
-                }`}
-                onClick={() => handleCategoryClick(cat)}
-              >
-                {cat.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-20 z-40 md:hidden"
+          onClick={() => setIsDrawerOpen(false)}
+        />
       )}
 
-      {/* Sub-category Drawer */}
-      {subDrawer.open && (
-        <div className="fixed top-0 left-64 h-full w-64 bg-gray-100 shadow-lg z-50 transition-transform duration-300">
-          <div className="flex justify-between items-center p-4 border-b">
-            <h2 className="font-bold text-lg">Select Option</h2>
-            <button onClick={() => setSubDrawer({ open: false, subItems: [] })}>
-              ✕
-            </button>
-          </div>
-          <ul className="p-4 space-y-2">
-            {subDrawer.subItems.map((sub) => (
-              <li
-                key={sub}
-                className={`p-2 rounded cursor-pointer ${
-                  activeCategory === sub ? "bg-[#FF6D1F] text-white" : ""
-                }`}
-                onClick={() => handleSubClick(sub)}
-              >
-                {sub}
-              </li>
-            ))}
-          </ul>
+      {/* Main Drawer */}
+      <motion.div
+        initial={{ x: "-100%" }}
+        animate={{ x: isDrawerOpen ? 0 : "-100%" }}
+        transition={{ type: "tween", duration: 0.3 }}
+        className="fixed top-0 left-0 h-full w-64 bg-white shadow-md z-50 dark:text-black md:hidden"
+      >
+        <div className="flex justify-between p-4 border-b border-gray-200">
+          <h2 className="font-semibold text-gray-800">Categories</h2>
+          <button onClick={() => setIsDrawerOpen(false)}>✕</button>
         </div>
-      )}
+
+        <ul className="p-4 space-y-2">
+          {dynamicCategories.map((cat, index) => (
+            <motion.li
+              key={cat}
+              custom={index}
+              variants={listVariants}
+              initial="hidden"
+              animate="visible"
+              className={`p-2 rounded cursor-pointer transition-all duration-200
+                ${
+                  isActive(cat)
+                    ? "bg-blue-100 text-blue-700 font-semibold"
+                    : "hover:bg-gray-200 text-gray-700"
+                }`}
+              onClick={() => handleCategoryClick(cat)}
+            >
+              {cat}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+
+      {/* Sub Drawer */}
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: subDrawer.open ? 0 : "100%" }}
+        transition={{ type: "tween", duration: 0.3 }}
+        className="fixed top-0 left-64 h-full w-64 bg-gray-50 shadow-md z-50 md:hidden"
+      >
+        <div className="flex justify-between p-4 border-b border-gray-200">
+          <h2 className="font-semibold text-gray-800">Select Option</h2>
+          <button onClick={() => setSubDrawer({ open: false, subItems: [] })}>
+            ✕
+          </button>
+        </div>
+
+        <ul className="p-4 space-y-2">
+          {subDrawer.subItems.map((sub, index) => (
+            <motion.li
+              key={sub}
+              custom={index}
+              variants={listVariants}
+              initial="hidden"
+              animate="visible"
+              className={`p-2 rounded cursor-pointer transition-all duration-200
+                ${
+                  isActive(sub)
+                    ? "bg-blue-100 text-blue-700 font-semibold"
+                    : "hover:bg-gray-200 text-gray-700"
+                }`}
+              onClick={() => handleSubClick(sub)}
+            >
+              {sub}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
     </>
   );
 };

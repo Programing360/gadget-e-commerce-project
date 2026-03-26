@@ -95,8 +95,10 @@ const Filters = () => {
           <option value="smartPhone">Mobile</option>
           <option value="shoe">Shoes</option>
           <option value="Bravery">Beverage</option>
+          <option value="Earthen">Earthen</option>
           <option value="Watch">Watch</option>
           <option value="Shirt">Shirt</option>
+          <option value="Umbrella">Umbrella</option>
         </select>
       </div>
 

@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAxiosSecure } from "./useAxiosSecure";
 
-const useAllProduct = () => {
+const useAllData = () => {
   const axiosSecure = useAxiosSecure();
 
   const {
-  data: allProduct = [],
+  data: allData = [],
   isLoading,
   refetch,
   isPending
 } = useQuery({
-  queryKey: ["allProducts",],
+  queryKey: ["allData",],
   queryFn: async () => {
-    const res = await axiosSecure.get("/allProducts");
+    const res = await axiosSecure.get("/allData");
     return res.data;
   },
 
@@ -22,7 +22,7 @@ const useAllProduct = () => {
   placeholderData: [],
 });
 
-  return [allProduct, refetch, isLoading ,isPending];
+  return [allData, refetch, isLoading ,isPending];
 };
 
-export default useAllProduct;
+export default useAllData;

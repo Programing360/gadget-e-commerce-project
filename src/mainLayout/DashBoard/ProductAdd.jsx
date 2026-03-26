@@ -36,11 +36,9 @@ const ProductAdd = () => {
 
   // 🔥 Submit
   const onSubmit = (data) => {
-    console.log(data);
     data.images = images; // multiple images add
 
     axiosSecure.post("/productAdd", data).then((res) => {
-      console.log(res.data);
       if (res.data) {
         toast("Publish Your Product ✅");
         reset();
@@ -120,9 +118,10 @@ const ProductAdd = () => {
               >
                 <option value="">Select category</option>
                 <option value="electronics">Electronics</option>
-                <option value="fashion">Watch</option>
-                <option value="food">Shirt</option>
-                <option value="home">Laptop</option>
+                <option value="Watch">Watch</option>
+                <option value="Shirt">Shirt</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Umbrella">Umbrella</option>
               </select>
             </div>
 
@@ -173,10 +172,6 @@ const ProductAdd = () => {
                 minLength: {
                   value: 20,
                   message: "Minimum 20 characters",
-                },
-                maxLength: {
-                  value: 300,
-                  message: "Maximum 300 characters",
                 },
               })}
             />

@@ -47,7 +47,7 @@ const AuthProvider = ({ children }) => {
   const googleLogin = () => {
     return signInWithPopup(auth, googleProvider);
   };
-  
+
   // Logout
   const UserLogout = () => {
     return signOut(auth);
@@ -69,7 +69,7 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     });
     return () => unsub();
-  }, []);
+  }, [axiosSecure]);
 
 
 

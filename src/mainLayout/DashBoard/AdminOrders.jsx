@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState("all");
-    console.log(orders);
   useEffect(() => {
     axios
       .get(`http://localhost:5000/admin/orders?filter=${filter}`)
       .then((res) => setOrders(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        if(err){
+          toast.error('Something is wrong')
+        }
+      });
   }, [filter]);
 
   return (

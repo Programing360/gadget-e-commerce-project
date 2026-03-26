@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 
@@ -9,7 +8,6 @@ const CreateCampaign = () => {
     const axiosSecure = useAxiosSecure()
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(title, hours);
     const startTime = Date.now();
     const endTime = startTime + hours * 60 * 60 * 1000;
 

@@ -9,82 +9,145 @@ import {
 } from "lucide-react";
 import { ShoppingBag, Mail } from "lucide-react";
 import { Link } from "react-router";
+import { motion } from "framer-motion";
 const About = () => {
   const stats = [
     {
-      value: "10+",
+      value: "5+",
       title: "Years Experience",
-      desc: "Serving Bangladesh since 2014",
+      desc: "Trusted by customers all over Bangladesh",
     },
     {
       value: "5K+",
-      title: "Original Products",
-      desc: "Authentic electronics & gadgets",
+      title: "Premium Product",
+      desc: "Carefully selected quality items",
     },
     {
       value: "64",
       title: "Districts",
-      desc: "Nationwide delivery coverage",
+      desc: "Fast delivery across Bangladesh",
     },
     {
-      value: "100%",
-      title: "Authentic",
-      desc: "Original products guarantee",
+      value: "99%",
+      title: "Customer Satisfaction",
+      desc: "Committed to best service experience",
+    },
+    {
+      value: "24/7",
+      title: "Support",
+      desc: "Always here to help you",
+    },
+    {
+      value: "500+",
+      title: "Curated Products",
+      desc: "Handpicked for quality & performance",
     },
   ];
   const values = [
     {
       icon: <BadgeCheck size={28} className="text-white" />,
-      title: "100% Original",
-      desc: "We guarantee authentic products only. Every item is sourced directly from authorized dealers and manufacturers to ensure originality.",
+      title: "Authenticity",
+      desc: "Only genuine, verified products.",
     },
     {
       icon: <GraduationCap size={28} className="text-white" />,
-      title: "Knowledge-Based",
-      desc: "We provide detailed, content-oriented information about every product to help you make informed purchasing decisions.",
+      title: "Clarity",
+      desc: "Clear specs for smarter decisions.",
     },
     {
       icon: <Video size={28} className="text-white" />,
-      title: "Creator Focused",
-      desc: "Specialized in gear for YouTubers, vloggers, and content creators with microphones, tripods, and professional equipment.",
+      title: "Creators",
+      desc: "Tools built for content creators.",
     },
     {
       icon: <Headphones size={28} className="text-white" />,
-      title: "Complete Support",
-      desc: "Dedicated pre-sales and post-sales support to ensure a secure and pleasant online shopping experience for every customer.",
+      title: "Support",
+      desc: "Always here to help you.",
     },
     {
       icon: <Handshake size={28} className="text-white" />,
-      title: "Trusted Platform",
-      desc: "Built on trust and reliability over 10 years, we're committed to transparency and keeping our promises to customers.",
+      title: "Trust",
+      desc: "Reliable and transparent service.",
     },
     {
       icon: <MapPin size={28} className="text-white" />,
-      title: "Physical Presence",
-      desc: "Visit our Dhaka office to see products firsthand and schedule pickups. We combine online convenience with offline trust.",
+      title: "Presence",
+      desc: "Online ease, offline assurance.",
     },
   ];
   return (
     <div className="mb-10">
-      <div className="bg-indigo-500 pt-35 text-center">
-        <h1 className=" md:text-5xl text-2xl text-white font-bold pb-4">
-          ABOUT Zeroo<span className="text-[#ff4e5c]">m</span>
-          <span className="text-[#fdb529]">iro</span>
-        </h1>
-        <p className="text-lg font-bold text-white md:w-150 text-center mx-auto max-w-150">
-          Bangladesh's Trusted E-commerce Platform for Original Electronics &
-          Content Creator Gear Since 2026
-        </p>
-        <div className="flex gap-4 justify-center py-20">
-          <h1 className="md:w-60 py-3 rounded-2xl bg-indigo-400 text-white font-semibold px-2">
-            <span>BD</span> Made in Bangladesh
-          </h1>
-          <h1 className="md:w-60 py-3 rounded-2xl bg-indigo-400 text-white font-semibold px-2">
-            Original Products
-          </h1>
-          <h1 className="md:w-60 py-3 rounded-2xl bg-indigo-400 text-white font-semibold px-2">
-            Creator Focused
-          </h1>
+      <div className="relative pt-32 pb-24 text-center overflow-hidden">
+        {/* 🔥 Animated Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1e1b4b] via-[#312e81] to-[#0f172a] animate-gradient-x"></div>
+
+        {/* 🔥 Glow Effect */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-500 opacity-20 blur-[120px] rounded-full"></div>
+
+        <div className="relative z-10 px-4">
+          {/* 🔥 Title Animation */}
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="md:text-5xl text-3xl font-bold text-white leading-tight"
+          >
+            ABOUT{" "}
+            <span className="bg-gradient-to-r from-[#534d89] via-[#3f9cb6] to-[#9b9a3b] bg-clip-text text-transparent">
+              Zeroomiro
+            </span>
+          </motion.h1>
+
+          {/* 🔥 Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.7 }}
+            className="mt-4 text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+          >
+            Bangladesh's trusted e-commerce platform for original electronics &
+            creator gear. Built with passion, powered by innovation.
+          </motion.p>
+
+          {/* 🔥 CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.7 }}
+            className="flex justify-center gap-4 mt-8 flex-wrap"
+          >
+            <Link to="/userAllProduct">
+              <button className="px-6 py-3 rounded-lg bg-white text-black font-semibold hover:bg-gray-200 transition">
+                Explore Products
+              </button>
+            </Link>
+
+            <Link to="/contact">
+              <button className="px-6 py-3 rounded-lg border border-white text-white hover:bg-white hover:text-black transition">
+                Contact Us
+              </button>
+            </Link>
+          </motion.div>
+
+          {/* 🔥 Feature Tags */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.7 }}
+            className="flex flex-wrap justify-center gap-4 mt-10"
+          >
+            <div className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium hover:scale-105 transition">
+              🇧🇩 Made in Bangladesh
+            </div>
+
+            <div className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium hover:scale-105 transition">
+              ✅ 100% Original Products
+            </div>
+
+            <div className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium hover:scale-105 transition">
+              🎥 Creator Focused
+            </div>
+          </motion.div>
         </div>
       </div>
       <main>
@@ -93,11 +156,12 @@ const About = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((item, index) => (
                 <div
+                  data-aos="flip-down"
                   key={index}
                   className="bg-white rounded-2xl shadow-lg p-6 text-center relative overflow-hidden hover:-translate-y-3 duration-250 hover:skew-x-3"
                 >
                   {/* Top gradient line */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-indigo-500" />
+                  <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-purple-500 to-indigo-500" />
 
                   <h2 className="text-4xl font-bold text-indigo-500 mb-2">
                     {item.value}
@@ -124,7 +188,7 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {values.map((item, index) => (
               <div
-              data-aos="flip-left"
+                data-aos="flip-left"
                 key={index}
                 className="bg-white rounded-3xl shadow-lg p-8 text-center hover:shadow-xl transition hover:bg-gray-100 cursor-pointer"
               >
@@ -143,7 +207,7 @@ const About = () => {
             ))}
           </div>
         </section>
-        <section className="w-full bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 py-24">
+        <section className="w-full bg-linear-to-r from-purple-600 via-indigo-500 to-blue-600 py-24">
           <div className="max-w-5xl mx-auto px-4 text-center text-white">
             {/* Heading */}
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -159,14 +223,14 @@ const About = () => {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row justify-center gap-5">
-              <Link to='/userAllProduct'>
+              <Link to="/userAllProduct">
                 <button className="flex items-center gap-2 bg-white text-indigo-600 font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition">
                   <ShoppingBag size={18} />
                   Start Shopping
                 </button>
               </Link>
 
-              <Link to='/contract'>
+              <Link to="/contract">
                 <button className="flex items-center gap-2 border border-white text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition">
                   <Mail size={18} />
                   Contact Us

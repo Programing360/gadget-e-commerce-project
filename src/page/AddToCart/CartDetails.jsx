@@ -3,7 +3,6 @@ import useCart from "../../Hook/useCart";
 import useCartItemUpdate from "../../Hook/cartItemUpdate";
 import editIcon from "../../assets/assets/editIcon.png";
 import crossIcon from "../../assets/assets/crossIcon.png";
-import emptyCartImg from "../../assets/assets/7612.jpg"; // 👉 add an image
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import { useState } from "react";
@@ -27,7 +26,9 @@ const CartDetails = () => {
         localStorage.removeItem("cartItem");
       }
     } catch (err) {
-      console.log(err);
+      if(err){
+        toast.error('Something is wrong')
+      }
     } finally {
       setLoading(null);
     }
@@ -74,7 +75,7 @@ const CartDetails = () => {
   if (cart.length === 0) {
     return (
       <div className="min-h-[70vh] flex flex-col justify-center items-center text-center">
-        <img src={emptyCartImg} alt="Empty Cart" className="w-64 mb-6" />
+        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="Empty Cart" className="w-64 mb-6" />
         <h2 className="text-3xl font-bold mb-2">Your Cart is Empty</h2>
         <p className="text-gray-500 mb-6">
           Looks like you haven’t added anything to your cart yet
@@ -116,7 +117,7 @@ const CartDetails = () => {
           </thead>
 
           <tbody>
-            {cart.map((item) => (
+            {cart?.map((item) => (
               <tr key={item._id} className="border bg-gray-200 text-center">
                 <td>
                   <img
@@ -142,7 +143,7 @@ const CartDetails = () => {
                     </button>
 
                     {/* Quantity */}
-                    <p className="min-w-[30px] text-center font-semibold text-gray-800">
+                    <p className="min-w-7.5 text-center font-semibold text-gray-800">
                       {item.quantity}
                     </p>
 

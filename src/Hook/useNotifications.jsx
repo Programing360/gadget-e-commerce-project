@@ -1,19 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAxiosSecure } from "./useAxiosSecure";
+import { useContext } from "react";
+import { UseContext } from "../Context/AuthContext";
 
 const useNotifications = () => {
   const axiosSecure = useAxiosSecure();
+  const { user } = useContext(UseContext);
 
-  const { data:notifications, refetch } = useQuery({
-  queryKey: ["notificationCount"],
-  queryFn: async () => {
-    const res = await axiosSecure.get("/notifications/unread-count");
-    return res.data.count;
-  },
-  refetchInterval: 5000, // auto update
-});
+  const { data: notifications = 0, refetch } = useQuery({
+    queryKey: ["notificationCount", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/notifications/unread-count");
+      return res.data.count;
+    },
 
-  return [ notifications, refetch ];
+    enabled: !!user, // 🔥 user থাকলে তবেই call হবে
+    staleTime: 1000 * 60 * 2, // 2 min cache
+    refetchOnWindowFocus: false, // focus এ call করবে না
+    refetchInterval: false, // ❌ auto polling বন্ধ
+  });
+
+  return [notifications, refetch];
 };
 
 export default useNotifications;

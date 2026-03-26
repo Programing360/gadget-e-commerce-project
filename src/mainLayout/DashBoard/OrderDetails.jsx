@@ -15,8 +15,10 @@ const OrderDetails = ({ order }) => {
             <thead>
               <tr>
                 <th>#</th>
+                <th>order ID</th>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Color</th>
                 <th>Qty</th>
                 <th>Price</th>
               </tr>
@@ -26,6 +28,7 @@ const OrderDetails = ({ order }) => {
               {order?.cart?.map((item, index) => (
                 <tr key={item._id || index}>
                   <td>{index + 1}</td>
+                  <td>{order.orderId}</td>
 
                   <td>
                     <img
@@ -34,8 +37,11 @@ const OrderDetails = ({ order }) => {
                     />
                   </td>
 
-                  <td>{item?.name}</td>
+                  {
+                    item?.size ? <td className="inline-block align-middle">{item.name} ({item.size})</td> : (item?.name)
+                  }
 
+                  <td>{item?.color}</td>
                   <td>{item?.quantity}</td>
 
                   <td>{item?.price} ৳</td>
@@ -46,9 +52,11 @@ const OrderDetails = ({ order }) => {
             <tfoot>
               <tr>
                 <th></th>
-                <th>Total</th>
+                <th className="text-2xl font-bold">Total</th>
                 <th></th>
-                <th>{total} ৳</th>
+                <th></th>
+                <th></th>
+                <th className="text-2xl font-bold">{total} ৳</th>
               </tr>
             </tfoot>
           </table>
@@ -56,7 +64,7 @@ const OrderDetails = ({ order }) => {
 
         <div className="modal-action">
           <form method="dialog">
-            <button className="btn bg-blue-500 text-white">
+            <button className="btn bg-blue-500 text-white active:scale-95">
               Close
             </button>
           </form>

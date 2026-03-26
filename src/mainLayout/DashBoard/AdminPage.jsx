@@ -1,5 +1,5 @@
 import React from "react";
-import logoIcon from "../../assets/logo.jpg";
+import logoIcon from "../../assets/assets/zeroomiro.jpeg";
 import productIcon from "../../assets/assets/crossIcon.png";
 import messageIcon from "../../assets/assets/comments.png";
 import product from "../../assets/assets/allProductIcon.png";

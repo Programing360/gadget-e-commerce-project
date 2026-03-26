@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import useAllProduct from "../Hook/useAllProduct";
-import { IoIosArrowDown } from "react-icons/io";
-import { Link } from "react-router";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { Link, useLocation, useNavigate } from "react-router";
 import Filters from "./filters";
 import { UseContext } from "../Context/AuthContext";
 import { useAxiosSecure } from "../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import useCart from "../Hook/useCart";
 import SEO from "../component/SEO/SEO";
+import Loader from "../component/Loader/Loader";
+import useAllData from "../Hook/useAllData";
 
 const getGuestUserId = () => {
   let guestId = localStorage.getItem("guestCart");
@@ -22,6 +24,7 @@ const getGuestUserId = () => {
 
 const UserAllProducts = () => {
   const [allProduct] = useAllProduct();
+  const [allData] = useAllData();
   // const [products, setProducts] = useState([]);
   const { products, setProducts } = useContext(UseContext);
   const [open, setOpen] = useState(false);
@@ -29,12 +32,33 @@ const UserAllProducts = () => {
   const [activeSort, setActiveSort] = useState("");
   const [cart, refetch] = useCart();
   const axiosSecure = useAxiosSecure();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
-    if (allProduct?.length) {
-      setProducts(allProduct);
+    if (allData?.length) {
+      setProducts(allData);
     }
-  }, [allProduct, setProducts]);
+  }, [allData, setProducts]);
+
+  useEffect(() => {
+    if (allData?.length) {
+      const query = new URLSearchParams(location.search);
+      const category = query.get("category");
+
+      if (category) {
+        const filtered = allData.filter(
+          (p) => p.category.toLowerCase() === category.toLowerCase(),
+        );
+        setProducts(filtered);
+      } else {
+        setProducts(allData);
+      }
+    }
+  }, [allData, location.search, setProducts]);
 
   const handleAToZ = () => {
     const sorted = [...products].sort((a, b) => a.name.localeCompare(b.name));
@@ -55,12 +79,23 @@ const UserAllProducts = () => {
     setProducts(sorted);
   };
   const handleCategoryFilter = (categoryName) => {
-    const filtered = allProduct.filter(
+    const filtered = allData.filter(
       (product) =>
         product.category.toLowerCase() === categoryName.toLowerCase(),
     );
     setProducts(filtered);
+    navigate(`/userAllProduct?category=${categoryName}`);
   };
+
+  // pagination
+  const startIndex = (currentPage - 1) * itemsPerPage;
+
+  const paginatedProducts = products.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
+
+  const totalPages = Math.ceil(products.length / itemsPerPage);
   // add To Cart---------------
 
   const handleCartData = async (id) => {
@@ -123,7 +158,7 @@ const UserAllProducts = () => {
                 onClick={() => setCategory(!category)}
                 className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black border p-2 border-gray-400 rounded"
               >
-                Default Sorting <IoIosArrowDown />
+                Default Sorting {category ? <IoIosArrowUp></IoIosArrowUp> :<IoIosArrowDown />}
               </h1>
             </div>
             {/* SORT HEADER */}
@@ -132,7 +167,7 @@ const UserAllProducts = () => {
                 onClick={() => setOpen(!open)}
                 className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black border p-2 border-gray-400 rounded"
               >
-                Best Selling <IoIosArrowDown />
+                Best Selling {open ? <IoIosArrowUp></IoIosArrowUp> :<IoIosArrowDown />}
               </h1>
             </div>
           </div>
@@ -245,45 +280,30 @@ const UserAllProducts = () => {
                   Watch
                 </button>
               </li>
-              <li className="relative group">
-                <button className="px-4 py-2 bg-gray-200 rounded">
+              <li>
+                <button onClick={() => handleCategoryFilter("Shirt")}>
                   Clothing
                 </button>
-                {/* Dropdown menu */}
-                <ul className="absolute left-0 mt-2 w-40 bg-white border rounded shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300">
-                  <li>
-                    <button
-                      onClick={() => handleCategoryFilter("Shirt")}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                    >
-                      Shirt
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => handleCategoryFilter("Pants")}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                    >
-                      Pants
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => handleCategoryFilter("Jacket")}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                    >
-                      Jacket
-                    </button>
-                  </li>
-                </ul>
+              </li>
+              <li>
+                <button onClick={() => handleCategoryFilter("Earthen")}>
+                  Earthen
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleCategoryFilter("Umbrella")}>
+                  Umbrella
+                </button>
               </li>
             </ul>
           )}
 
           {/* PRODUCTS GRID */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black">
-            {products?.map((item) => (
+            {paginatedProducts?.map((item) => (
               <div
+                data-aos="fade-up"
+                data-aos-anchor-placement="center-bottom"
                 key={item._id}
                 className="bg-white rounded shadow hover:shadow-lg transition hover:border-indigo-600 delay-75 hover:text-blue-500 duration-150 w-full flex flex-col"
               >
@@ -298,7 +318,8 @@ const UserAllProducts = () => {
                 </Link>
 
                 {/* গুরুত্বপূর্ণ change এখানে */}
-                <div className="p-4 space-y-2 flex flex-col flex-grow">
+                <Link to={`/productDetails/${item._id}`}>
+                  <div className="p-4 space-y-2 flex flex-col grow">
                   <div className="flex justify-between items-start">
                     <h2 className="font-semibold text-sm line-clamp-2">
                       {item.name}
@@ -316,22 +337,42 @@ const UserAllProducts = () => {
                     <button
                       disabled={item.stock === 0}
                       onClick={() => handleCartData(item._id)}
-                      className={`btn w-full rounded-none shadow-xl hover:shadow-blue-300 active:scale-95 ${
+                      className={`btn w-full border-[#7c9ef7] rounded-none shadow-xl hover:shadow-blue-300 active:scale-95 ${
                         item.stock === 0
                           ? "btn-disabled bg-gray-300"
-                          : "bg-[#467bec] text-white"
+                          : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95"
                       }`}
                     >
                       {item.stock === 0 ? "Out of Stock" : "Quick Add"}
                     </button>
                   </div>
                 </div>
+                </Link>
+                
               </div>
+            ))}
+          </div>
+          <div className="flex justify-center mt-8 gap-2 flex-wrap">
+            {[...Array(totalPages).keys()].map((num) => (
+              <button
+                key={num}
+                onClick={() => {
+                  setCurrentPage(num + 1);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className={`px-3 py-1 rounded ${
+                  currentPage === num + 1
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                {num + 1}
+              </button>
             ))}
           </div>
           {products.length === 0 && (
             <h1 className="text-center text-gray-500 mt-4 text-2xl max-w-full mx-auto ">
-              No product found
+              <Loader></Loader>
             </h1>
           )}
         </main>

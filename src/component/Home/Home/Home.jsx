@@ -4,6 +4,7 @@ import ItemList from "../../MainSection/itemList";
 import AllProduct from "../../../page/AllProduct";
 import FAQSection from "../../../page/FAQSection";
 import DiscoverProducts from "../../../page/DiscoverProducts";
+import { Suspense } from "react";
 
 const Home = () => {
   
@@ -12,7 +13,9 @@ const Home = () => {
     <div className="w-full mx-auto">
       <Banner></Banner>
       <ItemList></ItemList>
-      <AllProduct></AllProduct>
+      <Suspense fallback={<p>Loading....</p>}>
+        <AllProduct></AllProduct>
+      </Suspense>
       <DiscoverProducts></DiscoverProducts>
       <section id="faq">
         <FAQSection></FAQSection>

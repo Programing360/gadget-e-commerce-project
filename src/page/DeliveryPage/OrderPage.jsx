@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import useCart from "../../Hook/useCart";
 import successIcon from "../../assets/assets/check.png";
-import logo from "../../assets/assets/logo.jpg";
+import logo from "../../assets/assets/zeroomiro.jpeg";
 import { UseContext } from "../../Context/AuthContext";
 import jsPDF from "jspdf";
 const OrderPage = () => {

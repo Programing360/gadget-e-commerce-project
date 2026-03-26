@@ -5,7 +5,6 @@ import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 const AllProductList = () => {
   const [allProducts, refetch] = useAllProduct();
-  console.log(allProducts);
   const axiosSecure = useAxiosSecure();
   const onRemove = (id) => {
     axiosSecure.delete(`/allProduct/${id}`).then((res) => {
@@ -18,7 +17,7 @@ const AllProductList = () => {
   return (
     <div>
       <div className="bg-[#8d50f7] py-5 text-center w-full">
-        
+
         <h1 className="text-2xl font-bold bg-linear-to-tl to-white from-gray-400 bg-clip-text text-transparent shadow-fuchsia-900 shadow p-4">
           ALL PRODUCTS{" "}
         </h1>
@@ -29,7 +28,7 @@ const AllProductList = () => {
             {/* Left Side: Image + Info */}
             <div className="flex items-center gap-4">
               <img
-                src={product.image}
+                src={product.images[0]}
                 alt={product.name}
                 className="w-14 h-14 object-cover rounded-md"
               />

@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
 import laptop from "../../assets/assets/Laptop.jpg";
-import electronics from '../../assets/assets/Consumer-Electronics-Appliance_blog.jpeg'
-import phone from '../../assets/assets/phone.jpg'
-import bravery from '../../assets/assets/bravery.jpg'
-import arrow from '../../assets/assets/arrow.png'
-import shoe from '../../assets/assets/photo-1560769629-975ec94e6a86.avif'
-import watch from '../../assets/assets/watch.jpg'
+import electronics from "../../assets/assets/Consumer-Electronics-Appliance_blog.jpeg";
+import phone from "../../assets/assets/phone.jpg";
+import bravery from "../../assets/assets/bravery.jpg";
+import arrow from "../../assets/assets/arrow.png";
+import shoe from "../../assets/assets/photo-1560769629-975ec94e6a86.avif";
+import watch from "../../assets/assets/watch.jpg";
+import { Link } from "lucide-react";
+import { NavLink } from "react-router";
 const ItemList = () => {
-
   const sliderRef = useRef(null);
 
   const products = [
@@ -38,7 +39,6 @@ const ItemList = () => {
 
   return (
     <div className="container mx-auto py-16 relative ">
-
       <h2 className="text-3xl font-bold text-center mb-10">
         Featured Products
       </h2>
@@ -48,7 +48,7 @@ const ItemList = () => {
         onClick={slideLeft}
         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 dark:text-black"
       >
-       <img className="w-4 rotate-90" src={arrow} alt="" />
+        <img className="w-4 rotate-90" src={arrow} alt="arrow" />
       </button>
 
       {/* Right Button */}
@@ -56,7 +56,7 @@ const ItemList = () => {
         onClick={slideRight}
         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:text-black rounded-full"
       >
-       <img className="w-4 -rotate-90" src={arrow} alt="" />
+        <img className="w-4 -rotate-90" src={arrow} alt="arrow" />
       </button>
 
       {/* Slider */}
@@ -69,28 +69,25 @@ const ItemList = () => {
             key={product.id}
             className="
             min-w-full
-            sm:min-w-[100%]
+            sm:min-w-full
             md:min-w-[25%]
             lg:min-w-[20%]
             "
           >
-            <div className="p-6 bg-white border border-gray-300 hover:shadow-xl transition overflow-auto rounded-2xl dark:text-black">
+            <NavLink to='/userAllProduct'>
+              <div className="p-6 bg-white border border-gray-300 hover:shadow-xl transition overflow-auto rounded-2xl dark:text-black">
+                <img
+                  src={product.img}
+                  alt={product.title}
+                  className="w-full md:w-58 h-50 mx-auto mb-4 object-cover"
+                />
 
-              <img
-                src={product.img}
-                alt={product.title}
-                className="w-full md:w-58 h-50 mx-auto mb-4 object-cover"
-              />
-
-              <h3 className="text-center font-semibold">
-                {product.title}
-              </h3>
-
-            </div>
+                <h3 className="text-center font-semibold">{product.title}</h3>
+              </div>
+            </NavLink>
           </div>
         ))}
       </div>
-
     </div>
   );
 };

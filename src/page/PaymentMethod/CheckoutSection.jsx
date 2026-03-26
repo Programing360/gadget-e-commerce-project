@@ -165,7 +165,7 @@ const CheckoutSection = () => {
       </div>
 
       {/* ================= PLACE ORDER BUTTON ================= */}
-      <button className="mt-8 w-full py-3 rounded-lg bg-gradient-to-r from-slate-800 to-blue-900 text-white font-semibold flex items-center justify-center gap-2">
+      <button className="mt-8 w-full py-3 rounded-lg bg-linear-to-r from-slate-800 to-blue-900 text-white font-semibold flex items-center justify-center gap-2">
         <CreditCard size={18} />
         Place Order
       </button>

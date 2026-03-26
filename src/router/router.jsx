@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router";
-import Root from "../Root/Root";
-import Home from "../component/Home/Home/home";
-import ProductDetails from "../page/ProductDetails/ProductDetails";
+// import Root from "../Root/Root";
+// import ProductDetails from "../page/ProductDetails/ProductDetails";
 import Login from "../Authentication/Login";
 import SignIn from "../Authentication/SignIn";
 import AdminPage from "../mainLayout/DashBoard/AdminPage";
@@ -26,11 +25,20 @@ import ContactUs from "../page/ContractUs/ContractUs";
 import FAQSection from "../page/FAQSection";
 import SearchInput from "../page/SearchInput/SearchInput";
 import OrderInvoicePage from "../page/OrderInvoicePage/OrderInvoicePage";
+import Home from "../component/Home/Home/Home";
+import { lazy, Suspense } from "react";
 
+const Root = lazy(() => import("../Root/Root"));
+// const Home = lazy(() => import("../component/Home/Home/Home"));
+const ProductDetails = lazy(() => import("../page/ProductDetails/ProductDetails"));
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root></Root>,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Root />
+      </Suspense>
+    ),
     children: [
       {
         path: "/",
@@ -72,7 +80,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "*",
-        Component: PageNotFound,
+       errorElement: <PageNotFound />
       },
       {
         path: "/FAQSection",

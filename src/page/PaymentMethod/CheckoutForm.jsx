@@ -20,6 +20,8 @@ import SEO from "../../component/SEO/SEO";
 import cashIcon from "../../assets/assets/cash-on-delivery.png";
 import OnlineIcon from "../../assets/assets/card.png";
 import bkash from "../../assets/assets/bkash.png";
+import { v4 as uuidv4 } from "uuid";
+
 
 const transactionId = "TXN-" + Date.now();
 const CheckoutForm = () => {
@@ -29,7 +31,10 @@ const CheckoutForm = () => {
   const [cart] = useCart();
   const navigate = useNavigate();
   let guestId = localStorage.getItem("guestCart");
-  const orderId = Date.now().toString().slice(-6);
+ const [orderId] = useState(() => {
+    // UUID + last 6 digit of timestamp
+    return "ORD-" + uuidv4().split("-")[0] + Date.now().toString().slice(-6);
+  });
 
   // 🔥 Auto Fill user data
   useEffect(() => {
@@ -198,7 +203,7 @@ const CheckoutForm = () => {
                 >
                   <div className="flex items-center gap-2">
                     <Truck size={18} />
-                    <p className="font-medium">Delivery Charge</p>
+                    <p className="font-medium">Delivery Charge <br />(All Over BD)</p>
                   </div>
                   <p className="text-lg font-bold text-gray-500 ">৳17</p>
                 </div>
@@ -248,7 +253,7 @@ const CheckoutForm = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <img className="w-8" src={cashIcon} alt="" />
+                    <img className="w-8" src={cashIcon} alt="Cash on Delivery payment option" />
                     <p className="font-medium">Cash On Delivery</p>
                   </div>
                 </div>
@@ -262,7 +267,7 @@ const CheckoutForm = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <img className="w-8" src={bkash} alt="" />
+                    <img className="w-8" src={bkash} alt="bKash mobile payment option" />
                     <p className="font-medium">bKash</p>
                   </div>
                 </div>
@@ -276,13 +281,13 @@ const CheckoutForm = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <img className="w-8" src={OnlineIcon} alt="" />
+                    <img className="w-8" src={OnlineIcon} alt="Online card payment option" />
                     <p className="font-medium">Pay Online</p>
                   </div>
                 </div>
               </div>
 
-              <button className="mt-8 w-full py-3 text-sm sm:text-base rounded-lg bg-gradient-to-r from-slate-800 to-blue-900 text-white font-semibold flex items-center justify-center gap-2 hover:shadow-xl transition">
+              <button className="mt-8 w-full py-3 text-sm sm:text-base rounded-lg bg-linear-to-r from-slate-800 to-blue-900 text-white font-semibold flex items-center justify-center gap-2 hover:shadow-xl transition">
                 <CreditCard size={18} />
                 Place Order
               </button>

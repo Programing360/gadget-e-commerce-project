@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
-import { motion } from "motion/react";
 
 const CategoryNav = () => {
   const [show, setShow] = useState(true);
@@ -20,11 +19,13 @@ const CategoryNav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const activeClass = "text-blue-500 border-b-2 border-blue-500 pb-1";
-  const normalClass = "hover:text-blue-500 transition duration-200 text-[#ff6d1f]";
+  const normalClass =
+  "relative text-white hover:text-blue-500 transition duration-300 after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-blue-500 after:transition-all after:duration-300 hover:after:w-full";
 
+const activeClass =
+  "relative text-blue-500 after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-500";
   return (
-    <motion.div
+    <div
       layoutId="underline"
       className={`fixed top-15 md:top-16 left-0 w-full bg-white shadow-md z-20
       transition-transform duration-300 ease-in-out
@@ -43,7 +44,7 @@ const CategoryNav = () => {
             >
               <div className="flex items-center">
                 {/* <img src={homeIcon} alt="Home" className="w-5 h-5 mr-2" /> */}
-                Home
+                <h1 className="text-white">Home</h1>
               </div>
             </NavLink>
           </li>
@@ -58,7 +59,7 @@ const CategoryNav = () => {
                 isActive ? activeClass : normalClass
               }
             >
-              All Products
+              <h1 className="text-white">All Products</h1>
             </NavLink>
           </li>
 
@@ -70,7 +71,7 @@ const CategoryNav = () => {
                 isActive ? activeClass : normalClass
               }
             >
-              About
+              <h1 className="text-white">About</h1>
             </NavLink>
           </li>
 
@@ -82,13 +83,13 @@ const CategoryNav = () => {
                 isActive ? activeClass : normalClass
               }
             >
-              Contact Us
+              <h1 className="text-white">Contact Us</h1>
             </NavLink>
           </li>
 
         </ul>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

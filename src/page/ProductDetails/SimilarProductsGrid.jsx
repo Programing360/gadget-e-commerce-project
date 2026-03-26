@@ -8,13 +8,28 @@ const SimilarProductsGrid = ({ products }) => {
   // Default mobile: 2, md+: 4
   const visibleProducts = showAll ? products : products.slice(0, 2);
 
+  // যদি product না থাকে
+  if (!products || products.length === 0) {
+    return (
+      <div className="text-center py-10 text-gray-500 font-semibold flex flex-col items-center">
+        {/* No products image */}
+         <img
+            src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+            alt="No Product"
+            className="w-32 mb-4 opacity-70"
+          />
+        No Products Found
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 ">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 my-10">
         {visibleProducts.map((product) => (
           <div
             key={product._id}
-            className="border border-gray-300 shadow-2xl rounded-lg p-2 hover:shadow-lg transition "
+            className="border border-gray-300 shadow-2xl rounded-lg p-2 hover:shadow-lg transition"
           >
             <img
               src={product.images[0]}
@@ -36,7 +51,7 @@ const SimilarProductsGrid = ({ products }) => {
       {products.length > 2 && !showAll && (
         <div className="text-center mx-auto flex justify-self-center mt-4">
           <button
-            className="btn btn-ghost border border-gray-400 flex justify-center items-center justify-center gap-2"
+            className="btn btn-ghost border border-gray-400 flex justify-center items-center gap-2"
             onClick={() => setShowAll(true)}
           >
             More Products <ArrowRight size={18} />

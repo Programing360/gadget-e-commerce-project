@@ -1,20 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router";
 import jsPDF from "jspdf";
 import { QRCodeCanvas } from "qrcode.react";
-import logo from "../../assets/assets/logo.jpg";
+import logo from "../../assets/assets/zeroomiro.jpeg";
 import SEO from "../../component/SEO/SEO";
 
 
 const OrderInvoicePage = () => {
   const location = useLocation();
   const order = location.state?.order;
-
+  const [invoiceNumber] = useState(() => "INV-" + Date.now());
+  
   if (!order) {
-    return <h2 className="text-center mt-10">No Order Data Found</h2>;
-  }
-
-  const invoiceNumber = "INV-" + Date.now();
+      return <h2 className="text-center mt-10">No Order Data Found</h2>;
+    }
+    
 
   const {
     name,
@@ -72,7 +72,7 @@ const OrderInvoicePage = () => {
       {/* 🔥 HEADER */}
       <div className="flex justify-between items-center bg-green-600 text-white p-6">
         <div className="flex items-center gap-3">
-          <img src={logo} className="w-12 h-12 rounded" />
+          <img src={logo} className="w-12 h-12 rounded" alt="page logo"/>
           <h1 className="text-2xl font-bold">Zeroomiro</h1>
         </div>
         <h2 className="text-3xl font-bold">INVOICE</h2>

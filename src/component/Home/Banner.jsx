@@ -1,28 +1,34 @@
-import { Carousel } from "react-responsive-carousel";
+
 import bannerImg2 from "../../assets/assets/bannerImg2.jpg";
 import bannerImg3 from "../../assets/assets/bannerImage3.jpg";
 import bannerImg4 from "../../assets/assets/bannerImg4.webp";
 import bannerImg5 from "../../assets/assets/bannerImg5.jpg";
-import logoIcon from "../../assets/assets/logo.jpg";
+import logoIcon from "../../assets/assets/zeroomiro.jpeg";
 import Bravery from "../../assets/assets/bravery.jpg";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+import { Carousel } from "react-responsive-carousel";
+import AnimationBanner from "./AnimationBanner";
+
 
 const Banner = () => {
-  const axiosSecure = useAxiosSecure()
-  // ✅ Fetch campaign from backend (REAL TIME)
+  const axiosSecure = useAxiosSecure();
+
+  // ✅ Optimized campaign fetch
   const { data, isLoading } = useQuery({
     queryKey: ["campaign"],
     queryFn: async () => {
       const res = await axiosSecure.get("/campaign");
       return res.data;
     },
+    staleTime: 1000 * 60 * 5, // 🔥 5 min cache
+    refetchOnWindowFocus: false, // ❌ unnecessary refetch বন্ধ
   });
 
   const [timeLeft, setTimeLeft] = useState(0);
 
-  // ✅ Real-time countdown
+  // ✅ Countdown (optimized)
   useEffect(() => {
     if (!data?.endTime) return;
 
@@ -52,17 +58,7 @@ const Banner = () => {
 
         {/* 🔥 Carousel */}
         <div className="w-full lg:w-8/12 bg-[#e7e7e7] rounded-xl overflow-hidden">
-          <Carousel showThumbs={false} showStatus={false} infiniteLoop autoPlay>
-            {[bannerImg2, bannerImg3, bannerImg4, bannerImg5, Bravery].map((img, idx) => (
-              <div key={idx}>
-                <img
-                  src={img}
-                  className="h-[200px] sm:h-[300px] md:h-[380px] lg:h-[420px] w-full object-cover"
-                  alt="banner"
-                />
-              </div>
-            ))}
-          </Carousel>
+          <AnimationBanner></AnimationBanner>
         </div>
 
         {/* 🔥 Campaign */}
@@ -72,15 +68,22 @@ const Banner = () => {
           </h1>
 
           <div className="flex items-center gap-3 py-2">
-            <img className="w-10 h-10 rounded-full" src={logoIcon} alt="" />
-            <h1 className="text-xl md:text-2xl font-bold text-[#FF6D1F]">
-              Zeroo<span className="text-[#fdb529]">m</span>iro
+            <img
+              className="w-10 h-10 rounded-full"
+              src={logoIcon}
+              loading="lazy"
+              alt="Zeroomiro logo"
+            />
+            <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#FF6D1F] via-[#fdb529] to-[#ff8c42] bg-clip-text text-transparent">
+              Zeroomiro
             </h1>
           </div>
 
           {/* 🔥 Status */}
           {isLoading ? (
-            <p>Loading...</p>
+            <div className="flex justify-center py-6">
+              <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
           ) : timeLeft > 0 ? (
             <>
               <p className="text-red-500 mb-3 dark:text-black">
@@ -113,7 +116,6 @@ const Banner = () => {
             </p>
           )}
         </div>
-
       </div>
     </div>
   );

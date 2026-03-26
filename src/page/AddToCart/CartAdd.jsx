@@ -62,7 +62,7 @@ const CartAdd = () => {
         title="Your Cart - Zeroomiro"
         description="Review your cart items and checkout"
       />
-      {cart.map((item) => (
+      {cart?.map((item) => (
         <div
           key={item._id}
           className="flex gap-4 mb-4 items-center shadow-lg p-2 relative"

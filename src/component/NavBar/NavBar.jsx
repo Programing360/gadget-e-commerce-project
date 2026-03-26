@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/assets/zeroomiro.jpeg";
 import { Link, useNavigate } from "react-router";
 import { UseContext } from "../../Context/AuthContext";
 import loginIcon from "../../assets/Icon.png";
@@ -63,7 +63,7 @@ const NavBar = () => {
     });
   };
   const [activeCategory, setActiveCategory] = useState("");
-  // navber animition scroll---------------
+  // navbar animation scroll---------------
 
   return (
     <div className="fixed w-full top-0 z-50 bg-[#131921] ">
@@ -73,12 +73,12 @@ const NavBar = () => {
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
           ></MobileDrawer>
-          <div className="flex justify-center md:justify-start pl-20  items-center  gap-0">
-            <Link className="flex items-center  gap-2" to="/">
+          <div className="flex justify-center md:justify-start pl-15  items-center  gap-0">
+            <Link className="flex items-center gap-2" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
-              <h1 className="text-xl md:text-2xl font-bold text-[#FF6D1F]">
-                Zeroo<span className="text-[#fdb529]">m</span>
-                <span className="text-[#FF6D1F]">iro</span>
+              <h1 className="text-xl md:text-2xl font-bold bg-linear-to-r from-[#534d89] via-[#3f9cb6] to-[#9b9a3b] bg-clip-text text-transparent">
+                Zeroo<span>m</span>
+                <span>iro</span>
               </h1>
             </Link>
           </div>
@@ -117,7 +117,7 @@ const NavBar = () => {
                     key={n._id}
                     className="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-xl dark:hover:text-black"
                   >
-                    <img src={bellIcon} className="w-5 mt-1" />
+                    <img src={bellIcon} className="w-5 mt-1" alt="bell icon"/>
                     <div>
                       <p className="text-sm font-medium">{n.message}</p>
                       <p className="text-xs text-gray-500">
@@ -157,13 +157,13 @@ const NavBar = () => {
                       <img
                         className="rounded-full w-11 mx-auto cursor-pointer"
                         src={user?.photoURL}
-                        alt=""
+                        alt="login icon"
                       />
                     ) : (
                       <img
                         className="rounded-full w-14 mx-auto cursor-pointer"
                         src={userloginIcon}
-                        alt=""
+                        alt="user login icon"
                       />
                     )}
                   </div>
@@ -178,13 +178,13 @@ const NavBar = () => {
                       <img
                         className="rounded-full w-14 mx-auto mt-4"
                         src={user?.photoURL}
-                        alt=""
+                        alt="user login icon"
                       />
                     ) : (
                       <img
                         className="rounded-full w-14 mx-auto mt-4"
                         src={userloginIcon}
-                        alt=""
+                        alt="user login icon"
                       />
                     )}
 
@@ -195,7 +195,7 @@ const NavBar = () => {
                   <li className="">
                     <Link to="/wishList">
                       <div className="flex items-center gap-1">
-                        <img className="w-4" src={wishListIcon} alt="" />
+                        <img className="w-4" src={wishListIcon} alt="wish list icon" />
                         <a className="justify-between font-bold">Wish List</a>
                       </div>
                     </Link>
@@ -204,7 +204,7 @@ const NavBar = () => {
                     <li>
                       <Link to="/adminDashboard">
                         <div className="flex items-center gap-1">
-                          <img className="w-5" src={adminIcon} alt="" />
+                          <img className="w-5" src={adminIcon} alt="admin page icon" />
                           <a className="font-bold">Admin Page</a>
                         </div>
                       </Link>
@@ -212,7 +212,7 @@ const NavBar = () => {
                   ) : (
                     <li>
                       <Link to="/userDashBoard">
-                        <img className="w-5" src={userloginIcon} alt="" />
+                        <img className="w-5" src={userloginIcon} alt="user login icon" />
                         <a className="font-bold">Your Page</a>
                       </Link>
                     </li>
@@ -222,7 +222,7 @@ const NavBar = () => {
                       <img
                         className="w-4 dark:brightness-0 dark:invert"
                         src={loginOutIcon}
-                        alt=""
+                        alt="log out icon"
                       />
                       <a className="font-bold text-[#512da8]dark:text-white">
                         Logout
@@ -234,7 +234,7 @@ const NavBar = () => {
             ) : (
               <Link to="/login">
                 <div className="tooltip tooltip-bottom" data-tip="Account">
-                  <img className="w-17 mt-2" src={loginIcon} alt="" />
+                  <img className="w-17 mt-2" src={loginIcon} alt="login icon" />
                 </div>
               </Link>
             )}

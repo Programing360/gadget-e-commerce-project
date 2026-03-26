@@ -26,7 +26,7 @@ const SEO = ({ title, description, image, url }) => {
       <meta name="twitter:image" content={image} />
 
       {/* Favicon */}
-      <link rel="icon" href="/logo.png" />
+      <link rel="icon" href="/src/assets/assets/zeroomiro.jpeg" />
     </Helmet>
   );
 };

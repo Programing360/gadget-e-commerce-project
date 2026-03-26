@@ -10,6 +10,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import useAllProduct from "../../Hook/useAllProduct";
 import SimilarProductsGrid from "./SimilarProductsGrid";
 import SEO from "../../component/SEO/SEO";
+import { motion } from "motion/react";
+
 
 /* 🔑 Guest ID helper */
 const getGuestUserId = () => {
@@ -43,7 +45,7 @@ const ProductDetails = () => {
   const [size, setSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [currentStock, setCurrentStock] = useState(stock);
-
+  const [imgLoading, setImgLoading] = useState(true);
   const navigate = useNavigate();
 
   const isShoe = category?.toLowerCase() === "shoe";
@@ -187,11 +189,29 @@ const ProductDetails = () => {
 
       <div className="max-w-6xl mx-auto px-2 md:px-4 py-10 grid lg:grid-cols-2 gap-10">
         {/* Images */}
-        <Carousel className="overflow-x-auto" showThumbs showStatus={false} infiniteLoop autoPlay>
+        <Carousel
+          className="overflow-x-auto"
+          showThumbs
+          showStatus={false}
+          infiniteLoop
+          autoPlay
+        >
           {images?.map((img, i) => (
-            <div key={i}>
-              <img src={img} alt="" className="" />
-            </div>
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
+              key={i}
+            >
+              <img
+                src={img}
+                alt={name}
+                loading="lazy"
+                onLoad={() => setImgLoading(false)}
+                className={`w-full h-full object-cover rounded-xl p-3 transition-all duration-300 group-hover:scale-105 ${
+                  imgLoading ? "opacity-0" : "opacity-100"
+                }`}
+              />
+            </motion.div>
           ))}
         </Carousel>
 
@@ -253,7 +273,7 @@ const ProductDetails = () => {
                   <button
                     key={c}
                     onClick={() => setSelectedColor(c)}
-                    className={ 
+                    className={
                       selectedColor === c
                         ? "bg-black text-white px-3 "
                         : "border px-3"
@@ -283,18 +303,21 @@ const ProductDetails = () => {
           {/* Buttons */}
           <button
             onClick={handleBuyNow}
-            className="btn w-full bg-purple-600 text-white"
+            className="cta-btn w-full py-2 rounded font-semibold cursor-pointer active:scale-95"
           >
             Buy Now
           </button>
 
-          <button onClick={handleCartData} className="btn w-full border">
+          <button
+            onClick={handleCartData}
+            className="btn w-full border active:scale-95"
+          >
             Add to Cart
           </button>
 
           {description && (
-            <div className="bg-gray-100 p-4 whitespace-pre-line">
-              Description
+            <div className="bg-gray-100 p-4 whitespace-pre-line dark:text-black">
+              <h1>Description</h1>
               {description}
             </div>
           )}
@@ -303,6 +326,8 @@ const ProductDetails = () => {
 
       {/* Similar */}
       <div className="max-w-6xl mx-auto mt-10">
+        <h1 className="text-2xl font-bold my-4">Related Products</h1>
+        <hr />
         <SimilarProductsGrid products={sameCategoryProducts} />
       </div>
     </div>

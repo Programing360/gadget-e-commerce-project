@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import PageLogo from "../../page/PageLogo/PageLogo";
-import logo from "../../assets/assets/logo.jpg";
+import logo from "../../assets/assets/zeroomiro.jpeg";
 import userLoginIcon from "../../assets/assets/user.png";
 import menuBar from "../../assets/assets/menu.png";
 import arrowIcon from "../../assets/assets/arrow.png";

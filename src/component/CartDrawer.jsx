@@ -11,7 +11,7 @@ const CartDrawer = ({ cart, isLoading, setOpen, formatted }) => {
       {/* Trigger Button */}
       <div className="mr-3 md:mr-2 hidden md:block ml-3">
         <label htmlFor="my-drawer-5" className="relative cursor-pointer">
-          <img className="w-10 bg-gray-200 rounded-full p-2" src={cartIcon} />
+          <img className="w-10 bg-gray-200 rounded-full p-2" src={cartIcon} alt="cart icon" />
 
           <span className="absolute -top-2 right-2 text-white bg-[#ff2d08] rounded-full px-2 min-w-5.5 h-5.5 flex items-center justify-center">
             {isLoading ? (
@@ -26,9 +26,9 @@ const CartDrawer = ({ cart, isLoading, setOpen, formatted }) => {
       <div className="drawer-side">
         <label htmlFor="my-drawer-5" className="drawer-overlay"></label>
 
-        <ul className="menu bg-base-200 min-h-full md:w-[410px] p-4">
+        <ul className="menu bg-base-200 min-h-full md:w-102.5 p-4">
           {/* তোমার আগের সব content */}
-          <ul className="menu bg-base-200 min-h-full lg:w-100 w-[350px] p-4 dark:bg-white dark:text-black">
+          <ul className="menu bg-base-200 min-h-full lg:w-100 w-87.5 p-4 dark:bg-white dark:text-black">
             {/* Sidebar content here */}
 
             <div
@@ -50,7 +50,7 @@ const CartDrawer = ({ cart, isLoading, setOpen, formatted }) => {
             </div>
             {cart.length === 0 ? (
               <div>
-                <img className="w-8 mx-auto pb-2" src={cartIcon} alt="" />
+                <img className="w-8 mx-auto pb-2" src={cartIcon} alt="Empty cart icon" />
                 <h1 className="text-center text-2xl font-bold">
                   Your Cart is empty
                 </h1>

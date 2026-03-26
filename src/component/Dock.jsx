@@ -7,22 +7,22 @@ import dashboardIcon from "../assets/assets/dashboard.png";
 import searchIcon from "../assets/assets/searchIcon.png";
 import { UseContext } from "../Context/AuthContext";
 import SearchField from "./SearchField";
-import SearchInput from "../page/SearchInput/SearchInput";
 import useCart from "../Hook/useCart";
-import CartDrawer from "./CartDrawer";
 
 const Dock = () => {
-  const { user} = useContext(UseContext);
+  const { user } = useContext(UseContext);
   const [showSearch, setShowSearch] = useState(false);
   const [cart] = useCart();
 
   return (
     <>
-      {/* Search Overlay */}
-      <SearchField show={showSearch} setShow={setShowSearch}></SearchField>
+      {/* 🔍 Search Overlay */}
+      <SearchField show={showSearch} setShow={setShowSearch} />
 
-      {/* Dock */}
+      {/* 📱 Mobile Dock */}
       <div className="dock bg-gray-100 md:hidden z-10">
+        
+        {/* Home */}
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -30,10 +30,11 @@ const Dock = () => {
           }
         >
           <button>
-            <img className="w-6" src={homeIcon} alt="" />
+            <img className="w-6" src={homeIcon} alt="Home page" />
           </button>
         </NavLink>
 
+        {/* Products */}
         <NavLink
           to="/userAllProduct"
           className={({ isActive }) =>
@@ -41,28 +42,32 @@ const Dock = () => {
           }
         >
           <button>
-            <img className="w-6" src={windowsIcon} alt="" />
+            <img className="w-6" src={windowsIcon} alt="All products" />
           </button>
         </NavLink>
-        <div className="drawer-content">
-          {/* Page content here */}
+
+        {/* Cart */}
+        <div className="drawer-content relative">
           <label htmlFor="my-drawer-5" className="drawer-button">
-            <img className="w-6" src={shoppingIcon} alt="" />
-            <span className="absolute bg-red-500 text-white px-2 rounded-full -top-0 right-4">
-              {cart.length}
+            <img className="w-6" src={shoppingIcon} alt="Shopping cart" />
+            
+            {/* Cart Count */}
+            <span className="absolute bg-red-500 text-white px-2 rounded-full top-2 right-5 text-md">
+              {cart?.length || 0}
             </span>
           </label>
         </div>
 
-        {/* Search Button */}
+        {/* Search */}
         <button onClick={() => setShowSearch(true)}>
-          <img className="w-6" src={searchIcon} alt="" />
+          <img className="w-6" src={searchIcon} alt="Search products" />
         </button>
 
+        {/* Dashboard */}
         <NavLink
           to={
-            user === "fhlimon360@gmail.com"
-              ? "/adminDashbord"
+            user?.email === "fhlimon360@gmail.com"
+              ? "/adminDashboard"
               : "/userDashBoard"
           }
           className={({ isActive }) =>
@@ -70,7 +75,7 @@ const Dock = () => {
           }
         >
           <button>
-            <img className="w-6" src={dashboardIcon} alt="" />
+            <img className="w-6" src={dashboardIcon} alt="User dashboard" />
           </button>
         </NavLink>
       </div>

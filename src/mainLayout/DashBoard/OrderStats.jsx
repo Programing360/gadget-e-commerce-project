@@ -11,7 +11,7 @@ const data = [
 ];
 
 const OrderStats = () => {
-  const [orders, refetch, isLoading] = useOrderList();
+  const [orders] = useOrderList();
   const [orderConfirm] = useOrderConfirmList();
 
   const totalPriceOfOrders = orders?.reduce((sum, item) => sum + item.total, 0);
