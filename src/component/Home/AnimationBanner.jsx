@@ -1,11 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+
 import bannerImg2 from "../../assets/assets/bannerImg2.jpg";
 import bannerImg3 from "../../assets/assets/bannerImage3.jpg";
 import bannerImg4 from "../../assets/assets/bannerImg4.webp";
-import { Link } from "lucide-react";
+import bannerImg5 from "../../assets/assets/bannerImg5.jpg";
+import Bravery from "../../assets/assets/bravery.jpg";
 import { NavLink } from "react-router";
 
 const slides = [
@@ -21,6 +21,16 @@ const slides = [
   },
   {
     image: bannerImg4,
+    title: "Minimal. Powerful. Yours.",
+    subtitle: "Designed with precision & passion",
+  },
+  {
+    image: bannerImg5,
+    title: "Minimal. Powerful. Yours.",
+    subtitle: "Designed with precision & passion",
+  },
+  {
+    image: Bravery,
     title: "Minimal. Powerful. Yours.",
     subtitle: "Designed with precision & passion",
   },
@@ -105,7 +115,7 @@ const AnimationBanner = () => {
           />
 
           {/* 🔥 Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/30 to-transparent"></div>
 
           {/* 🔥 TEXT */}
           <div className="absolute bottom-10 left-5 md:left-12 text-white max-w-md">

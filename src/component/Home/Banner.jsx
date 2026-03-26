@@ -1,16 +1,8 @@
-
-import bannerImg2 from "../../assets/assets/bannerImg2.jpg";
-import bannerImg3 from "../../assets/assets/bannerImage3.jpg";
-import bannerImg4 from "../../assets/assets/bannerImg4.webp";
-import bannerImg5 from "../../assets/assets/bannerImg5.jpg";
 import logoIcon from "../../assets/assets/zeroomiro.jpeg";
-import Bravery from "../../assets/assets/bravery.jpg";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
-import { Carousel } from "react-responsive-carousel";
 import AnimationBanner from "./AnimationBanner";
-
 
 const Banner = () => {
   const axiosSecure = useAxiosSecure();
@@ -55,7 +47,6 @@ const Banner = () => {
   return (
     <div className="container mx-auto px-4 mt-32 mb-10">
       <div className="flex flex-col lg:flex-row gap-6 items-start">
-
         {/* 🔥 Carousel */}
         <div className="w-full lg:w-8/12 bg-[#e7e7e7] rounded-xl overflow-hidden">
           <AnimationBanner></AnimationBanner>
@@ -74,9 +65,10 @@ const Banner = () => {
               loading="lazy"
               alt="Zeroomiro logo"
             />
-            <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#FF6D1F] via-[#fdb529] to-[#ff8c42] bg-clip-text text-transparent">
-              Zeroomiro
-            </h1>
+            <h1 className="text-xl md:text-2xl font-bold bg-linear-to-r from-[#534d89] via-[#3f9cb6] to-[#9b9a3b] bg-clip-text text-transparent">
+                Zeroo<span>m</span>
+                <span>iro</span>
+              </h1>
           </div>
 
           {/* 🔥 Status */}

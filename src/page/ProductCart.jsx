@@ -89,8 +89,9 @@ const ProductCard = ({ product }) => {
       return;
     }
 
+
     const existing = wishlist.find(
-      (item) => item.productId === id && item.userId === userId,
+      (item) => item.productId === id,
     );
 
     if (existing) {
@@ -117,59 +118,56 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div data-aos="fade-up"
-     data-aos-anchor-placement="center-bottom">
-      <Link to={`/productDetails/${_id}`}>
-        <div className="relative group overflow-hidden shadow-lg hover:shadow-xl transition bg-white hover:text-blue-600 dark:text-black">
-          {/* Discount */}
-          {discountPercentage > 0 && (
-            <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">
-              -{discountPercentage}%
-            </span>
+    <div data-aos="fade-up" data-aos-anchor-placement="center-bottom">
+      <div className="relative group overflow-hidden shadow-lg hover:shadow-xl transition bg-white hover:text-blue-600 dark:text-black">
+        {/* Discount */}
+        {discountPercentage > 0 && (
+          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full z-10">
+            -{discountPercentage}%
+          </span>
+        )}
+
+        {/* Wishlist */}
+        <button
+          onClick={() => handleWishlist(_id)}
+          className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10"
+        >
+          {isInWishlist ? (
+            <img className="w-4" src={hearIcon} alt="wishlist" />
+          ) : (
+            <Heart size={16} />
+          )}
+        </button>
+
+        {/* 🔥 Image */}
+        <div className="w-full h-48 md:h-64 overflow-hidden relative">
+          {/* 🔥 Skeleton */}
+          {imgLoading && (
+            <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-xl"></div>
           )}
 
-          {/* Wishlist */}
-          <button
-            onClick={() => handleWishlist(_id)}
-            className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow z-10"
-          >
-            {isInWishlist ? (
-              <img className="w-4" src={hearIcon} alt="wishlist" />
-            ) : (
-              <Heart size={16} />
-            )}
-          </button>
+          <Link to={`/productDetails/${_id}`}>
+            <img
+              src={mainImage}
+              alt={name}
+              loading="lazy"
+              onLoad={() => setImgLoading(false)}
+              className={`w-full h-full object-cover rounded-xl p-3 transition-all duration-300 group-hover:scale-105 ${
+                imgLoading ? "opacity-0" : "opacity-100"
+              }`}
+            />
+          </Link>
+        </div>
 
-          {/* 🔥 Image */}
-          <div className="w-full h-48 md:h-64 overflow-hidden relative">
-            {/* 🔥 Skeleton */}
-            {imgLoading && (
-              <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-xl"></div>
-            )}
-
-            <Link to={`/productDetails/${_id}`}>
-              <img
-                src={mainImage}
-                alt={name}
-                loading="lazy"
-                onLoad={() => setImgLoading(false)}
-                className={`w-full h-full object-cover rounded-xl p-3 transition-all duration-300 group-hover:scale-105 ${
-                  imgLoading ? "opacity-0" : "opacity-100"
-                }`}
-              />
-            </Link>
-          </div>
-
-          {/* Content */}
-          <div className="p-4">
-            {stock === 0 && (
-              <span className="text-xs bg-red-600 text-white px-2 rounded-full absolute md:top-55 top-40">
-                Stock Out
-              </span>
-            )}
-
+        {/* Content */}
+        <div className="p-4">
+          {stock === 0 && (
+            <span className="text-xs bg-red-600 text-white px-2 rounded-full absolute md:top-55 top-40">
+              Stock Out
+            </span>
+          )}
+          <Link to={`/productDetails/${_id}`}>
             <h3 className="font-semibold text-sm">{name}</h3>
-
             <div className="flex items-center gap-2 mt-1">
               <span className="text-lg font-bold text-primary">
                 ৳{discountPrice}
@@ -178,22 +176,22 @@ const ProductCard = ({ product }) => {
                 ৳{price}
               </span>
             </div>
-          </div>
-
-          {/* Button */}
-          <button
-            disabled={stock === 0}
-            onClick={() => handleCartData(_id)}
-            className={`btn w-full rounded-none border-0 text-white transition-all duration-300 ${
-              stock === 0
-                ? "btn-disabled bg-gray-300 text-black"
-                : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] hover:scale-[1.02] active:scale-95"
-            }`}
-          >
-            {stock === 0 ? "Out of Stock" : "Quick Add"}
-          </button>
+          </Link>
         </div>
-      </Link>
+
+        {/* Button */}
+        <button
+          disabled={stock === 0}
+          onClick={() => handleCartData(_id)}
+          className={`btn w-full rounded-none border-0 text-white transition-all duration-300 ${
+            stock === 0
+              ? "btn-disabled bg-gray-300 text-black"
+              : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] hover:scale-[1.02] active:scale-95"
+          }`}
+        >
+          {stock === 0 ? "Out of Stock" : "Quick Add"}
+        </button>
+      </div>
     </div>
   );
 };

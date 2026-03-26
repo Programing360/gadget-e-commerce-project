@@ -19,7 +19,7 @@ const AllProduct = () => {
       />
 
       <h1 className="text-center text-3xl text-[#111827] font-bold bg-gray-100 py-4">
-        Our Products
+        Premium Products
       </h1>
 
       <p className="text-center text-gray-500 mt-4">

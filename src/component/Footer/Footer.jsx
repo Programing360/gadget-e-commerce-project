@@ -10,6 +10,19 @@ import {
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 
+const links = [
+  { name: "Home", path: "/" },
+  { name: "Shop", path: "/userAllProduct" },
+  { name: "About", path: "/about" },
+  { name: "Contact", path: "/contract" },
+];
+const categories = [
+  { name: "Smartphones", path: "/userAllProduct" },
+  { name: "Laptops", path: "/userAllProduct" },
+  { name: "Gaming", path: "/userAllProduct" },
+  { name: "Accessories", path: "/userAllProduct" },
+];
+
 const Footer = () => {
   return (
     <footer className="relative bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] text-white overflow-hidden">
@@ -40,7 +53,7 @@ const Footer = () => {
           className="lg:col-span-2"
         >
           <Link to="/">
-            <span className="font-semibold text-2xl animate-text-gradient bg-gradient-to-r from-pink-500 via-blue-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]">
+            <span className="font-semibold text-2xl animate-text-gradient bg-linear-to-r from-pink-500 via-blue-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]">
               Zeroomiro
             </span>
           </Link>
@@ -52,10 +65,10 @@ const Footer = () => {
 
           <div className="mt-6 space-y-3 text-sm text-gray-400">
             <p className="flex items-center gap-2 hover:text-white transition">
-              <Phone size={16} /> 09678-300400
+              <Phone size={16} /> 01640561692
             </p>
             <p className="flex items-center gap-2 hover:text-white transition">
-              <Mail size={16} /> support@zeroomiro.com
+              <Mail size={16} /> zeroomiro@gmail.com
             </p>
             <p className="flex items-center gap-2 hover:text-white transition">
               <Clock size={16} /> 10AM - 11PM
@@ -79,12 +92,15 @@ const Footer = () => {
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
           <h3 className="font-semibold mb-5">Quick Links</h3>
           <ul className="space-y-3 text-sm text-gray-400">
-            {["Home", "Shop", "About", "Contact"].map((item) => (
-              <li
-                key={item}
-                className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1"
-              >
-                <ChevronRight size={14} /> {item}
+            {links.map((item) => (
+              <li key={item.name} className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1">
+                <ChevronRight size={14} />
+                <Link
+                  to={item.path}
+                  className="hover:text-white transition hover:translate-x-1"
+                >
+                  {item.name}
+                </Link>
               </li>
             ))}
           </ul>
@@ -94,12 +110,15 @@ const Footer = () => {
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
           <h3 className="font-semibold mb-5">Categories</h3>
           <ul className="space-y-3 text-sm text-gray-400">
-            {["Smartphones", "Laptops", "Gaming", "Accessories"].map((item) => (
-              <li
-                key={item}
-                className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1"
-              >
-                <ChevronRight size={14} /> {item}
+            {categories.map((item) => (
+              <li key={item.name} className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1">
+                <ChevronRight size={14} />
+                <Link
+                  to={item.path}
+                  className="hover:text-white transition hover:translate-x-1"
+                >
+                  {item.name}
+                </Link>
               </li>
             ))}
           </ul>

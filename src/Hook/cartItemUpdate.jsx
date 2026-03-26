@@ -38,10 +38,6 @@ const useCartItemUpdate = () => {
       toast.error("Update failed");
     },
 
-    // ✅ Success
-    // onSuccess: () => {
-    //   toast.success("Cart Updated");
-    // },
 
     // 🔄 Sync with backend
     onSettled: () => {
@@ -76,10 +72,6 @@ const useCartItemUpdate = () => {
       queryClient.setQueryData(["cart"], context.previousCart);
       toast.error("Update failed");
     },
-
-    // onSuccess: () => {
-    //   toast.success("Cart Updated");
-    // },
 
     onSettled: () => {
       queryClient.invalidateQueries(["cart"]);

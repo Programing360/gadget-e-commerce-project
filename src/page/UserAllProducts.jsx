@@ -126,7 +126,7 @@ const UserAllProducts = () => {
       userId,
       name: allData.name,
       price: allData.price,
-      image: allData.image,
+      image: allData.images[0],
       quantity: 1,
     };
 
@@ -339,7 +339,7 @@ const UserAllProducts = () => {
                       onClick={() => handleCartData(item._id)}
                       className={`btn w-full border-[#7c9ef7] rounded-none shadow-xl hover:shadow-blue-300 active:scale-95 ${
                         item.stock === 0
-                          ? "btn-disabled bg-gray-300"
+                          ? "btn-disabled bg-gray-300 dark:text-white"
                           : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95"
                       }`}
                     >
@@ -360,9 +360,9 @@ const UserAllProducts = () => {
                   setCurrentPage(num + 1);
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className={`px-3 py-1 rounded ${
+                className={`px-3 py-1 rounded dark:text-black ${
                   currentPage === num + 1
-                    ? "bg-blue-600 text-white"
+                    ? "bg-blue-600 text-white dark:text-white"
                     : "bg-gray-200"
                 }`}
               >

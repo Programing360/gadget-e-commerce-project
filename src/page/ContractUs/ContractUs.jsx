@@ -17,13 +17,7 @@ import { UseContext } from "../../Context/AuthContext";
 import { Link, useLocation } from "react-router";
 import SEO from "../../component/SEO/SEO";
 import { motion } from "framer-motion";
-import DarkModeToggle from "../../component/DarkMood/DarkModeToggle";
-import ContactForm from "./ContactForm";
 const ContactUs = () => {
-  const { user } = useContext(UseContext);
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
-
   const navigate = useNavigate();
 
   const handleFAQ = () => {
@@ -43,10 +37,10 @@ const ContactUs = () => {
       />
       <div className="relative overflow-hidden py-20 px-4 text-center">
         {/* 🔥 Animated Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1e1b4b] via-[#4338ca] to-[#0f172a] animate-gradient-x"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[#1e1b4b] via-[#4338ca] to-[#0f172a] animate-gradient-x"></div>
 
         {/* 🔥 Glow Effect */}
-        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-indigo-500 opacity-20 blur-[120px] rounded-full"></div>
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-125 h-125 bg-indigo-500 opacity-20 blur-[120px] rounded-full"></div>
 
         {/* 🔥 Content */}
         <div className="relative z-10">
@@ -143,14 +137,14 @@ const ContactUs = () => {
               ></textarea>
             </div>
 
-            <button className="w-full bg-gradient-to-r from-[#615fff] to-blue-600 hover:scale-[1.02] transition transform text-white py-3 rounded-xl flex items-center justify-center gap-2 font-semibold shadow-md">
+            <button className="w-full bg-linear-to-r from-[#615fff] to-blue-600 hover:scale-[1.02] transition transform text-white py-3 rounded-xl flex items-center justify-center gap-2 font-semibold shadow-md">
               <Send size={18} /> Send Message
             </button>
           </form>
         </div>
 
         {/* ================= RIGHT - CONTACT INFO ================= */}
-        <div className="bg-gradient-to-br from-[#615fff] to-indigo-700 text-white rounded-2xl shadow-xl p-8 space-y-8">
+        <div className="bg-linear-to-br from-[#615fff] to-indigo-700 text-white rounded-2xl shadow-xl p-8 space-y-8">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <MapPin size={22} /> Contact Information
           </h2>
@@ -272,7 +266,7 @@ const ContactUs = () => {
           <iframe
             title="Zeroomiro Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3629.8405972009336!2d89.53318607591437!3d24.525597558574265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fdb7e3b76d077d%3A0x4be8a7e8c24209f3!2sDhangora%20Bazar!5e0!3m2!1sen!2sbd!4v1774531703413!5m2!1sen!2sbd"
-            className="w-full h-[400px] border-0"
+            className="w-full h-100 border-0"
             loading="lazy"
           ></iframe>
         </div>

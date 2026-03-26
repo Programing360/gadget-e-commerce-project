@@ -27,6 +27,7 @@ import SearchInput from "../page/SearchInput/SearchInput";
 import OrderInvoicePage from "../page/OrderInvoicePage/OrderInvoicePage";
 import Home from "../component/Home/Home/Home";
 import { lazy, Suspense } from "react";
+import Loader from "../component/Loader/Loader";
 
 const Root = lazy(() => import("../Root/Root"));
 // const Home = lazy(() => import("../component/Home/Home/Home"));
@@ -35,7 +36,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader></Loader>}>
         <Root />
       </Suspense>
     ),
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
         path: "/productDetails/:id",
         Component: ProductDetails,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/allProduct/${params.id}`),
+          fetch(`https://zeromiroo-api.vercel.app/allProduct/${params.id}`),
       },
       {
         path: "/userAllProduct",

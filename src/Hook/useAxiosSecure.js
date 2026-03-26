@@ -4,7 +4,7 @@ import { useMemo } from "react";
 export const useAxiosSecure = () => {
   const axiosSecure = useMemo(() => {
     const instance = axios.create({
-      baseURL: "http://localhost:5000",
+      baseURL: "https://zeromiroo-api.vercel.app",
       withCredentials: true,
     });
 

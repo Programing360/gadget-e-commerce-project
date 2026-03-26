@@ -67,12 +67,12 @@ const FAQSection = () => {
               onClick={() => toggleFAQ(index)}
               className="w-full flex items-center justify-between px-6 py-5 text-left"
             >
-              <span className="font-medium text-gray-900">
-                {item.q}
-              </span>
+              <span className="font-medium text-gray-900">{item.q}</span>
               <ChevronDown
                 className={`transition-transform ${
-                  openIndex === index ? "rotate-180 text-blue-600" : "text-blue-600"
+                  openIndex === index
+                    ? "rotate-180 text-blue-600"
+                    : "text-blue-600"
                 }`}
               />
             </button>
@@ -90,10 +90,10 @@ const FAQSection = () => {
       <div className="text-center mt-14">
         <p className="text-gray-500 mb-4">Still have questions?</p>
         <Link to="/contract">
-          <button className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
-          <Mail size={18} />
-          Contact Us
-        </button>
+          <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-white bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-700 hover:from-blue-600 hover:via-indigo-700 hover:to-purple-800 transition-all duration-300">
+            <Mail size={18} />
+            Contact Us
+          </button>
         </Link>
       </div>
     </section>

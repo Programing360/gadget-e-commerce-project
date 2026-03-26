@@ -12,7 +12,6 @@ import SimilarProductsGrid from "./SimilarProductsGrid";
 import SEO from "../../component/SEO/SEO";
 import { motion } from "motion/react";
 
-
 /* 🔑 Guest ID helper */
 const getGuestUserId = () => {
   let guestId = localStorage.getItem("guestCart");
@@ -51,6 +50,9 @@ const ProductDetails = () => {
   const isShoe = category?.toLowerCase() === "shoe";
   const isShirt = category?.toLowerCase() === "shirt";
 
+
+  const quantity = cart.find(item => item.productId === _id)
+
   /* 🔥 auto select color */
   useEffect(() => {
     if (colors.length > 0) {
@@ -77,7 +79,6 @@ const ProductDetails = () => {
       item.size === size &&
       item.color === selectedColor,
   );
-
   /* 🔥 Similar products */
   const [allProduct] = useAllProduct();
   const sameCategoryProducts = allProduct.filter(
@@ -293,10 +294,27 @@ const ProductDetails = () => {
 
           {/* 🔥 Quantity Control */}
           {cartItem && (
-            <div className="flex items-center gap-3 border p-3 bg-gray-100">
-              <button onClick={() => handleCartDecrement(_id)}>−</button>
-              <span>{cartItem.quantity}</span>
-              <button onClick={() => handleCartIncrement(_id)}>+</button>
+            <div className="flex items-center gap-3 border p-2 rounded-lg bg-gray-100 dark:text-black shadow-sm">
+              {/* Decrement */}
+              <button
+                onClick={() => handleCartDecrement(_id)}
+                className="w-8 h-8 flex items-center justify-center rounded-md bg-white shadow hover:bg-red-100 active:scale-90 transition duration-150"
+              >
+                −
+              </button>
+
+              {/* Quantity */}
+              <span className="min-w-[24px] text-center font-semibold text-gray-800">
+                {quantity.quantity}
+              </span>
+
+              {/* Increment */}
+              <button
+                onClick={() => handleCartIncrement(_id)}
+                className="w-8 h-8 flex items-center justify-center rounded-md bg-white shadow hover:bg-green-100 active:scale-90 transition duration-150"
+              >
+                +
+              </button>
             </div>
           )}
 

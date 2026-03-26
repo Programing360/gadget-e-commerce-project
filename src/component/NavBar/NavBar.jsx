@@ -66,7 +66,7 @@ const NavBar = () => {
   // navbar animation scroll---------------
 
   return (
-    <div className="fixed w-full top-0 z-50 bg-[#131921] ">
+    <div className="fixed w-full top-0 z-50 bg-[#131921] shadow-2xl shadow-purple-500">
       <div className="navbar bg-[#f7f7f7] md:px-10 w-full mx-auto relative">
         <div className="flex-1 flex items-center">
           <MobileDrawer
@@ -76,10 +76,9 @@ const NavBar = () => {
           <div className="flex justify-center md:justify-start pl-15  items-center  gap-0">
             <Link className="flex items-center gap-2" to="/">
               <img className="w-10 rounded-full" src={logo} alt="" />
-              <h1 className="text-xl md:text-2xl font-bold bg-linear-to-r from-[#534d89] via-[#3f9cb6] to-[#9b9a3b] bg-clip-text text-transparent">
-                Zeroo<span>m</span>
-                <span>iro</span>
-              </h1>
+              <span className="font-bold text-2xl animate-text-gradient bg-linear-to-r from-pink-500 via-blue-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]">
+                Zeroomiro
+              </span>
             </Link>
           </div>
         </div>
@@ -117,7 +116,7 @@ const NavBar = () => {
                     key={n._id}
                     className="flex items-center gap-3 p-3 hover:bg-gray-100 rounded-xl dark:hover:text-black"
                   >
-                    <img src={bellIcon} className="w-5 mt-1" alt="bell icon"/>
+                    <img src={bellIcon} className="w-5 mt-1" alt="bell icon" />
                     <div>
                       <p className="text-sm font-medium">{n.message}</p>
                       <p className="text-xs text-gray-500">
@@ -195,8 +194,12 @@ const NavBar = () => {
                   <li className="">
                     <Link to="/wishList">
                       <div className="flex items-center gap-1">
-                        <img className="w-4" src={wishListIcon} alt="wish list icon" />
-                        <a className="justify-between font-bold">Wish List</a>
+                        <img
+                          className="w-4"
+                          src={wishListIcon}
+                          alt="wish list icon"
+                        />
+                        <h1 className="justify-between font-bold">Wish List</h1>
                       </div>
                     </Link>
                   </li>
@@ -204,16 +207,24 @@ const NavBar = () => {
                     <li>
                       <Link to="/adminDashboard">
                         <div className="flex items-center gap-1">
-                          <img className="w-5" src={adminIcon} alt="admin page icon" />
-                          <a className="font-bold">Admin Page</a>
+                          <img
+                            className="w-5"
+                            src={adminIcon}
+                            alt="admin page icon"
+                          />
+                          <h1 className="font-bold">Admin Page</h1>
                         </div>
                       </Link>
                     </li>
                   ) : (
                     <li>
                       <Link to="/userDashBoard">
-                        <img className="w-5" src={userloginIcon} alt="user login icon" />
-                        <a className="font-bold">Your Page</a>
+                        <img
+                          className="w-5"
+                          src={userloginIcon}
+                          alt="user login icon"
+                        />
+                        <h1 className="font-bold">Your Page</h1>
                       </Link>
                     </li>
                   )}
@@ -224,9 +235,9 @@ const NavBar = () => {
                         src={loginOutIcon}
                         alt="log out icon"
                       />
-                      <a className="font-bold text-[#512da8]dark:text-white">
+                      <h1 className="font-bold text-[#512da8]dark:text-white">
                         Logout
-                      </a>
+                      </h1>
                     </div>
                   </li>
                 </ul>

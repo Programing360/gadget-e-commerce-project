@@ -46,7 +46,7 @@ const DiscoverProducts = () => {
             key={index}
             style={{ y: yTransforms[index] || 0 }}
             variants={cardVariants}
-            className="bg-gradient-to-tr from-blue-50 via-white to-green-50 border border-gray-200 rounded-3xl shadow-xl px-8 md:px-16 py-16 text-center
+            className="bg-linear-to-tr from-blue-50 via-white to-green-50 border border-gray-200 rounded-3xl shadow-xl px-8 md:px-16 py-16 text-center
                        transform transition-transform duration-500 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl"
           >
             {/* Icon */}
@@ -75,7 +75,7 @@ const DiscoverProducts = () => {
             >
               {product.description}
             </motion.p>
-
+          
             {/* Button */}
             <Link to="/userAllProduct">
               <motion.button

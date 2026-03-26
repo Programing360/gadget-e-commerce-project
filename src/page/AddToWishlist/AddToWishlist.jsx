@@ -34,7 +34,7 @@ const handleAddToCart = (item) => {
 
   if (wishlist.length === 0) {
     return (
-      <div className="min-h-[100vh] flex flex-col justify-center items-center text-center">
+      <div className="min-h-screen flex flex-col justify-center items-center text-center">
         <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="Empty Cart" className="w-64 mb-6" />
         <h2 className="text-3xl font-bold mb-2">There are no products in your wishlist!</h2>
         <p className="text-gray-500 mb-6">
@@ -51,7 +51,7 @@ const handleAddToCart = (item) => {
 
   // 🟢 CART WITH PRODUCTS
   return (
-    <div className="dark:bg-white dark:text-black my-10 ">
+    <div className="dark:bg-white dark:text-black my-10 mt-30 ">
       <SEO
         title="Your Wishlist - Zeroomiro"
         description="Review your wishlist items and Add to cart"
@@ -59,7 +59,7 @@ const handleAddToCart = (item) => {
       <div className="bg-linear-to-l from-cyan-600 to-cyan-800 py-10 text-white">
         <h1 className="text-4xl text-center font-bold">WISHLIST</h1>
         <p className="text-center pt-4">
-          <Link to="/">Home</Link> {">"} WishList
+          <Link to="/" ><span className="font-bold">Home</span></Link> {">"} WishList
         </p>
       </div>
 
@@ -76,7 +76,7 @@ const handleAddToCart = (item) => {
           </thead>
 
           <tbody>
-            {wishlist.map((item) => (
+            {wishlist?.map((item) => (
               <tr key={item._id} className="border bg-gray-200 text-center">
                 <td>
                   <img
@@ -94,7 +94,7 @@ const handleAddToCart = (item) => {
                   <div className="flex justify-center items-center py-1">
                     <button
                       onClick={() => handleAddToCart(item)}
-                      className="btn bg-linear-0 from-cyan-700 to-cyan-400 text-white"
+                      className="btn bg-linear-0 from-cyan-700 to-cyan-400 text-white active:scale-95"
                     >
                       Add To Cart
                     </button>
@@ -114,7 +114,7 @@ const handleAddToCart = (item) => {
                     </Link>
                     <img
                       onClick={() => handleWishListDelete(item._id)}
-                      className="w-5 cursor-pointer"
+                      className="w-5 cursor-pointer active:scale-95"
                       src={crossIcon}
                       alt="delete"
                     />

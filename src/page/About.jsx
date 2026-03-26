@@ -79,7 +79,7 @@ const About = () => {
     <div className="mb-10">
       <div className="relative pt-32 pb-24 text-center overflow-hidden">
         {/* 🔥 Animated Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1e1b4b] via-[#312e81] to-[#0f172a] animate-gradient-x"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[#1e1b4b] via-[#312e81] to-[#0f172a] animate-gradient-x"></div>
 
         {/* 🔥 Glow Effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-500 opacity-20 blur-[120px] rounded-full"></div>
@@ -93,7 +93,7 @@ const About = () => {
             className="md:text-5xl text-3xl font-bold text-white leading-tight"
           >
             ABOUT{" "}
-            <span className="bg-gradient-to-r from-[#534d89] via-[#3f9cb6] to-[#9b9a3b] bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-[#534d89] via-[#3f9cb6] to-[#9b9a3b] bg-clip-text text-transparent">
               Zeroomiro
             </span>
           </motion.h1>
@@ -122,7 +122,7 @@ const About = () => {
               </button>
             </Link>
 
-            <Link to="/contact">
+            <Link to="/contract">
               <button className="px-6 py-3 rounded-lg border border-white text-white hover:bg-white hover:text-black transition">
                 Contact Us
               </button>

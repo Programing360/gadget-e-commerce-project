@@ -26,6 +26,8 @@ const useWishList = () => {
       if (userId) {
         return res.data;
       }
+      return []
+      
 
       // 🔥 Correct filtering
       // const userCart = data?.filter((item) => item.userId === userId);

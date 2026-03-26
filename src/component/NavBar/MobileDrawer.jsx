@@ -69,7 +69,7 @@ const MobileDrawer = () => {
       {/* Backdrop */}
       {isDrawerOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-20 z-40 md:hidden"
+          className="fixed inset-0 bg-black opacity-50 bg-opacity-20 z-40 md:hidden"
           onClick={() => setIsDrawerOpen(false)}
         />
       )}
@@ -94,7 +94,7 @@ const MobileDrawer = () => {
               variants={listVariants}
               initial="hidden"
               animate="visible"
-              className={`p-2 rounded cursor-pointer transition-all duration-200
+              className={`p-2 rounded cursor-pointer transition-all duration-200 capitalize
                 ${
                   isActive(cat)
                     ? "bg-blue-100 text-blue-700 font-semibold"
