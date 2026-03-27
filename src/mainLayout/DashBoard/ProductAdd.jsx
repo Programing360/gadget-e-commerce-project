@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const ProductAdd = () => {
   const {
@@ -16,6 +17,10 @@ const ProductAdd = () => {
   // 🔥 Multiple Image State
   const [images, setImages] = useState([""]);
 
+  // 🔥 Custom category & subcategory
+  const [customCategory, setCustomCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+
   // 🔥 Handle Image Change
   const handleImageChange = (index, value) => {
     const updated = [...images];
@@ -23,35 +28,38 @@ const ProductAdd = () => {
     setImages(updated);
   };
 
-  // 🔥 Add New Image Field
-  const addImageField = () => {
-    setImages([...images, ""]);
-  };
-
-  // 🔥 Remove Image Field
-  const removeImageField = (index) => {
-    const updated = images.filter((_, i) => i !== index);
-    setImages(updated);
-  };
+  // 🔥 Add/Remove Image
+  const addImageField = () => setImages([...images, ""]);
+  const removeImageField = (index) =>
+    setImages(images.filter((_, i) => i !== index));
 
   // 🔥 Submit
   const onSubmit = (data) => {
-    data.images = images; // multiple images add
+    data.images = images;
+    data.category = customCategory || data.category;
+    if (subCategory) data.subCategory = subCategory;
 
     axiosSecure.post("/productAdd", data).then((res) => {
       if (res.data) {
-        toast("Publish Your Product ✅");
+        toast.success("Publish Your Product ✅");
         reset();
-        setImages([""]); // reset images
+        setImages([""]);
+        setCustomCategory("");
+        setSubCategory("");
       }
     });
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-1 rounded-xl text-white bg-linear-0 from-indigo-500 to-pink-400 mt-[5%]">
-      <div className="card bg-[#100828] shadow-xl">
+    <div className="max-w-4xl mx-auto p-4 rounded-xl mt-12 bg-gradient-to-r from-indigo-500 to-pink-400 shadow-xl">
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="card bg-[#100828] shadow-xl"
+      >
         <div className="card-body">
-          <h2 className="text-2xl font-bold text-center text-cyan-600">
+          <h2 className="text-2xl font-bold text-center text-cyan-400 mb-4">
             Add New Product
           </h2>
 
@@ -64,7 +72,7 @@ const ProductAdd = () => {
               <input
                 type="text"
                 placeholder="Product name"
-                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
                 {...register("name", { required: "Product name is required" })}
               />
               {errors.name && (
@@ -72,60 +80,78 @@ const ProductAdd = () => {
               )}
             </div>
 
-            {/* Price */}
-            <div>
-              <label className="label">
-                <span className="label-text">Price</span>
-              </label>
+            {/* Price + Discount + Stock */}
+            <div className="flex flex-col md:flex-row gap-3">
               <input
                 type="number"
-                placeholder="Product price"
-                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                placeholder="Price"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
                 {...register("price", {
                   required: "Price is required",
-                  min: { value: 1, message: "Price must be greater than 0" },
+                  min: { value: 1, message: "Price must be > 0" },
                 })}
               />
-            </div>
-
-            {/* Discount + Stock */}
-            <div className="flex gap-3">
               <input
                 type="number"
                 placeholder="Discount Price"
-                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
                 {...register("discountPrice")}
               />
               <input
                 type="number"
                 placeholder="Discount %"
-                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
                 {...register("discountPercentage")}
               />
               <input
-                type="number"
+                type="text"
                 placeholder="Stock"
-                className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
                 {...register("stock")}
               />
             </div>
 
-            {/* Category */}
-            <div>
+            {/* Category + Subcategory */}
+            <div className="space-y-3">
+              <label className="label">
+                <span className="label-text">Category</span>
+              </label>
+
+              {/* Select Category */}
               <select
-                className="select select-bordered w-full border-cyan-600 bg-[#362949]"
-                {...register("category", { required: true })}
+                className="select select-bordered w-full border-cyan-600 bg-[#362949] text-white"
+                {...register("category")}
+                disabled={customCategory.length > 0}
               >
                 <option value="">Select category</option>
                 <option value="electronics">Electronics</option>
-                <option value="Watch">Watch</option>
-                <option value="Shirt">Shirt</option>
-                <option value="Laptop">Laptop</option>
-                <option value="Umbrella">Umbrella</option>
+                <option value="watch">Watch</option>
+                <option value="shirt">Shirt</option>
+                <option value="laptop">Laptop</option>
               </select>
+
+              <p className="text-center text-sm text-gray-400">OR</p>
+
+              {/* Custom Category */}
+              <input
+                type="text"
+                placeholder="Add custom category"
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
+              />
+
+              {/* Optional Sub-category */}
+              <input
+                type="text"
+                placeholder="Add sub-category (optional)"
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target.value)}
+                className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
+              />
             </div>
 
-            {/* 🔥 Multiple Images */}
+            {/* Images */}
             <div>
               <label className="label">
                 <span className="label-text">Product Images</span>
@@ -138,9 +164,8 @@ const ProductAdd = () => {
                     value={img}
                     onChange={(e) => handleImageChange(index, e.target.value)}
                     placeholder="https://image-url.com"
-                    className="input input-bordered w-full border-cyan-600 bg-[#362949]"
+                    className="input input-bordered w-full border-cyan-600 bg-[#362949] text-white"
                   />
-
                   {images.length > 1 && (
                     <button
                       type="button"
@@ -164,7 +189,7 @@ const ProductAdd = () => {
 
             {/* Description */}
             <textarea
-              className="textarea textarea-bordered w-full border-cyan-600 bg-[#362949]"
+              className="textarea textarea-bordered w-full border-cyan-600 bg-[#362949] text-white"
               placeholder="Write product description..."
               rows={4}
               {...register("description", {
@@ -175,11 +200,8 @@ const ProductAdd = () => {
                 },
               })}
             />
-
             {errors.description && (
-              <p className="text-red-500 text-sm">
-                {errors.description.message}
-              </p>
+              <p className="text-red-500 text-sm">{errors.description.message}</p>
             )}
 
             {/* Status */}
@@ -189,12 +211,16 @@ const ProductAdd = () => {
             </label>
 
             {/* Submit */}
-            <button className="btn bg-indigo-500 text-white w-full">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn bg-indigo-500 text-white w-full mt-2"
+            >
               Add Product
-            </button>
+            </motion.button>
           </form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

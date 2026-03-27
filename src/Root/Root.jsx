@@ -8,6 +8,7 @@ import Dock from "../component/Dock";
 import Clock from "../component/Clock/Clock";
 import upArrowIcon from "../assets/assets/up-arrow.png";
 import AutoReloadOnRouteChange from "../page/AutoReloadOnRouteChange/AutoReloadOnRouteChange";
+import TrackPage from "../page/TrackPage/TrackPage";
 
 const Root = () => {
   const location = useLocation();
@@ -52,6 +53,7 @@ const Root = () => {
       <div className="fixed top-40 left-0 shadow-2xl p-3 z-100 hidden md:block">
         <Clock></Clock>
       </div>
+      <TrackPage></TrackPage>
       <AutoReloadOnRouteChange></AutoReloadOnRouteChange>
       <ScrollToTop></ScrollToTop>
       <NavBar></NavBar>

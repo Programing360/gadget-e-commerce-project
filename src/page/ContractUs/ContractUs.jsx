@@ -112,7 +112,7 @@ const ContactUs = () => {
                 <label className="text-sm font-medium">Phone Number</label>
                 <input
                   type="text"
-                  placeholder="017XXXXXXXX"
+                  placeholder="01540561692"
                   className="w-full border rounded-xl p-3 mt-1 focus:ring-2 focus:ring-[#615fff] outline-none transition"
                 />
               </div>
@@ -170,7 +170,7 @@ const ContactUs = () => {
             </div>
             <div>
               <h4 className="font-semibold">Call Us</h4>
-              <p className="font-medium">09678-300400</p>
+              <p className="font-medium">01540561692</p>
             </div>
           </div>
 
@@ -181,7 +181,7 @@ const ContactUs = () => {
             </div>
             <div>
               <h4 className="font-semibold">Email</h4>
-              <p className="text-sm opacity-80">info@zeroomiro.com</p>
+              <p className="text-sm opacity-80">zeroomiro@gmail.com.com</p>
             </div>
           </div>
 

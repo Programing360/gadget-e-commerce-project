@@ -59,13 +59,15 @@ const Footer = () => {
           </Link>
 
           <p className="text-sm text-gray-400 mt-3 max-w-md">
-            Premium electronics & creator gear platform in Bangladesh. Built for
-            quality & trust.
+            At ZerooMiro, We believe shopping should be simple reliable and exciting.
+            Explore a wide range of products - handpicked for quality and satisfaction. 
+            <br />
+            Your trust, Our priority.
           </p>
 
           <div className="mt-6 space-y-3 text-sm text-gray-400">
             <p className="flex items-center gap-2 hover:text-white transition">
-              <Phone size={16} /> 01640561692
+              <Phone size={16} /> 01540561692
             </p>
             <p className="flex items-center gap-2 hover:text-white transition">
               <Mail size={16} /> zeroomiro@gmail.com
@@ -147,7 +149,7 @@ const Footer = () => {
         <span className="font-semibold animate-text-gradient bg-gradient-to-r from-pink-500 via-blue-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]">
           Zeroomiro
         </span>
-        • Built with ❤️
+        • Build with ❤️
       </div>
     </footer>
   );

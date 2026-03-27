@@ -6,23 +6,24 @@ import TimeAgo from "../../component/SetTimeOut";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import SEO from "../../component/SEO/SEO";
 import { UseContext } from "../../Context/AuthContext";
+import { motion } from "framer-motion";
 
 const UserOrders = () => {
   const { user } = useContext(UseContext);
-  const [orders, refetch, isloading] = useOrderList("all", user);
+  const [orders, refetch, isLoading] = useOrderList("all", user);
   const axiosSecure = useAxiosSecure();
 
-  const guestId = localStorage.getItem("guestCart"); 
-  const userOrderData = orders.filter((order) =>
-  user?.email
-    ? order.email === user.email
-    : order.guestId === guestId
-);
+  const guestId = localStorage.getItem("guestCart");
+
+  // ✅ Filter user orders
+  const userOrderData = orders?.filter((order) =>
+    user?.email ? order.email === user.email : order.guestId === guestId,
+  );
 
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [, forceUpdate] = useState(0);
 
-  /* 🔄 Auto time update */
+  // ⏱ Auto time refresh
   useEffect(() => {
     const interval = setInterval(() => {
       forceUpdate((p) => p + 1);
@@ -30,10 +31,10 @@ const UserOrders = () => {
     return () => clearInterval(interval);
   }, []);
 
-  /* ❌ Cancel Order */
+  // ❌ Cancel Order
   const handleCancelOrder = async (orderId) => {
     const confirm = window.confirm(
-      "Are you sure you want to cancel this order?"
+      "Are you sure you want to cancel this order?",
     );
     if (!confirm) return;
 
@@ -45,26 +46,56 @@ const UserOrders = () => {
     }
   };
 
-  /* ⏳ Loading */
-  if (isloading) {
+  // ⏳ Loading
+  if (isLoading) {
     return (
-      <div className="text-center py-10 text-gray-500">
+      <div className="flex justify-center items-center h-[60vh] text-gray-500">
         Loading your orders...
       </div>
     );
   }
 
-  /* 📦 Empty */
-  if (orders.length === 0) {
+  // 📦 Empty State (FIXED ✅)
+  if (!userOrderData || userOrderData.length === 0) {
     return (
-      <div className="text-center py-10 text-gray-500">
-        You have no orders yet 📦
+      <div className="flex flex-col items-center justify-center py-20 text-center min-h-[80vh]">
+        <motion.img
+          src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+          alt="No Orders"
+          className="w-44 mb-6 opacity-80"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+        />
+
+        <motion.h2
+          className="text-2xl font-semibold text-gray-800"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          No Orders Found
+        </motion.h2>
+
+        <motion.p
+          className="text-gray-500 mt-2 max-w-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          You haven’t placed any orders yet. Start shopping and your orders will
+          appear here.
+        </motion.p>
+
+        <Link
+          to="/userAllProduct"
+          className="mt-6 px-6 py-2 bg-black text-white rounded-lg shadow hover:bg-gray-800 transition"
+        >
+          Browse Products
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 mt-20 ">
+    <div className="max-w-5xl mx-auto px-4 py-6 mt-20">
       <SEO
         title="Order Details - Zeroomiro"
         description="Review your orders and track status"
@@ -73,111 +104,112 @@ const UserOrders = () => {
       <h2 className="text-2xl font-bold mb-6">My Orders</h2>
 
       <div className="space-y-4">
-        {userOrderData.map((order) => (
-          <div
+        {userOrderData.map((order, index) => (
+          <motion.div
             key={order._id}
-            className="flex gap-4 bg-white dark:bg-white hover:bg-amber-300 transition shadow-sm rounded-xl p-4 dark:text-white"
+            className="flex flex-col md:flex-row md:justify-between gap-4 rounded-xl p-4 text-white border border-purple-500 shadow-sm"
+            style={{
+              background: "linear-gradient(135deg, #ad46ff 0%, #c3cfe2 100%)",
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.4 }}
+            whileHover={{
+              scale: 1.02,
+              boxShadow: "0 8px 20px rgba(0,0,0,0.12)",
+            }}
           >
-            {/* 🖼 Product Preview */}
-            <div className="flex flex-col md:flex-row gap-2 md:gap-0 -space-x-3">
-              {order.cart?.slice(0, 2).map((item, index) => (
+            {/* 🖼 Images */}
+            <div className="flex -space-x-3">
+              {order.cart?.slice(0, 3).map((item, idx) => (
                 <img
-                  key={index}
+                  key={idx}
                   src={item.image}
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded-lg border-2 border-white shadow"
                 />
               ))}
-
               {order.cart?.length > 3 && (
-                <div className="w-16 h-16 flex items-center justify-center bg-gray-300 text-sm font-bold rounded-lg border-2 border-white">
+                <div className="w-16 h-16 flex items-center justify-center bg-gray-200 text-sm font-bold rounded-lg border-2 border-white">
                   +{order.cart.length - 3}
                 </div>
               )}
             </div>
 
-            {/* 📦 Info */}
-            <div className="flex-1 dark:text-black">
-              <p className="text-xs text-gray-400">
-                Order ID:{" "}
-                <span className="font-medium">{order._id}</span>
-              </p>
+            {/* 📦 Order Info */}
+            <div className="flex-1 flex flex-col justify-between">
+              <div>
+                <p className="text-xs text-gray-800">
+                  Order ID: <span className="font-medium">#{order.orderId}</span>
+                </p>
 
-              <h3 className="font-semibold capitalize dark:text-black">
-                {order.name}
-              </h3>
+                <h3 className="font-semibold text-purple-950 text-shadow-purple-600 capitalize">
+                  {order.name}
+                </h3>
 
-              <div className="text-sm mt-1">
-                Qty:{" "}
-                <span className="font-medium">
-                  {order.cart?.length}
-                </span>
-              </div>
+                <p className="text-sm text-purple-950 text-shadow-purple-600 mt-1">
+                  Qty: <span className="font-medium ">{order.cart?.length}</span>
+                </p>
 
-              <div className="text-sm">
-                Payment:{" "}
-                <span className="font-medium capitalize">
-                  {order.paymentMethod}
-                </span>
+                <p className="text-sm text-purple-950 text-shadow-purple-600">
+                  Payment:{" "}
+                  <span className="font-medium capitalize">
+                    {order.paymentMethod}
+                  </span>
+                </p>
 
-                <p className="text-sm text-gray-500 mt-1">
-                  Ordered{" "}
-                  <TimeAgo time={order.newDate}></TimeAgo>
+                <p className="text-xs text-purple-950 text-shadow-purple-600 mt-1">
+                  Ordered <TimeAgo time={order.newDate} />
                 </p>
               </div>
-            </div>
 
-            {/* 💰 Right Side */}
-            <div className="text-right flex flex-col justify-between">
-              <div>
-                <p className="font-bold text-cyan-600">
-                  ৳{order.total}
+              {/* 💰 Price & Status */}
+              <div className="flex flex-col md:items-end mt-2 md:mt-0">
+                <p className="font-bold text-lg text-cyan-700">
+                 Total: {order.total} BDT
                 </p>
 
                 <span
-                  className={`text-xs px-3 py-1 rounded-full inline-block mt-1 ${
+                  className={`text-xs px-3 py-1 rounded-full mt-1 inline-block font-medium ${
                     order.status === "delivered"
                       ? "bg-green-100 text-green-700"
                       : order.status === "cancelled"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-yellow-100 text-yellow-700"
+                        ? "bg-red-100 text-red-600"
+                        : "bg-yellow-100 text-yellow-700"
                   }`}
                 >
                   {order.status}
                 </span>
-              </div>
 
-              {/* 🔘 Buttons */}
-              <div className="flex gap-2 mt-3">
-                <button
-                  onClick={() => setSelectedOrder(order)}
-                  className="btn btn-xs btn-outline dark:text-black"
-                >
-                  View
-                </button>
-
-                {order.status === "pending" && (
+                {/* 🔘 Buttons */}
+                <div className="flex gap-2 mt-2">
                   <button
-                    onClick={() =>
-                      handleCancelOrder(order._id)
-                    }
-                    className="btn btn-xs btn-error"
+                    onClick={() => setSelectedOrder(order)}
+                    className="px-3 py-1 text-xs border rounded-md text-purple-950 text-shadow-purple-600 hover:bg-gray-100 transition"
                   >
-                    Cancel
+                    View
                   </button>
-                )}
+
+                  {order.status === "pending" && (
+                    <button
+                      onClick={() => handleCancelOrder(order._id)}
+                      className="px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      {/* 🔥 MODAL */}
+      {/* 🔥 Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 dark:text-black">
-          <div className="bg-white w-[95%] h-full md:w-[600px] rounded-xl p-5 relative">
-
-            {/* ❌ Close */}
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white w-[95%] md:w-[600px] rounded-2xl p-6 relative shadow-xl">
+            {/* Close */}
             <button
               onClick={() => setSelectedOrder(null)}
               className="absolute top-2 right-3 text-xl"
@@ -185,9 +217,7 @@ const UserOrders = () => {
               ✕
             </button>
 
-            <h2 className="text-xl font-bold mb-4">
-              Order Details
-            </h2>
+            <h2 className="text-xl font-bold mb-4">Order Details</h2>
 
             <p className="text-sm mb-1">
               <span className="font-semibold">Order ID:</span>{" "}
@@ -204,8 +234,8 @@ const UserOrders = () => {
               {selectedOrder.status}
             </p>
 
-            {/* 🛒 Products */}
-            <div className="space-y-3 max-h-[300px] overflow-y-auto">
+            {/* 🛒 Items */}
+            <div className="space-y-3 max-h-80 overflow-y-auto">
               {selectedOrder.cart?.map((item, index) => (
                 <div
                   key={index}
@@ -218,9 +248,7 @@ const UserOrders = () => {
                   />
 
                   <div className="flex-1">
-                    <h3 className="text-sm font-semibold">
-                      {item.name}
-                    </h3>
+                    <h3 className="text-sm font-semibold">{item.name}</h3>
                     <p className="text-xs text-gray-500">
                       Qty: {item.quantity}
                     </p>
@@ -231,14 +259,11 @@ const UserOrders = () => {
                   </p>
                 </div>
               ))}
-              
             </div>
 
             {/* 💰 Total */}
             <div className="mt-4 text-right">
-              <p className="text-lg font-bold">
-                Total: ৳{selectedOrder.total}
-              </p>
+              <p className="text-lg font-bold">Total: ৳{selectedOrder.total}</p>
             </div>
           </div>
         </div>

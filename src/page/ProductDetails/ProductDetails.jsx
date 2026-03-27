@@ -35,7 +35,6 @@ const ProductDetails = () => {
     colors = [],
     variants = [], // [{size:'M', color:'Red', stock:5}, ...]
   } = useLoaderData();
-
   const { user } = useContext(UseContext);
   const axiosSecure = useAxiosSecure();
   const [cart, refetch] = useCart();
@@ -44,14 +43,12 @@ const ProductDetails = () => {
   const [size, setSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [currentStock, setCurrentStock] = useState(stock);
-  const [imgLoading, setImgLoading] = useState(true);
   const navigate = useNavigate();
 
   const isShoe = category?.toLowerCase() === "shoe";
   const isShirt = category?.toLowerCase() === "shirt";
 
-
-  const quantity = cart.find(item => item.productId === _id)
+  const quantity = cart.find((item) => item.productId === _id);
 
   /* 🔥 auto select color */
   useEffect(() => {
@@ -183,13 +180,14 @@ const ProductDetails = () => {
       refetch();
     }
   };
-
+  const [loadedImages, setLoadedImages] = useState({});
   return (
     <div className="min-h-screen mt-28">
       <SEO title={name} description={description} image={images[0]} />
 
       <div className="max-w-6xl mx-auto px-2 md:px-4 py-10 grid lg:grid-cols-2 gap-10">
         {/* Images */}
+
         <Carousel
           className="overflow-x-auto"
           showThumbs
@@ -199,17 +197,28 @@ const ProductDetails = () => {
         >
           {images?.map((img, i) => (
             <motion.div
+              key={i}
+              className="relative"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.8 }}
-              key={i}
             >
+              {/* Skeleton */}
+              {!loadedImages[i] && (
+                <div className="w-full h-[300px] rounded-xl p-3">
+                  <div className="w-full h-full bg-gray-300 animate-pulse rounded-xl"></div>
+                </div>
+              )}
+
+              {/* Image */}
               <img
                 src={img}
                 alt={name}
                 loading="lazy"
-                onLoad={() => setImgLoading(false)}
-                className={`w-full h-full object-cover rounded-xl p-3 transition-all duration-300 group-hover:scale-105 ${
-                  imgLoading ? "opacity-0" : "opacity-100"
+                onLoad={() =>
+                  setLoadedImages((prev) => ({ ...prev, [i]: true }))
+                }
+                className={`w-full h-full object-cover rounded-xl p-3 transition-all duration-300 ${
+                  loadedImages[i] ? "opacity-100" : "opacity-0"
                 }`}
               />
             </motion.div>
@@ -266,26 +275,27 @@ const ProductDetails = () => {
           )}
 
           {/* 🎨 Color */}
-          {colors.length > 0 && (
-            <div>
-              <h3>Select Color:</h3>
-              <div className="flex gap-2 ">
-                {colors.map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => setSelectedColor(c)}
-                    className={
-                      selectedColor === c
-                        ? "bg-black text-white px-3 "
-                        : "border px-3"
-                    }
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {Array.isArray(colors) && colors.length > 0 && (
+  <div>
+    <h3>Select Color:</h3>
+
+    <div className="flex gap-2">
+      {colors.map((c, i) => (
+        <button
+          key={i}
+          onClick={() => setSelectedColor(c)}
+          className={
+            selectedColor === c
+              ? "bg-black text-white px-3"
+              : "border px-3"
+          }
+        >
+          {c}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
 
           {/* 🔥 Stock */}
           <p className="text-green-600 font-semibold">

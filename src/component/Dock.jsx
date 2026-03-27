@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { NavLink } from "react-router";
-import homeIcon from "../assets/assets/homeIcon.png";
-import windowsIcon from "../assets/assets/windowsIcon.png";
-import shoppingIcon from "../assets/assets/shopping-bag.png";
-import dashboardIcon from "../assets/assets/dashboard.png";
-import searchIcon from "../assets/assets/searchIcon.png";
+import homeIcon from "../assets/assets/home (c).png";
+import windowsIcon from "../assets/assets/menu (c).png";
+import shoppingIcon from "../assets/assets/shopping-bag (c).png";
+import dashboardIcon from "../assets/assets/dashboard(c).png";
+import searchIcon from "../assets/assets/search(c).png";
 import { UseContext } from "../Context/AuthContext";
 import SearchField from "./SearchField";
 import useCart from "../Hook/useCart";
@@ -20,7 +20,7 @@ const Dock = () => {
       <SearchField show={showSearch} setShow={setShowSearch} />
 
       {/* 📱 Mobile Dock */}
-      <div className="dock bg-gray-100 md:hidden z-10">
+      <div className="dock bg-gray-100 md:hidden z-50">
         
         {/* Home */}
         <NavLink

@@ -10,9 +10,10 @@ const useAllProduct = () => {
   refetch,
   isPending
 } = useQuery({
-  queryKey: ["allProducts",],
+  queryKey: ["allProducts"],
   queryFn: async () => {
     const res = await axiosSecure.get("/allProducts");
+    
     return res.data;
   },
 

@@ -5,6 +5,7 @@ import AllProduct from "../../../page/AllProduct";
 import FAQSection from "../../../page/FAQSection";
 import DiscoverProducts from "../../../page/DiscoverProducts";
 import { Suspense } from "react";
+import Loader from "../../Loader/Loader";
 
 const Home = () => {
   
@@ -13,7 +14,7 @@ const Home = () => {
     <div className="w-full mx-auto">
       <Banner></Banner>
       <ItemList></ItemList>
-      <Suspense fallback={<p>Loading....</p>}>
+      <Suspense fallback={<Loader></Loader>}>
         <AllProduct></AllProduct>
       </Suspense>
       <DiscoverProducts></DiscoverProducts>

@@ -99,6 +99,7 @@ const Filters = () => {
           <option value="Watch">Watch</option>
           <option value="Shirt">Shirt</option>
           <option value="Umbrella">Umbrella</option>
+          <option value="Bottle">Water Bottle</option>
         </select>
       </div>
 
@@ -147,7 +148,7 @@ const Filters = () => {
       {/* Buttons */}
       <button 
         // onClick={handleApplyFilter}
-      className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700">
+      className="w-full bg-blue-600 py-2 rounded-md font-medium bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95">
         Apply Filters
       </button>
 

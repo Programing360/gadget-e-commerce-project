@@ -10,6 +10,7 @@ import useCart from "../Hook/useCart";
 import SEO from "../component/SEO/SEO";
 import Loader from "../component/Loader/Loader";
 import useAllData from "../Hook/useAllData";
+import NetworkLoader from "../component/Loader/NetworkLoader ";
 
 const getGuestUserId = () => {
   let guestId = localStorage.getItem("guestCart");
@@ -158,7 +159,8 @@ const UserAllProducts = () => {
                 onClick={() => setCategory(!category)}
                 className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black border p-2 border-gray-400 rounded"
               >
-                Default Sorting {category ? <IoIosArrowUp></IoIosArrowUp> :<IoIosArrowDown />}
+                Default Sorting{" "}
+                {category ? <IoIosArrowUp></IoIosArrowUp> : <IoIosArrowDown />}
               </h1>
             </div>
             {/* SORT HEADER */}
@@ -167,7 +169,8 @@ const UserAllProducts = () => {
                 onClick={() => setOpen(!open)}
                 className="font-semibold flex items-center gap-1 cursor-pointer select-none dark:text-black border p-2 border-gray-400 rounded"
               >
-                Best Selling {open ? <IoIosArrowUp></IoIosArrowUp> :<IoIosArrowDown />}
+                Best Selling{" "}
+                {open ? <IoIosArrowUp></IoIosArrowUp> : <IoIosArrowDown />}
               </h1>
             </div>
           </div>
@@ -295,6 +298,11 @@ const UserAllProducts = () => {
                   Umbrella
                 </button>
               </li>
+              <li>
+                <button onClick={() => handleCategoryFilter("Bottle")}>
+                  Water Bottle
+                </button>
+              </li>
             </ul>
           )}
 
@@ -320,35 +328,36 @@ const UserAllProducts = () => {
                 {/* গুরুত্বপূর্ণ change এখানে */}
                 <Link to={`/productDetails/${item._id}`}>
                   <div className="p-4 space-y-2 flex flex-col grow">
-                  <div className="flex justify-between items-start">
-                    <h2 className="font-semibold text-sm line-clamp-2">
-                      {item.name}
-                    </h2>
-                    <span className="badge badge-secondary badge-sm">NEW</span>
-                  </div>
+                    <div className="flex justify-between items-start">
+                      <h2 className="font-semibold text-sm line-clamp-2">
+                        {item.name}
+                      </h2>
+                      <span className="badge badge-secondary badge-sm">
+                        NEW
+                      </span>
+                    </div>
 
-                  <div className="flex gap-4">
-                    <b>৳{item.discountPrice}</b>
-                    <del className="text-gray-500">{item.price}</del>
-                  </div>
+                    <div className="flex gap-4">
+                      <b>৳{item.discountPrice}</b>
+                      <del className="text-gray-500">{item.price}</del>
+                    </div>
 
-                  {/* এই div push করবে button নিচে */}
-                  <div className="mt-auto">
-                    <button
-                      disabled={item.stock === 0}
-                      onClick={() => handleCartData(item._id)}
-                      className={`btn w-full border-[#7c9ef7] rounded-none shadow-xl hover:shadow-blue-300 active:scale-95 ${
-                        item.stock === 0
-                          ? "btn-disabled bg-gray-300 dark:text-white"
-                          : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95"
-                      }`}
-                    >
-                      {item.stock === 0 ? "Out of Stock" : "Quick Add"}
-                    </button>
+                    {/* এই div push করবে button নিচে */}
+                    <div className="mt-auto">
+                      <button
+                        disabled={item.stock === 0}
+                        onClick={() => handleCartData(item._id)}
+                        className={`btn w-full border-[#7c9ef7] rounded-md shadow-xl hover:shadow-blue-300 active:scale-95 ${
+                          item.stock === 0
+                            ? "btn-disabled bg-gray-300 dark:text-white"
+                            : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95"
+                        }`}
+                      >
+                        {item.stock === 0 ? "Out of Stock" : "Quick Add"}
+                      </button>
+                    </div>
                   </div>
-                </div>
                 </Link>
-                
               </div>
             ))}
           </div>
@@ -372,7 +381,7 @@ const UserAllProducts = () => {
           </div>
           {products.length === 0 && (
             <h1 className="text-center text-gray-500 mt-4 text-2xl max-w-full mx-auto ">
-              <Loader></Loader>
+              <NetworkLoader></NetworkLoader>
             </h1>
           )}
         </main>
