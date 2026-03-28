@@ -8,7 +8,8 @@ const useAllData = () => {
   data: allData = [],
   isLoading,
   refetch,
-  isPending
+  isPending,
+  error
 } = useQuery({
   queryKey: ["allData",],
   queryFn: async () => {
@@ -22,7 +23,7 @@ const useAllData = () => {
   placeholderData: [],
 });
 
-  return [allData, refetch, isLoading ,isPending];
+  return [allData, refetch, isLoading ,isPending,error];
 };
 
 export default useAllData;

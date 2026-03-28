@@ -4,61 +4,88 @@ import useAllProduct from "../Hook/useAllProduct";
 
 const Filters = () => {
   const [allProduct] = useAllProduct();
-  const {setProducts } = useContext(UseContext);
+  const { setProducts } = useContext(UseContext);
+
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
+  const [subCategory, setSubCategory] = useState("All"); // 🔥 NEW
+  const [subCategories, setSubCategories] = useState([]); // 🔥 NEW
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [brand, setBrand] = useState("All");
+
+  // 🔥 SubCategory generate
+  useEffect(() => {
+    if (category !== "All") {
+      const filtered = allProduct.filter(
+        (p) => p.category?.toLowerCase() === category.toLowerCase(),
+      );
+
+      const uniqueSubs = [
+        ...new Set(filtered.map((p) => p.subCategory).filter(Boolean)),
+      ];
+
+      setSubCategories(uniqueSubs);
+    } else {
+      setSubCategories([]);
+      setSubCategory("All");
+    }
+  }, [category, allProduct]);
+
   // 🔥 Main Filter Logic
   useEffect(() => {
     let filtered = [...allProduct];
-    
-    // Search filter
-    if (query.trim() !== "") {
-      filtered = filtered.filter((product) =>
-        product.name?.toLowerCase().includes(query.toLowerCase())
+
+    if (query.trim()) {
+      filtered = filtered.filter((p) =>
+        p.name?.toLowerCase().includes(query.toLowerCase()),
       );
     }
 
-    // Category filter
     if (category !== "All") {
       filtered = filtered.filter(
-        (product) =>
-          product.category?.toLowerCase() === category.toLowerCase()
+        (p) => p.category?.toLowerCase() === category.toLowerCase(),
       );
-      setProducts(filtered)
     }
 
-    // Brand filter
+    // 🔥 SubCategory filter
+    if (subCategory !== "All") {
+      filtered = filtered.filter(
+        (p) => p.subCategory?.toLowerCase() === subCategory.toLowerCase(),
+      );
+    }
+
     if (brand !== "All") {
       filtered = filtered.filter(
-        (product) => product.brand?.toLowerCase() === brand.toLowerCase()
+        (p) => p.brand?.toLowerCase() === brand.toLowerCase(),
       );
-      setProducts(filtered)
     }
 
-    // Price filter
-    if (minPrice !== "") {
-      filtered = filtered.filter(
-        (product) => product.price >= Number(minPrice)
-      );
-      setProducts(filtered)
+    if (minPrice) {
+      filtered = filtered.filter((p) => p.price >= Number(minPrice));
     }
 
-    if (maxPrice !== "") {
-      filtered = filtered.filter(
-        (product) => product.price <= Number(maxPrice)
-      );
-      setProducts(filtered);
+    if (maxPrice) {
+      filtered = filtered.filter((p) => p.price <= Number(maxPrice));
     }
 
-  }, [query, category, minPrice, maxPrice, brand, allProduct, setProducts]);
+    setProducts(filtered);
+  }, [
+    query,
+    category,
+    subCategory,
+    minPrice,
+    maxPrice,
+    brand,
+    allProduct,
+    setProducts,
+  ]);
 
-  // Clear filters
+  // 🔥 Clear
   const handleClear = () => {
     setQuery("");
     setCategory("All");
+    setSubCategory("All");
     setMinPrice("");
     setMaxPrice("");
     setBrand("All");
@@ -66,47 +93,65 @@ const Filters = () => {
   };
 
   return (
-    <div className="w-full bg-white p-6 rounded-xl shadow-md dark:text-black">
+    <div className="w-full bg-white p-6 rounded-xl shadow-md">
       <h2 className="text-lg font-semibold mb-4">Filters</h2>
-
-      {/* Search */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Search</label>
-        <input
-          type="text"
-          placeholder="Search products..."
-          className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
 
       {/* Category */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Category</label>
+        <label className="block text-sm mb-1">Category</label>
         <select
-          className="w-full border rounded-md px-3 py-2"
+          className="w-full border px-3 py-2 rounded-md"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          <option value="All">All Categories</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Laptop">Laptop</option>
-          <option value="smartPhone">Mobile</option>
-          <option value="shoe">Shoes</option>
-          <option value="Bravery">Beverage</option>
-          <option value="Earthen">Earthen</option>
-          <option value="Watch">Watch</option>
-          <option value="Shirt">Shirt</option>
-          <option value="Umbrella">Umbrella</option>
+          <option value="All">All Categories</option>{" "}
+          <option value="Electronics">Electronics</option>{" "}
+          <option value="Laptop">Laptop</option>{" "}
+          <option value="smartPhone">Mobile</option>{" "}
+          <option value="shoe">Shoes</option>{" "}
+          <option value="Bravery">Beverage</option>{" "}
+          <option value="Earthen">Earthen</option>{" "}
+          <option value="Watch">Watch</option>{" "}
+          <option value="Clothing">Clothing</option>{" "}
+          <option value="Umbrella">Umbrella</option>{" "}
           <option value="Bottle">Water Bottle</option>
         </select>
       </div>
 
-      {/* Price Range */}
+      {/* 🔥 SubCategory (Dynamic Show) */}
+      {subCategories.length > 0 && (
+        <div className="mb-4">
+          <label className="block text-sm mb-1">Sub Category</label>
+          <select
+            className="w-full border px-3 py-2 rounded-md"
+            value={subCategory}
+            onChange={(e) => setSubCategory(e.target.value)}
+          >
+            <option value="All">All Sub Categories</option>
+            {subCategories.map((sub, i) => (
+              <option key={i} value={sub}>
+                {sub}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Price Range</label>
-        <div className="flex gap-2">
+        <label className="block text-sm font-medium mb-2">Price Range</label>
+
+        {/* Range Slider */}
+        <input
+          type="range"
+          min="0"
+          max="50000"
+          step="100"
+          value={maxPrice || 50000}
+          onChange={(e) => setMaxPrice(e.target.value)}
+          className="w-full accent-indigo-600 bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95"
+        />
+
+        {/* Min / Max Inputs */}
+        <div className="flex gap-2 mt-3">
           <input
             type="number"
             placeholder="Min ৳"
@@ -122,39 +167,20 @@ const Filters = () => {
             onChange={(e) => setMaxPrice(e.target.value)}
           />
         </div>
-      </div>
 
-      {/* Brand */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Brand</label>
-        <select
-          className="w-full border rounded-md px-3 py-2"
-          value={brand}
-          onChange={(e) => setBrand(e.target.value)}
-        >
-          <option value="All">All Brands</option>
-          <option value="Apple">Apple</option>
-          <option value="Samsung">Samsung</option>
-          <option value="Xiaomi">Xiaomi</option>
-          <option value="Google">Google</option>
-          <option value="OnePlus">OnePlus</option>
-          <option value="vivo">vivo</option>
-          <option value="Oppo">Oppo</option>
-          <option value="Motorola">Motorola</option>
-          <option value="Realme">Realme</option>
-        </select>
+        {/* Selected Range */}
+        <p className="text-sm text-gray-500 mt-1">
+          ৳{minPrice || 0} - ৳{maxPrice || 500000}
+        </p>
       </div>
-
       {/* Buttons */}
-      <button 
-        // onClick={handleApplyFilter}
-      className="w-full bg-blue-600 py-2 rounded-md font-medium bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95">
+      <button className="w-full py-2 rounded-md bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95">
         Apply Filters
       </button>
 
       <button
         onClick={handleClear}
-        className="w-full text-sm text-gray-500 mt-2 hover:underline"
+        className="w-full text-sm text-gray-500 mt-2"
       >
         Clear Filters
       </button>

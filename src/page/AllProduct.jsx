@@ -5,11 +5,31 @@ import useAllProduct from "../Hook/useAllProduct";
 import NetworkLoader from "../component/Loader/NetworkLoader ";
 
 const AllProduct = () => {
-  const [allProduct,,isLoading,isPending] = useAllProduct();
+  const [allProduct, , isLoading, isPending, error] = useAllProduct();
 
-  // ✅ Full page loader
-  if (isLoading || isPending) return <Loader />;
-  
+  // ✅ Loading
+  if (isLoading || isPending) {
+    return (
+      <div className="mt-30 flex justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  // ❌ Error
+  if (error) {
+    return <NetworkLoader />;
+  }
+
+  // 📦 No Product
+  if (allProduct.length === 0) {
+    return (
+      <div className="text-center mt-32 text-gray-500">
+        <h2 className="text-2xl font-semibold">No Products Found</h2>
+        <p className="mt-2">Try adjusting your filters or come back later.</p>
+      </div>
+    );
+  }
   return (
     <div className="mt-14 container lg:w-10/12 mx-auto lg:p-10 p-2">
       <SEO
@@ -22,18 +42,17 @@ const AllProduct = () => {
       <p className="text-center text-gray-500 mt-4">
         Welcome to our premium product collection where quality meets value.
       </p>
-      <div className="flex justify-center">
-        {isLoading && (
-          <NetworkLoader></NetworkLoader>
-        )}
-      </div>
+      {isLoading && (
+        <div className="flex justify-center mt-20">
+          <Loader />
+        </div>
+      )}
+
       {/* ❌ No Product */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-2 mt-14">
         {allProduct?.map((product) => (
           <ProductCart key={product._id} product={product} />
         ))}
-      </div>
-      <div>
       </div>
     </div>
   );

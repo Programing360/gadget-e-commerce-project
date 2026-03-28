@@ -11,6 +11,7 @@ import SEO from "../component/SEO/SEO";
 import Loader from "../component/Loader/Loader";
 import useAllData from "../Hook/useAllData";
 import NetworkLoader from "../component/Loader/NetworkLoader ";
+import ProductNotFound from "../component/Loader/ProductNotFound";
 
 const getGuestUserId = () => {
   let guestId = localStorage.getItem("guestCart");
@@ -137,7 +138,13 @@ const UserAllProducts = () => {
       refetch();
     }
   };
-
+  if (!allData.length) {
+    return (
+      <div className="mt-30">
+        <Loader></Loader>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 mt-35 lg:container lg:w-11/12 mx-auto mb-10 p-4 md:p-0">
       <SEO
@@ -284,7 +291,7 @@ const UserAllProducts = () => {
                 </button>
               </li>
               <li>
-                <button onClick={() => handleCategoryFilter("Shirt")}>
+                <button onClick={() => handleCategoryFilter("Clothing")}>
                   Clothing
                 </button>
               </li>
@@ -299,13 +306,13 @@ const UserAllProducts = () => {
                 </button>
               </li>
               <li>
-                <button onClick={() => handleCategoryFilter("Bottle")}>
+                <button onClick={() => handleCategoryFilter("Water Bottle")}>
                   Water Bottle
                 </button>
               </li>
             </ul>
           )}
-
+          { paginatedProducts.length === 0 && <ProductNotFound></ProductNotFound>}
           {/* PRODUCTS GRID */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black">
             {paginatedProducts?.map((item) => (
@@ -379,11 +386,6 @@ const UserAllProducts = () => {
               </button>
             ))}
           </div>
-          {products.length === 0 && (
-            <h1 className="text-center text-gray-500 mt-4 text-2xl max-w-full mx-auto ">
-              <NetworkLoader></NetworkLoader>
-            </h1>
-          )}
         </main>
       </div>
     </div>

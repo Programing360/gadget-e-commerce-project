@@ -128,6 +128,7 @@ const ProductAdd = () => {
                 <option value="watch">Watch</option>
                 <option value="shirt">Shirt</option>
                 <option value="laptop">Laptop</option>
+                <option value="laptop">Clothing</option>
               </select>
 
               <p className="text-center text-sm text-gray-400">OR</p>
