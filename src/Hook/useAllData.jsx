@@ -23,7 +23,7 @@ const useAllData = () => {
   placeholderData: [],
 });
 
-  return [allData, refetch, isLoading ,isPending,error];
+  return [allData, refetch, isLoading ,isPending, error];
 };
 
 export default useAllData;

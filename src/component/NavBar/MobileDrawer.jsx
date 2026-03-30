@@ -13,6 +13,7 @@ const MobileDrawer = () => {
   const [allData] = useAllData();
   const { setProducts } = useContext(UseContext);
   const dynamicCategories = [...new Set(allData?.map((p) => p.category))];
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleCategoryClick = (categoryName) => {
     const filtered = allData.filter(
@@ -92,8 +93,24 @@ const MobileDrawer = () => {
         transition={{ type: "tween", duration: 0.3 }}
         className="fixed top-0 left-0 h-full w-64 bg-white shadow-md z-50 dark:text-black md:hidden"
       >
-        <div className="flex justify-between p-4 bg-purple-500 text-white border-b border-gray-200">
-          <h2 className="font-semibold text-white">Categories</h2>
+        <div className="flex justify-between items-center p-4 bg-purple-500 text-white border-b border-gray-200">
+          <div className="flex items-center gap-2">
+            {!imageLoaded && (
+              <div className="w-8 h-8 rounded-full bg-purple-300 animate-pulse"></div>
+            )}
+
+            <img
+              src={menuIcon}
+              alt="menu"
+              onLoad={() => setImageLoaded(true)}
+              className={`w-8 h-8 transition-opacity duration-300 ${
+                imageLoaded ? "opacity-100" : "opacity-0 absolute"
+              }`}
+            />
+
+            <h2 className="font-semibold text-white">Categories</h2>
+          </div>
+
           <button onClick={() => setIsDrawerOpen(false)}>✕</button>
         </div>
 
@@ -106,11 +123,11 @@ const MobileDrawer = () => {
               initial="hidden"
               animate="visible"
               className={`p-2 rounded cursor-pointer transition-all duration-200 capitalize
-                ${
-                  isActive(cat)
-                    ? "bg-purple-200 text-purple-700 font-semibold"
-                    : "hover:bg-gray-200 text-gray-700"
-                }`}
+          ${
+            isActive(cat)
+              ? "bg-purple-200 text-purple-700 font-semibold"
+              : "hover:bg-gray-200 text-gray-700"
+          }`}
               onClick={() => handleCategoryClick(cat)}
             >
               {cat}

@@ -31,7 +31,7 @@ const UserDashBoard = () => {
         transition={{ duration: 0.6 }}
       >
         {/* Drawer */}
-        <div className="drawer w-10">
+        <div className="drawer w-10 text-black">
           <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
             <label htmlFor="my-drawer-1" className="drawer-button">
@@ -89,7 +89,7 @@ const UserDashBoard = () => {
               </motion.div>
 
               {/* Footer Links */}
-              <div className="mt-auto">
+              <div className="mt-90">
                 <hr className="border-gray-300 my-4" />
                 <ul className="flex flex-col gap-2 text-gray-700">
                   <Link to="/userDashboard/profile">

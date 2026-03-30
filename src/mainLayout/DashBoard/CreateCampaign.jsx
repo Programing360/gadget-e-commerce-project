@@ -38,7 +38,7 @@ const CreateCampaign = () => {
           placeholder="Campaign Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="input input-bordered w-full"
+          className="input input-bordered w-full "
           required
         />
 

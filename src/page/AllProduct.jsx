@@ -7,13 +7,10 @@ import NetworkLoader from "../component/Loader/NetworkLoader ";
 const AllProduct = () => {
   const [allProduct, , isLoading, isPending, error] = useAllProduct();
 
+  
   // ✅ Loading
-  if (isLoading || isPending) {
-    return (
-      <div className="mt-30 flex justify-center">
-        <Loader />
-      </div>
-    );
+  if (isLoading) {
+    return <Loader />;
   }
 
   // ❌ Error
@@ -47,7 +44,12 @@ const AllProduct = () => {
           <Loader />
         </div>
       )}
-
+      {isPending && (
+        <div className="text-center text-sm text-gray-400">
+          Updating data...
+        </div>
+      )}
+      
       {/* ❌ No Product */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-2 mt-14">
         {allProduct?.map((product) => (

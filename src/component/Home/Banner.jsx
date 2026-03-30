@@ -92,9 +92,9 @@ const Banner = () => {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content"
+                    className="flex flex-col p-2 rounded-box text-neutral-content bg-purple-700"
                   >
-                    <span className="countdown font-mono text-3xl sm:text-4xl md:text-5xl">
+                    <span className="countdown font-mono text-3xl sm:text-4xl md:text-5xl ">
                       <span style={{ "--value": item.value }}></span>
                     </span>
                     <span className="text-xs sm:text-sm">{item.label}</span>

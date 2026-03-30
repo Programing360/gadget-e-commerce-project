@@ -9,12 +9,16 @@ import useOrderCancelList from "../../Hook/useOrderCancelList";
 import useAllProduct from "../../Hook/useAllProduct";
 import { Link } from "react-router";
 import OrderStats from "./OrderStats";
+import useOrderConfirmList from "../../Hook/useOrderConfirmList";
 const Dashboard = () => {
   const [orders] = useOrderList();
   const [orderCancel] = useOrderCancelList();
   const [allProduct] = useAllProduct();
-
-  const totalPrice = allProduct?.reduce((sum, item) => sum + item.price, 0);
+  const [orderConfirm] = useOrderConfirmList();
+  const totalPrice = allProduct?.reduce(
+    (sum, item) => sum + Number(item.price),
+    0,
+  );
   const totalPriceOfOrders = orders?.reduce((sum, item) => sum + item.total, 0);
   const totalPriceOfCancel = orderCancel?.reduce(
     (sum, item) => sum + item.total,
@@ -125,9 +129,8 @@ const Dashboard = () => {
             <ChartComponent></ChartComponent>
           </div>
         </div>
-        
-          <OrderStats></OrderStats>
-        
+
+        <OrderStats></OrderStats>
       </div>
     </main>
   );

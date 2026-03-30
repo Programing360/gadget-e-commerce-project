@@ -12,12 +12,18 @@ const data = [
 
 const OrderStats = () => {
   const [orders] = useOrderList();
+
   const [orderConfirm] = useOrderConfirmList();
-
   const totalPriceOfOrders = orders?.reduce((sum, item) => sum + item.total, 0);
-  const TotalProcessing = (orders.length - orderConfirm.length);
-  const processing = (orderConfirm.length / orders.length ) * 100
+  const TotalProcessing = orders.length - orderConfirm.length;
+  const processing =
+    orders > 0 ? ((orders - totalDelivered) / orders) * 100 : 0;
 
+  const totalOrders = orders?.length || 0;
+  const totalDelivered = orderConfirm?.length || 0;
+
+  const deliveredPercentage =
+    totalOrders > 0 ? (totalDelivered / totalOrders) * 100 : 0;
   return (
     <div className="p-6 bg-white rounded-xl shadow-md max-w-4xl mx-auto">
       {/* Header */}
@@ -70,7 +76,9 @@ const OrderStats = () => {
           <div className="flex justify-between border-l-4 border-green-500 pl-3">
             <div>
               <p className="text-sm text-gray-500">Delivered</p>
-              <h3 className="text-lg font-bold text-black">76.64%</h3>
+              <h3 className="text-lg font-bold text-black">
+                {Number(deliveredPercentage.toFixed(1))}%
+              </h3>
               <p className="text-xs text-gray-400">
                 {orderConfirm.length} orders
               </p>

@@ -12,7 +12,7 @@ const UserOrders = () => {
   const { user } = useContext(UseContext);
   const [orders, refetch, isLoading] = useOrderList("all", user);
   const axiosSecure = useAxiosSecure();
-
+// const navigate = useNavigate()
   const guestId = localStorage.getItem("guestCart");
 
   // ✅ Filter user orders
@@ -93,7 +93,7 @@ const UserOrders = () => {
       </div>
     );
   }
-
+  
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 mt-20">
       <SEO
@@ -189,6 +189,7 @@ const UserOrders = () => {
                   >
                     View
                   </button>
+                  {/* <button className="btn" onClick={() => navigate('/invoicePage')} >Invoice</button> */}
 
                   {order.status === "pending" && (
                     <button

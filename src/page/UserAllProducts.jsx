@@ -10,7 +10,6 @@ import useCart from "../Hook/useCart";
 import SEO from "../component/SEO/SEO";
 import Loader from "../component/Loader/Loader";
 import useAllData from "../Hook/useAllData";
-import NetworkLoader from "../component/Loader/NetworkLoader ";
 import ProductNotFound from "../component/Loader/ProductNotFound";
 
 const getGuestUserId = () => {
@@ -115,7 +114,7 @@ const UserAllProducts = () => {
         quantity: newQty,
       });
 
-      if (data.modifiedCount > 0) {
+      if (data?.modifiedCount > 0) {
         toast.success("Product quantity updated 🛒");
         refetch();
       }
@@ -133,7 +132,7 @@ const UserAllProducts = () => {
     };
 
     const res = await axiosSecure.post("/cartData", cartItem);
-    if (res.data.insertedId) {
+    if (res?.data?.insertedId) {
       toast.success("Product added to Cart 🛒");
       refetch();
     }
@@ -258,6 +257,11 @@ const UserAllProducts = () => {
                 </button>
               </li>
               <li>
+                <button onClick={() => handleCategoryFilter("Home Appliance")}>
+                  Home Appliance
+                </button>
+              </li>
+              <li>
                 <button onClick={() => handleCategoryFilter("Electronics")}>
                   Electronics
                 </button>
@@ -312,7 +316,9 @@ const UserAllProducts = () => {
               </li>
             </ul>
           )}
-          { paginatedProducts.length === 0 && <ProductNotFound></ProductNotFound>}
+          {paginatedProducts.length === 0 && (
+            <ProductNotFound></ProductNotFound>
+          )}
           {/* PRODUCTS GRID */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 md:gap-5 gap-2 dark:text-black">
             {paginatedProducts?.map((item) => (
@@ -333,8 +339,8 @@ const UserAllProducts = () => {
                 </Link>
 
                 {/* গুরুত্বপূর্ণ change এখানে */}
-                <Link to={`/productDetails/${item._id}`}>
-                  <div className="p-4 space-y-2 flex flex-col grow">
+                <div className="p-4 space-y-2 flex flex-col grow">
+                  <Link to={`/productDetails/${item._id}`}>
                     <div className="flex justify-between items-start">
                       <h2 className="font-semibold text-sm line-clamp-2">
                         {item.name}
@@ -343,28 +349,28 @@ const UserAllProducts = () => {
                         NEW
                       </span>
                     </div>
+                  </Link>
 
-                    <div className="flex gap-4">
-                      <b>৳{item.discountPrice}</b>
-                      <del className="text-gray-500">{item.price}</del>
-                    </div>
-
-                    {/* এই div push করবে button নিচে */}
-                    <div className="mt-auto">
-                      <button
-                        disabled={item.stock === 0}
-                        onClick={() => handleCartData(item._id)}
-                        className={`btn w-full border-[#7c9ef7] rounded-md shadow-xl hover:shadow-blue-300 active:scale-95 ${
-                          item.stock === 0
-                            ? "btn-disabled bg-gray-300 dark:text-white"
-                            : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95"
-                        }`}
-                      >
-                        {item.stock === 0 ? "Out of Stock" : "Quick Add"}
-                      </button>
-                    </div>
+                  <div className="flex gap-4">
+                    <b>৳{item.discountPrice}</b>
+                    <del className="text-gray-500">{item.price}</del>
                   </div>
-                </Link>
+
+                  {/* এই div push করবে button নিচে */}
+                  <div className="mt-auto">
+                    <button
+                      disabled={item.stock === 0}
+                      onClick={() => handleCartData(item._id)}
+                      className={`btn w-full border-[#7c9ef7] rounded-md shadow-xl hover:shadow-blue-300 active:scale-95 ${
+                        item.stock === 0
+                          ? "btn-disabled bg-gray-300 dark:text-white"
+                          : "bg-linear-to-r from-[#902afb] via-[#8440fd] to-[#4f46e5] text-white hover:scale-[1.02] active:scale-95"
+                      }`}
+                    >
+                      {item.stock === 0 ? "Out of Stock" : "Quick Add"}
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

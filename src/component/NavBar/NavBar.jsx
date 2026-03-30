@@ -44,7 +44,10 @@ const NavBar = () => {
       await axiosSecure.patch("/notifications/read-all");
       refetch();
     } catch (error) {
-      alert(error);
+      console.log(error);
+      if (error) {
+        alert(error);
+      }
     }
   };
 
@@ -82,7 +85,7 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className=" md:mr-6 mr-3 hidden md:block">
+        <div className="md:mr-6 mr-3 hidden md:block">
           <SearchInput></SearchInput>
         </div>
         {adminUser && (
@@ -142,6 +145,7 @@ const NavBar = () => {
                 isLoading={isLoading}
                 user={user}
                 setOpen={setOpen}
+                open={open}
                 formatted={formatted}
               ></CartDrawer>
             )}

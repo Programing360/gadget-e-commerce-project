@@ -1,11 +1,16 @@
 import cartIcon from "../assets/assets/shopping-bag.png";
 import crossIcon from "../assets/assets/crossIcon.png";
 import CartAdd from "../page/AddToCart/CartAdd";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { motion } from "framer-motion";
+const CartDrawer = ({ cart, isLoading, setOpen,open, formatted }) => {
 
-const CartDrawer = ({ cart, isLoading, setOpen, formatted }) => {
+  const navigate = useNavigate()
+
   return (
-    <div className="drawer drawer-end">
+    <motion.div 
+      
+    className="drawer drawer-end ">
       <input id="my-drawer-5" type="checkbox" className="drawer-toggle" />
 
       {/* Trigger Button */}
@@ -23,7 +28,11 @@ const CartDrawer = ({ cart, isLoading, setOpen, formatted }) => {
         </label>
       </div>
       {/* Drawer Content */}
-      <div className="drawer-side">
+      <motion.div 
+      initial={{ x: "100%" }}
+        animate={{ x: open ? "100%":  0}}
+        transition={{ type: "tween", duration: 0.3 }}
+      className="drawer-side">
         <label htmlFor="my-drawer-5" className="drawer-overlay"></label>
 
         <ul className="menu bg-base-200 min-h-full md:w-102.5 p-4">
@@ -77,7 +86,7 @@ const CartDrawer = ({ cart, isLoading, setOpen, formatted }) => {
                   </Link>
 
                   <button
-                    onClick={() => setOpen(true)}
+                    onClick={() => navigate('/onlinePayment')}
                     className="btn w-full bg-linear-0 to-[#0f1624] from-cyan-800 text-white hover:bg-[#0f1624]"
                   >
                     Cash On Delivery
@@ -90,8 +99,8 @@ const CartDrawer = ({ cart, isLoading, setOpen, formatted }) => {
             )}
           </ul>
         </ul>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

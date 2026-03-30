@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const NetworkLoader = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-indigo-500 to-purple-600 text-white">
+    <div className="flex flex-col items-center justify-center h-screen bg-linear-to-b from-indigo-500 to-purple-600 text-white">
       {/* 🔄 Spinner Animation */}
       <motion.div
         className="w-20 h-20 border-4 border-white border-t-transparent rounded-full mb-6"

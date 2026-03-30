@@ -105,6 +105,7 @@ const Filters = () => {
           onChange={(e) => setCategory(e.target.value)}
         >
           <option value="All">All Categories</option>{" "}
+          <option value="Home Appliance">Home Appliance</option>{" "}
           <option value="Electronics">Electronics</option>{" "}
           <option value="Laptop">Laptop</option>{" "}
           <option value="smartPhone">Mobile</option>{" "}

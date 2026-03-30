@@ -35,7 +35,7 @@ const CampaignList = () => {
         <tbody>
           {campaigns?.map((c) => (
             <tr key={c._id}>
-              <td>{c.title}</td>
+              <td className="text-black">{c.title}</td>
               <td>
                 {c.isActive ? (
                   <span className="text-green-600">Active</span>

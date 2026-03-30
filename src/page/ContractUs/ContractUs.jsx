@@ -1,20 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Mail, MapPin, Phone, Clock, Send } from "lucide-react";
 import { useNavigate } from "react-router";
 import {
-  Facebook,
-  Instagram,
-  Twitter,
-  MessageCircle,
   Share2,
   Zap,
   Search,
   History,
   HelpCircle,
-  Star,
+
 } from "lucide-react";
-import { UseContext } from "../../Context/AuthContext";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import SEO from "../../component/SEO/SEO";
 import { motion } from "framer-motion";
 const ContactUs = () => {

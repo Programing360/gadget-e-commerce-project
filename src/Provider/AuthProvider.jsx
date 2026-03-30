@@ -24,9 +24,6 @@ const AuthProvider = ({ children }) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [latestOrderId, setLatestOrderId] = useState(null);
 
-
-
-  
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -50,29 +47,37 @@ const AuthProvider = ({ children }) => {
 
   // Logout
   const UserLogout = () => {
+    localStorage.removeItem("access-token");
     return signOut(auth);
   };
 
   // User observer
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (currentUser) => {
+    const unsub = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      if (currentUser) {
-        axiosSecure.post("/jwt", { email: currentUser?.email }).then((res) => {
+
+      if (currentUser?.email) {
+        try {
+          const res = await axiosSecure.post("/jwt", {
+            email: currentUser.email,
+          });
+
           if (res.data?.token) {
             localStorage.setItem("access-token", res.data.token);
-          } else {
-            localStorage.removeItem("access-token");
           }
-        });
+        } catch (err) {
+          console.error(err);
+          localStorage.removeItem("access-token");
+        }
+      } else {
+        localStorage.removeItem("access-token");
       }
+
       setLoading(false);
     });
+
     return () => unsub();
-  }, [axiosSecure]);
-
-
-
+  }, []); // 🔥 axiosSecure dependency remove
 
   const userInfo = {
     createUser,

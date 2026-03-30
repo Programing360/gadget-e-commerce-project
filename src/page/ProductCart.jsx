@@ -72,7 +72,7 @@ const ProductCard = ({ product }) => {
 
     const res = await axiosSecure.post("/cartData", cartItem);
 
-    if (res.data.insertedId) {
+    if (res?.data?.insertedId) {
       toast.success("Product added to Cart 🛒");
       refetch();
     }

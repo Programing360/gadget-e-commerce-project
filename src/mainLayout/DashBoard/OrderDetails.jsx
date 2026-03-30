@@ -21,6 +21,7 @@ const OrderDetails = ({ order }) => {
                 <th>Color</th>
                 <th>Qty</th>
                 <th>Price</th>
+                <th>Total Price</th>
               </tr>
             </thead>
 
@@ -45,6 +46,7 @@ const OrderDetails = ({ order }) => {
                   <td>{item?.quantity}</td>
 
                   <td>{item?.price} ৳</td>
+                  <td>{Number(item?.price)*item.quantity} ৳</td>
                 </tr>
               ))}
             </tbody>

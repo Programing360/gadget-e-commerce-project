@@ -8,8 +8,6 @@ import {
   MapPin,
   Store,
   CreditCard,
-  ShieldCheck,
-  Smartphone,
   Clock,
 } from "lucide-react";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
@@ -20,8 +18,6 @@ import SEO from "../../component/SEO/SEO";
 import cashIcon from "../../assets/assets/cash-on-delivery.png";
 import OnlineIcon from "../../assets/assets/card.png";
 import bkash from "../../assets/assets/bkash.png";
-import { v4 as uuidv4 } from "uuid";
-
 
 const transactionId = "TXN-" + Date.now();
 const CheckoutForm = () => {
@@ -31,10 +27,12 @@ const CheckoutForm = () => {
   const [cart] = useCart();
   const navigate = useNavigate();
   let guestId = localStorage.getItem("guestCart");
+  const [loading, setLoading] = useState(false);
  const [orderId] = useState(() => {
-    // UUID + last 6 digit of timestamp
-    return "ORD-" + uuidv4().split("-")[0] + Date.now().toString().slice(-6);
-  });
+  const random = Math.floor(1000000 + Math.random() * 9000000);
+  const time = Date.now().toString().slice(-2); // last 2 digit
+  return "ORD-" + random + time;
+});
 
   // 🔥 Auto Fill user data
   useEffect(() => {
@@ -63,34 +61,44 @@ const CheckoutForm = () => {
 
   const newDate = moment().format();
   // 🔥 Submit
-  const onSubmit = (data) => {
-    const orderData = {
-      ...data,
-      name: data.fullName,
-      cart,
-      deliveryArea,
-      paymentMethod,
-      paymentType,
-      subtotal,
-      shippingCost: deliveryCharge,
-      total,
-      mobileNumber: data.mobile,
-      newDate,
-      transactionId,
-      email: user?.email || null,
-      guestId,
-      orderId,
-      payNow: paymentType === "partial" ? partialAmount : total,
-    };
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
 
-    axiosSecure.post("/orders", orderData).then((res) => {
-      if (res.data) {
+      const orderData = {
+        ...data,
+        name: data.fullName,
+        cart,
+        deliveryArea,
+        paymentMethod,
+        paymentType,
+        subtotal,
+        shippingCost: deliveryCharge,
+        total,
+        mobileNumber: data.mobile,
+        newDate,
+        transactionId,
+        email: user?.email || null,
+        guestId,
+        orderId,
+        payNow: paymentType === "partial" ? partialAmount : total,
+      };
+
+      const res = await axiosSecure.post("/orders", orderData);
+
+      if (res.data.insertedId) {
+        toast.success("Order Confirmed ✅");
+
         navigate("/invoicePage", {
           state: { order: orderData },
         });
-        toast.success("Order Confirmed ✅");
       }
-    });
+    } catch (error) {
+      console.error(error);
+      toast.error("Order failed ❌");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -99,7 +107,6 @@ const CheckoutForm = () => {
         title="Checkout Page - Zeroomiro"
         description="Review your cart items and checkout"
       />
-
 
       {!user && (
         <div className="flex justify-between items-center p-2 mb-4 border-gray-400 shadow-2xl">
@@ -180,7 +187,7 @@ const CheckoutForm = () => {
 
                 <div
                   onClick={() => setDeliveryArea("inside")}
-                  className={`border rounded-lg p-4 cursor-pointer ${
+                  className={`border rounded-lg p-4 cursor-pointer tab-disabled  ${
                     deliveryArea === "inside"
                       ? "border-blue-500 bg-blue-50 dark:text-black"
                       : "border-gray-300"
@@ -203,7 +210,10 @@ const CheckoutForm = () => {
                 >
                   <div className="flex items-center gap-2">
                     <Truck size={18} />
-                    <p className="font-medium">Delivery Charge <br />(All Over BD)</p>
+                    <p className="font-medium">
+                      Delivery Charge <br />
+                      (All Over BD)
+                    </p>
                   </div>
                   <p className="text-lg font-bold text-gray-500 ">৳17</p>
                 </div>
@@ -253,7 +263,11 @@ const CheckoutForm = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <img className="w-8" src={cashIcon} alt="Cash on Delivery payment option" />
+                    <img
+                      className="w-8"
+                      src={cashIcon}
+                      alt="Cash on Delivery payment option"
+                    />
                     <p className="font-medium">Cash On Delivery</p>
                   </div>
                 </div>
@@ -267,7 +281,11 @@ const CheckoutForm = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <img className="w-8" src={bkash} alt="bKash mobile payment option" />
+                    <img
+                      className="w-8"
+                      src={bkash}
+                      alt="bKash mobile payment option"
+                    />
                     <p className="font-medium">bKash</p>
                   </div>
                 </div>
@@ -281,15 +299,34 @@ const CheckoutForm = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <img className="w-8" src={OnlineIcon} alt="Online card payment option" />
+                    <img
+                      className="w-8"
+                      src={OnlineIcon}
+                      alt="Online card payment option"
+                    />
                     <p className="font-medium">Pay Online</p>
                   </div>
                 </div>
               </div>
 
-              <button className="mt-8 w-full py-3 text-sm sm:text-base rounded-lg bg-linear-to-r from-slate-800 to-blue-900 text-white font-semibold flex items-center justify-center gap-2 hover:shadow-xl transition">
-                <CreditCard size={18} />
-                Place Order
+              <button
+                disabled={loading}
+                className={`mt-8 w-full py-3 text-sm sm:text-base rounded-lg 
+  bg-linear-to-r from-slate-800 to-blue-900 text-white font-semibold 
+  flex items-center justify-center gap-2 hover:shadow-xl transition
+  ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+              >
+                {loading ? (
+                  <>
+                    <Clock className="animate-spin" size={18} />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <CreditCard size={18} />
+                    Place Order
+                  </>
+                )}
               </button>
             </div>
           </form>
