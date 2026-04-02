@@ -187,7 +187,7 @@ const ProductList = () => {
                   <th>
                     <button
                       onClick={() => handleOrderDetails(item._id)}
-                      className="hover:bg-blue-500 border px-4 py-2 rounded-lg hover:shadow-2xl"
+                      className="hover:bg-blue-500 border px-4 py-2 rounded-lg hover:shadow-2xl cursor-pointer"
                     >
                       View
                     </button>
@@ -197,8 +197,8 @@ const ProductList = () => {
                       onClick={() => handleOrderBtn(item._id)}
                       className={
                         orderCount?.some((order) => order._id === item._id)
-                          ? "btn-disabled btn btn-sm bg-gray-300 mr-2"
-                          : "btn btn-sm bg-green-500 rounded mr-2"
+                          ? "btn-disabled btn btn-sm bg-gray-300 dark:text-green-700 mr-2 active:scale-95 cursor-pointer"
+                          : "btn btn-sm bg-green-500 rounded mr-2 active:scale-95 cursor-pointer"
                       }
                     >
                       Confirm

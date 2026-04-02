@@ -24,6 +24,7 @@ const Dashboard = () => {
     (sum, item) => sum + item.total,
     0,
   );
+
   const totalLoss = totalPriceOfCancel
     ? (totalPriceOfOrders / totalPriceOfCancel) % 100
     : 0;
@@ -82,7 +83,7 @@ const Dashboard = () => {
                 <h1 className="text-xl font-bold">Approval Status</h1>
               </div>
               <div className="flex justify-around items-center gap-3 pt-4">
-                <p className="text-3xl font-bold">500</p>
+                <p className="text-3xl font-bold">{orderConfirm?.length || 0}</p>
                 <p className="text-3xl font-bold">10000 BDT</p>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router";
+import {useLoaderData, useNavigate } from "react-router";
 import { useAxiosSecure } from "../../Hook/useAxiosSecure";
 import { toast } from "react-toastify";
 import { UseContext } from "../../Context/AuthContext";
@@ -43,7 +43,6 @@ const ProductDetails = () => {
   const { handleCartIncrement, handleCartDecrement } = useCartItemUpdate();
   const [loadingId, setLoadingId] = useState(null);
   const [size, setSize] = useState(null);
-  // const [selectedColor, setSelectedColor] = useState(null);
   const [currentStock, setCurrentStock] = useState(stock);
   const navigate = useNavigate();
 
@@ -199,8 +198,9 @@ const ProductDetails = () => {
         refetch();
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      if (error) {
+        toast.error("Something went wrong");
+      }
     } finally {
       setLoadingId(null);
     }
@@ -209,7 +209,6 @@ const ProductDetails = () => {
   const [loadedImages, setLoadedImages] = useState({});
 
   const data = useLoaderData();
-
   // if not get data ------------------------
   if (!data) {
     return (

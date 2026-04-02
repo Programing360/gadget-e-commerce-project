@@ -4,6 +4,7 @@ import {
   Clock,
   Facebook,
   Youtube,
+  Instagram,
   ChevronRight,
   Send,
 } from "lucide-react";
@@ -59,8 +60,9 @@ const Footer = () => {
           </Link>
 
           <p className="text-sm text-gray-400 mt-3 max-w-md">
-            At ZerooMiro, We believe shopping should be simple reliable and exciting.
-            Explore a wide range of products - handpicked for quality and satisfaction. 
+            At ZerooMiro, We believe shopping should be simple reliable and
+            exciting. Explore a wide range of products - handpicked for quality
+            and satisfaction.
             <br />
             Your trust, Our priority.
           </p>
@@ -79,14 +81,30 @@ const Footer = () => {
 
           {/* Social */}
           <div className="mt-6 flex gap-3">
-            {[Facebook, Youtube].map((Icon, i) => (
-              <div
-                key={i}
-                className="p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-blue-600 hover:scale-110 transition cursor-pointer"
-              >
-                <Icon size={18} />
-              </div>
-            ))}
+            <a
+              href="https://www.facebook.com/Zeroomirooo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-blue-600 hover:scale-110 transition cursor-pointer"
+            >
+              <Facebook size={18} />
+            </a>
+            <a
+              href="https://www.instagram.com/zeroomiro?utm_source=qr&igsh=Nnpwc3hwNGgyb2py"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-pink-600 hover:scale-110 transition cursor-pointer"
+            >
+              <Instagram size={18} />
+            </a>
+            <a
+              href="https://www.youtube.com/@Zeroomirooo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-red-600 hover:scale-110 transition cursor-pointer"
+            >
+              <Youtube size={18} />
+            </a>
           </div>
         </motion.div>
 
@@ -95,7 +113,10 @@ const Footer = () => {
           <h3 className="font-semibold mb-5">Quick Links</h3>
           <ul className="space-y-3 text-sm text-gray-400">
             {links.map((item) => (
-              <li key={item.name} className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1">
+              <li
+                key={item.name}
+                className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1"
+              >
                 <ChevronRight size={14} />
                 <Link
                   to={item.path}
@@ -113,7 +134,10 @@ const Footer = () => {
           <h3 className="font-semibold mb-5">Categories</h3>
           <ul className="space-y-3 text-sm text-gray-400">
             {categories.map((item) => (
-              <li key={item.name} className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1">
+              <li
+                key={item.name}
+                className="flex items-center gap-2 hover:text-white transition cursor-pointer hover:translate-x-1"
+              >
                 <ChevronRight size={14} />
                 <Link
                   to={item.path}

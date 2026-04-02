@@ -29,9 +29,9 @@ const CheckoutForm = () => {
   let guestId = localStorage.getItem("guestCart");
   const [loading, setLoading] = useState(false);
  const [orderId] = useState(() => {
-  const random = Math.floor(1000000 + Math.random() * 9000000);
-  const time = Date.now().toString().slice(-2); // last 2 digit
-  return "ORD-" + random + time;
+  const random = Math.floor(1000000 + Math.random() * 9000);
+ const time = Date.now().toString().slice(-1); // 1 digit
+  return "ZM-" + random + time;
 });
 
   // 🔥 Auto Fill user data

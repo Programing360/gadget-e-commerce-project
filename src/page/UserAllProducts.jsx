@@ -24,7 +24,7 @@ const getGuestUserId = () => {
 };
 
 const UserAllProducts = () => {
-  const [allProduct] = useAllProduct();
+const [allProduct, , isLoading, isPending, error] = useAllProduct();
   const [allData] = useAllData();
   // const [products, setProducts] = useState([]);
   const { products, setProducts } = useContext(UseContext);
@@ -137,7 +137,7 @@ const UserAllProducts = () => {
       refetch();
     }
   };
-  if (!allData.length) {
+  if (isLoading) {
     return (
       <div className="mt-30">
         <Loader></Loader>

@@ -7,9 +7,10 @@ const AllProductList = () => {
   const [allProducts, refetch] = useAllProduct();
   const axiosSecure = useAxiosSecure();
   const onRemove = (id) => {
+    toast("Removing product...");
     axiosSecure.delete(`/allProduct/${id}`).then((res) => {
       if (res.data) {
-        toast("Product already deleted");
+        toast("Product removed successfully");
         refetch();
       }
     });

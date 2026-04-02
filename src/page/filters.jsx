@@ -93,7 +93,7 @@ const Filters = () => {
   };
 
   return (
-    <div className="w-full bg-white p-6 rounded-xl shadow-md">
+    <div className="w-full bg-white p-6 rounded-xl shadow-md dark:text-black">
       <h2 className="text-lg font-semibold mb-4">Filters</h2>
 
       {/* Category */}

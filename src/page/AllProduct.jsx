@@ -5,9 +5,8 @@ import useAllProduct from "../Hook/useAllProduct";
 import NetworkLoader from "../component/Loader/NetworkLoader ";
 
 const AllProduct = () => {
-  const [allProduct, , isLoading, isPending, error] = useAllProduct();
+const [allProduct, , isLoading, isPending, error] = useAllProduct();
 
-  
   // ✅ Loading
   if (isLoading) {
     return <Loader />;
@@ -19,16 +18,11 @@ const AllProduct = () => {
   }
 
   // 📦 No Product
-  if (allProduct.length === 0) {
-    return (
-      <div className="text-center mt-32 text-gray-500">
-        <h2 className="text-2xl font-semibold">No Products Found</h2>
-        <p className="mt-2">Try adjusting your filters or come back later.</p>
-      </div>
-    );
-  }
+  // if (allProduct.length === 0) {
+  //   return <Loader></Loader>;
+  // }
   return (
-    <div className="mt-14 container lg:w-10/12 mx-auto lg:p-10 p-2">
+    <div className="mt-14 container lg:w-10/12 mx-auto lg:p-10 p-2 ">
       <SEO
         title="Zeroomiro - Trusted Place"
         description="Buy online products with trust"
@@ -39,17 +33,12 @@ const AllProduct = () => {
       <p className="text-center text-gray-500 mt-4">
         Welcome to our premium product collection where quality meets value.
       </p>
-      {isLoading && (
-        <div className="flex justify-center mt-20">
-          <Loader />
-        </div>
-      )}
-      {isPending && (
-        <div className="text-center text-sm text-gray-400">
-          Updating data...
-        </div>
-      )}
-      
+      <div className="flex justify-center">
+        {isLoading && (
+          <span className="loading w-1/7 loading-bars loading-xl"></span>
+        )}
+      </div>
+
       {/* ❌ No Product */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-10 gap-2 mt-14">
         {allProduct?.map((product) => (

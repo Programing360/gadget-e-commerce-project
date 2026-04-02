@@ -63,14 +63,14 @@ const OrderInvoicePage = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto my-20 shadow-lg border bg-white mt-40">
+    <div className="max-w-5xl mx-auto my-20 shadow-lg border bg-white mt-40 dark:text-black">
       <SEO
         title="Invoice - Zeroomiro"
         description="Professional invoice with QR code"
       />
 
       {/* 🔥 HEADER */}
-      <div className="flex justify-between items-center bg-green-600 text-white p-6">
+      <div className="flex justify-between items-center bg-orange-500 text-white p-6">
         <div className="flex items-center gap-3">
           <img src={logo} className="w-12 h-12 rounded" alt="page logo"/>
           <h1 className="text-2xl font-bold">Zeroomiro</h1>
@@ -107,7 +107,7 @@ const OrderInvoicePage = () => {
       {/* 🔥 TABLE */}
       <div className="p-6">
         <table className="w-full border">
-          <thead className="bg-green-600 text-white">
+          <thead className="bg-orange-500 text-white">
             <tr>
               <th className="p-2 text-left">Product</th>
               <th className="p-2">Color</th>
@@ -153,7 +153,7 @@ const OrderInvoicePage = () => {
               <span>৳{shippingCost}</span>
             </div>
 
-            <div className="flex justify-between font-bold text-lg border-t pt-2 bg-green-100 p-2 rounded">
+            <div className="flex justify-between font-bold text-lg border-t pt-2 bg-orange-100 p-2 rounded">
               <span>Total</span>
               <span>৳{total}</span>
             </div>
@@ -170,7 +170,7 @@ const OrderInvoicePage = () => {
       <div className="text-center pb-6">
         <button
           onClick={handleDownloadPDF}
-          className="px-6 py-2 bg-green-600 text-white rounded mr-3"
+          className="px-6 py-2 bg-orange-600 text-white rounded mr-3"
         >
           Download PDF
         </button>

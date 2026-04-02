@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import OrderPage from "../../page/DeliveryPage/OrderPage";
 import CartDrawer from "../CartDrawer";
 import MobileDrawer from "./MobileDrawer";
+import { toast } from "react-toastify";
 
 const NavBar = () => {
   const { user, UserLogout, setOpen, open, showSuccessModal } =
@@ -44,9 +45,8 @@ const NavBar = () => {
       await axiosSecure.patch("/notifications/read-all");
       refetch();
     } catch (error) {
-      console.log(error);
       if (error) {
-        alert(error);
+        toast.error(error);
       }
     }
   };

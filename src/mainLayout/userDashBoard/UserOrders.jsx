@@ -68,7 +68,7 @@ const UserOrders = () => {
         />
 
         <motion.h2
-          className="text-2xl font-semibold text-gray-800"
+          className="text-2xl font-semibold text-gray-800 dark:text-white"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
         >

@@ -59,15 +59,16 @@ const AuthProvider = ({ children }) => {
       if (currentUser?.email) {
         try {
           const res = await axiosSecure.post("/jwt", {
-            email: currentUser.email,
+            email: currentUser?.email,
           });
-
-          if (res.data?.token) {
-            localStorage.setItem("access-token", res.data.token);
+            
+          if (res.data?.accessToken) {
+            localStorage.setItem("access-token", res.data.accessToken);
           }
         } catch (err) {
-          console.error(err);
-          localStorage.removeItem("access-token");
+          if (err) {
+            localStorage.removeItem("access-token");
+          }
         }
       } else {
         localStorage.removeItem("access-token");

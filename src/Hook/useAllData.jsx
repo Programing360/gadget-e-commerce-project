@@ -16,7 +16,6 @@ const useAllData = () => {
     const res = await axiosSecure.get("/allData");
     return res.data;
   },
-
   staleTime: 1000 * 60 * 5,
   retry: 2,
   retryDelay: 1000,

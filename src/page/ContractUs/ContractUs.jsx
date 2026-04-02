@@ -1,19 +1,23 @@
 import React from "react";
 import { Mail, MapPin, Phone, Clock, Send } from "lucide-react";
 import { useNavigate } from "react-router";
-import {
-  Share2,
-  Zap,
-  Search,
-  History,
-  HelpCircle,
-
-} from "lucide-react";
+import { Share2, Zap, Search, History, HelpCircle } from "lucide-react";
 import { Link } from "react-router";
 import SEO from "../../component/SEO/SEO";
 import { motion } from "framer-motion";
+import { useAxiosSecure } from "../../Hook/useAxiosSecure";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
 const ContactUs = () => {
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const handleFAQ = () => {
     navigate("/"); // first go to home
@@ -22,6 +26,21 @@ const ContactUs = () => {
       const section = document.getElementById("faq");
       section?.scrollIntoView({ behavior: "smooth" });
     }, 100);
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await axiosSecure.post("/contact", data);
+
+      if (res.data.insertedId) {
+        toast.success("Message sent successfully!");
+        reset();
+      }
+    } catch (error) {
+      if (error) {
+        toast.error("Failed to send message");
+      }
+    }
   };
 
   return (
@@ -81,15 +100,21 @@ const ContactUs = () => {
             <Mail size={22} className="text-[#615fff]" /> Send us a Message
           </h2>
 
-          <form className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium">Full Name *</label>
                 <input
                   type="text"
                   placeholder="Enter your full name"
+                  {...register("name", { required: "Name is required" })}
                   className="w-full border rounded-xl p-3 mt-1 focus:ring-2 focus:ring-[#615fff] focus:border-transparent outline-none transition"
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -97,8 +122,14 @@ const ContactUs = () => {
                 <input
                   type="email"
                   placeholder="Enter your email"
+                  {...register("email", { required: "Email is required" })}
                   className="w-full border rounded-xl p-3 mt-1 focus:ring-2 focus:ring-[#615fff] focus:border-transparent outline-none transition"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -108,18 +139,27 @@ const ContactUs = () => {
                 <input
                   type="text"
                   placeholder="01540561692"
+                  {...register("phone")}
                   className="w-full border rounded-xl p-3 mt-1 focus:ring-2 focus:ring-[#615fff] outline-none transition"
                 />
               </div>
 
               <div>
                 <label className="text-sm font-medium">Subject *</label>
-                <select className="w-full border rounded-xl p-3 mt-1 focus:ring-2 focus:ring-[#615fff] outline-none transition">
-                  <option>Select a subject</option>
-                  <option>Order Issue</option>
-                  <option>Product Inquiry</option>
-                  <option>General Question</option>
+                <select
+                  {...register("subject", { required: "Subject is required" })}
+                  className="w-full border rounded-xl p-3 mt-1 focus:ring-2 focus:ring-[#615fff] outline-none transition"
+                >
+                  <option value="">Select a subject</option>
+                  <option value="Order Issue">Order Issue</option>
+                  <option value="Product Inquiry">Product Inquiry</option>
+                  <option value="General Question">General Question</option>
                 </select>
+                {errors.subject && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.subject.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -128,11 +168,20 @@ const ContactUs = () => {
               <textarea
                 rows="5"
                 placeholder="Tell us how we can help you..."
+                {...register("message", { required: "Message is required" })}
                 className="w-full border rounded-xl p-3 mt-1 focus:ring-2 focus:ring-[#615fff] outline-none transition"
               ></textarea>
+              {errors.message && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.message.message}
+                </p>
+              )}
             </div>
 
-            <button className="w-full bg-linear-to-r from-[#615fff] to-blue-600 hover:scale-[1.02] transition transform text-white py-3 rounded-xl flex items-center justify-center gap-2 font-semibold shadow-md">
+            <button
+              type="submit"
+              className="w-full bg-linear-to-r from-[#615fff] to-blue-600 hover:scale-[1.02] transition transform text-white py-3 rounded-xl flex items-center justify-center gap-2 font-semibold shadow-md"
+            >
               <Send size={18} /> Send Message
             </button>
           </form>
@@ -152,7 +201,7 @@ const ContactUs = () => {
             <div>
               <h4 className="font-semibold">Shop Address</h4>
               <p className="text-sm opacity-80 mt-1">
-                Elephant Road, Dhaka-1205 <br />
+                DMHS Road Sirajganj 6720 <br />
                 Bangladesh
               </p>
             </div>
@@ -257,13 +306,15 @@ const ContactUs = () => {
       </div>
       <div className="max-w-7xl mx-auto px-6 pb-16">
         <h1 className="text-2xl text-center font-bold mb-3">Our Location</h1>
-        <div className="rounded-2xl overflow-hidden shadow-xl">
-          <iframe
-            title="Zeroomiro Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3629.8405972009336!2d89.53318607591437!3d24.525597558574265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fdb7e3b76d077d%3A0x4be8a7e8c24209f3!2sDhangora%20Bazar!5e0!3m2!1sen!2sbd!4v1774531703413!5m2!1sen!2sbd"
-            className="w-full h-100 border-0"
-            loading="lazy"
-          ></iframe>
+        <div className="flex justify-center mt-4 ">
+          <a
+            href="https://www.google.com/maps/place/Sirajganj"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-[#615fff] hover:bg-[#4f46e5] text-white px-6 py-3 rounded-xl font-semibold transition"
+          >
+            Open Location
+          </a>
         </div>
       </div>
       {/* <DarkModeToggle></DarkModeToggle> */}
